@@ -1,13 +1,6 @@
 .grid-container {
-	display: grid;
-	grid-template-columns: repeat(3, minmax(150px, 1fr));
-	grid-gap: 10px;
-	background-color: #fff;
-	overflow-x: hidden;
+	@apply grid grid-cols-[repeat(3,minmax(1px,50fr))] gap-[5px] bg-white overflow-x-hidden;
 }
-
 .grid-item {
-	padding: 10px;
-	box-sizing: border-box;
-	min-width: 0;
+	@apply box-border min-w-0 mx-[5px] p-2.5;
 }

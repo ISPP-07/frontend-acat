@@ -1,60 +1,40 @@
 .container {
-	position: relative; /* change to relative or static */
-	top: 181px;
-	left: 401px;
-	width: 406px;
-	height: 141px;
-	background: #ffffffff; /* white */
-	border-radius: 12px; /* border-m */
-	border-width: 1px;
-	border-color: rgb(255, 255, 255); /* white */
-	border-style: solid;
-	box-shadow:
-		0px 3px 8px #171a1f,
-		0px 0px 2px #171a1f; /* shadow-s */
+	@apply relative w-[406px] h-[141px] border shadow-[0px_3px_8px_#171a1f,0px_0px_2px_#171a1f] rounded-xl border-white border-solid left-[190px] top-[181px];
+
+	/* change to relative or static */
+	background: #ffffffff;
+
+	/* white */
+
+	/* border-m */
+
+	/* white */
+
+	/* shadow-s */
 }
 
 /* other styles */
 .icon {
-	position: relative;
-	top: 19px;
-	left: 8px;
-	width: 104px;
-	height: 90px;
-	fill: #171a1fff; /* neutral-900 */
+	@apply relative w-[104px] h-[90px] fill-[#171a1fff] left-2 top-[19px];
+
+	/* neutral-900 */
 }
 .text {
-	position: relative;
-	top: 19px;
-	left: 122px;
-	font-family: Poppins; /* Heading */
-	font-size: 20px;
-	font-weight: 700;
-	line-height: 30px;
-	color: rgb(30, 32, 36); /* neutral-900 */
+	@apply relative text-xl font-bold leading-[30px] text-[rgb(30,32,36)] left-[122px] top-[19px];
+	font-family: Poppins;
+
+	/* Heading */
+
+	/* neutral-900 */
 }
 
 /* Tag 1 */
 .tag {
-	position: absolute;
-	top: 83px;
-	left: 122px;
-	width: 104px;
-	height: 33px;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
+	@apply absolute w-[104px] h-[33px] flex items-center justify-between left-[122px] top-[83px];
 }
-
 .tag2 {
-	font-family: Varela; /* Body */
-	font-size: 11px;
-	font-weight: 400;
-	line-height: 18px;
-	opacity: 1;
-	position: absolute;
-	top: 89px;
-	left: 200px;
-	width: 104px;
-	height: 33px;
+	@apply text-[11px] font-normal leading-[18px] opacity-100 absolute w-[104px] h-[33px] left-[200px] top-[89px];
+	font-family: Varela;
+
+	/* Body */
 }

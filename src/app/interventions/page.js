@@ -1,7 +1,6 @@
-import React from 'react'
 import InterventionList from './components/InterventionList'
 
-const appointments = [
+const interventions = [
 	{ id: 1, user: 'Pérez Jiménez', date: '22/2/2024' },
 	{ id: 2, user: 'Sánchez López', date: '12/2/2024' },
 	{ id: 1, user: 'Pérez Jiménez', date: '22/2/2024' },
@@ -24,7 +23,7 @@ const appointments = [
 ]
 
 function AppointmentsPage() {
-	return <InterventionList appointments={appointments} />
+	return <InterventionList interventions={interventions} />
 }
 
 export default AppointmentsPage

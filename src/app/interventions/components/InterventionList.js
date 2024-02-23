@@ -1,12 +1,12 @@
 import styles from '../styles/InterventionList.css';
 import InterventionCard from './InterventionCard'
 
-const MyComponent = ({ appointments }) => {
+const MyComponent = ({ interventions }) => {
   return (
     <div className={"grid-container"}>
-      {appointments.map(appointment => (
-        <div className={"grid-item"} key={appointment.id}>
-          <InterventionCard appointment={appointment} />
+      {interventions.map(intervention => (
+        <div className={"grid-item"} key={intervention.id}>
+          <InterventionCard appointment={intervention} />
         </div>
       ))}
     </div>
