@@ -1,3 +1,4 @@
+'use client'
 import Phone from '../components/icons/phone'
 import Location2 from '../components/icons/location-2'
 import User from '../components/icons/user'
@@ -5,6 +6,9 @@ import UserLaptop from '../components/icons/user-laptop'
 import Clipboard from '../components/icons/clipboard'
 import Identification from '../components/icons/id'
 import Gender from '../components/icons/gender'
+import { useRouter } from 'next/navigation'
+
+const axios = require('axios').default
 
 export default function CreateModal({ isVisible, onClose }) {
 	if (!isVisible) return null
@@ -15,7 +19,25 @@ export default function CreateModal({ isVisible, onClose }) {
 		}
 	}
 
-	async function onSubmit(event) {}
+	const router = useRouter()
+	async function onSubmit(event) {
+		event.preventDefault()
+		// TODO: waiting for creation API implementation
+		const formData = new FormData(event.target)
+		axios
+			.post(
+				'https://65dc59f1e7edadead7ebb34d.mockapi.io/api/v1/beneficiary',
+				formData
+			)
+			.then(function (response) {
+				// Navigate to the newly created beneficiary
+				router.push('/beneficiaries/' + response.data.id.toString())
+			})
+			.catch(function (error) {
+				// TODO: handle error
+				console.log(error)
+			})
+	}
 
 	return (
 		<div
@@ -153,11 +175,13 @@ export default function CreateModal({ isVisible, onClose }) {
 								/>
 							</div>
 						</div>
-						<input
+
+						<button
 							type="submit"
 							className="col-span-2 bg-blue-600 rounded-md drop-shadow-lg p-1 cursor-pointer text-white w-full"
-							value="Registrar"
-						/>
+						>
+							Registrar
+						</button>
 					</form>
 				</div>
 			</div>
