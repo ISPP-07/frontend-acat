@@ -45,7 +45,7 @@ export default function CreateModal({ isVisible, onClose }) {
 			id="close"
 			onClick={toClose}
 		>
-			<div className="w-[600px] h-[200px] ">
+			<div>
 				<button className="text-gray-500 text-xl" onClick={onClose}>
 					X
 				</button>
