@@ -52,13 +52,13 @@ export default function Sidebar () {
 							Crear nuevo ususario
 						</Link>
 					</div>
-					<hr className='mt-[30px] w-3/4 mx-auto'></hr>
-					<button className="absolute w-48 h-8 flex items-center justify-center text-sm font-normal leading-5 top-[450px] left-[45px] font-Varela text-white rounded-3xl bg-red-500 shadow-xl">
+				</div>
+				<hr className='w-3/4 h-8 bottom-14 left-10 absolute'></hr>
+				<button className="absolute w-48 h-8 flex bottom-5 left-12 items-center justify-center text-sm font-normal leading-5 font-Varela text-white rounded-3xl bg-red-500 shadow-xl">
 						<Image src="/logout.svg" width={18} height={18} className="mr-1"></Image>
 						<span>Cerrar Sesión
 						</span>
-						</button>
-				</div>
+					</button>
 			</div>
 	)
 }
