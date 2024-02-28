@@ -1,4 +1,4 @@
-import InterventionList from './components/InterventionList'
+import InterventionList from './InterventionList'
 
 const interventions = [
 	{ id: 1, user: 'Pérez Jiménez', date: '22/2/2024' },

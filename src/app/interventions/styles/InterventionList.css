@@ -1,6 +1,0 @@
-.grid-container {
-	@apply grid grid-cols-[repeat(3,minmax(1px,50fr))] gap-[5px] bg-white overflow-x-hidden;
-}
-.grid-item {
-	@apply box-border min-w-0 mx-[5px] p-2.5;
-}
