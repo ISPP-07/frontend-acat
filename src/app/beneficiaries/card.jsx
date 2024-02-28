@@ -1,12 +1,20 @@
-import CalendarDays from '../../../static/calendarDays'
-import Users from '../../../static/users'
-
 function Card({ beneficiary }) {
-	const age = calculateAge(beneficiary.birthday)
+	const age = calculateAge(beneficiary.birthday) + ' años'
+	const Calendar = <img src="/calendar.svg" alt="calendar" />
+	const Face = <img src="/face.svg" alt="face" />
+	const Users = (
+		<div className="w-24">
+			<img
+				src="/family.svg"
+				alt="user"
+				className="h-full w-full object-cover"
+			/>
+		</div>
+	)
 	return (
-		<div className="mt-6 flex justify-center transition-transform transform hover:scale-105 hover:cursor-pointer">
-			<div className="relative flex w-full max-w-[24rem] flex-row rounded-xl bg-white bg-clip-border text-gray-700 shadow-md">
-				<Users className="h-full w-full object-cover" />
+		<div className="mt-6 flex justify-center transition-transform transform hover:scale-105  hover:cursor-pointer">
+			<div className="relative flex w-full p-4 max-w-[32rem] flex-row rounded-xl bg-white bg-clip-border text-gray-700 shadow-md">
+				{Users}
 				<div className="flex flex-col w-full p-4">
 					<div className="flex flex-col items-start justify-between w-full h-full">
 						<div>
@@ -15,12 +23,12 @@ function Card({ beneficiary }) {
 						<div className="flex flex-col items-start w-full">
 							<div className="flex flex-row items-center justify-center w-full gap-5">
 								<Tags
-									svg={<CalendarDays />}
+									svg={Calendar}
 									text={beneficiary.interventions.length}
 									color={'text-[#117b34] bg-[#EEFDF3]'}
 								/>
 								<Tags
-									svg={<CalendarDays />}
+									svg={Face}
 									text={age}
 									color={'text-[#323842] bg-[#f3f4f6]'}
 								/>

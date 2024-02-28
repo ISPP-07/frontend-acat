@@ -3,13 +3,15 @@ import Searchbar from '../components/searchbar'
 
 export default function Layout({ children }) {
 	return (
-		<div className="flex h-screen flex-col md:flex-row md:overflow-hidden">
-			<div className="w-full flex-none md:w-64">
+		<div className="flex h-full flex-col md:flex-row overflow-x-hidden">
+			<div className="w-full h-full flex-none md:w-64 fixed z-20">
 				<Sidebar />
 			</div>
-			<div className="w-full md:overflow-y-scroll">
-				<Searchbar />
-				<div className="flex-grow p-6 md:p-12">{children}</div>
+			<div className="left-80 relative w-full overflow-x-hidden">
+				<div className="-ml-56 min-h-24 w-full fixed bg-white z-10">
+					<Searchbar />
+				</div>
+				<main className="p-6 md:p-12">{children}</main>
 			</div>
 		</div>
 	)
