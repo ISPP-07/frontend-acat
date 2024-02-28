@@ -1,6 +1,6 @@
 function InterventionCard({ intervention }) {
 	return (
-		<div className="mt-6 flex justify-center transition-transform transform hover:scale-105 hover:cursor-pointer">
+		<div className="mt-6 flex justify-center transition-transform transform hover:scale-105  hover:cursor-pointer">
 			<div className="relative flex w-full p-4 max-w-[32rem] flex-row rounded-xl bg-white bg-clip-border text-gray-700 shadow-md">
 				<div className="w-24">
 					<img

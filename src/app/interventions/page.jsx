@@ -18,6 +18,17 @@ const interventions = [
 	{ id: 2, user: 'Sánchez López', date: '12/2/2024' },
 	{ id: 2, user: 'Sánchez López', date: '12/2/2024' },
 	{ id: 2, user: 'Sánchez López', date: '12/2/2024' },
+	{ id: 2, user: 'Sánchez López', date: '12/2/2024' },
+	{ id: 2, user: 'Sánchez López', date: '12/2/2024' },
+	{ id: 2, user: 'Sánchez López', date: '12/2/2024' },
+	{ id: 2, user: 'Sánchez López', date: '12/2/2024' },
+	{ id: 2, user: 'Sánchez López', date: '12/2/2024' },
+	{ id: 2, user: 'Sánchez López', date: '12/2/2024' },
+	{ id: 2, user: 'Sánchez López', date: '12/2/2024' },
+	{ id: 2, user: 'Sánchez López', date: '12/2/2024' },
+	{ id: 2, user: 'Sánchez López', date: '12/2/2024' },
+	{ id: 2, user: 'Sánchez López', date: '12/2/2024' },
+	{ id: 2, user: 'Sánchez López', date: '12/2/2024' },
 	{ id: 2, user: 'Sánchez López', date: '12/2/2024' }
 	// Agrega más appointments según sea necesario
 ]
