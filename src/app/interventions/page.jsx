@@ -1,5 +1,5 @@
 "use client";
-import {useState} from 'react';
+import React ,{useState} from 'react';
 import Searchbar from '../components/searchbar';
 import Sidebar from '../components/sidebar';
 import Modal from './modal'

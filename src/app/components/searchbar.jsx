@@ -1,6 +1,8 @@
 'use client'
 import Image from 'next/image'
-
+/* eslint-disable no-unused-vars */
+import React from 'react'
+/* eslint-enable no-unused-vars */
 const Searchbar = () => {
 	return (
 		<div className='absolute top-10 left-1/4 w-4/6 h-10 flex items-center'>

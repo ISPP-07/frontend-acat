@@ -1,6 +1,5 @@
 'use client'
-
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import Image from 'next/image'
 
 export default function Modal ({isVisible, onClose, selectedIntervention}) {
@@ -41,7 +40,8 @@ export default function Modal ({isVisible, onClose, selectedIntervention}) {
               <div className="bg-white p-5 rounded-3xl text-black font-Varela">
                 <div className="flex items-center">
                   <h1 className="mb-3 text-left text-4xl"><strong>Datos de la intervención</strong></h1>
-                  <Image src="/calendar.svg" width={90} height={18} className="ml-2" alt="Icono de calendario"></Image>
+                  <Image src="/calendar.svg" width={120} height={18} className="ml-2" alt="Icono de calendario"></Image>
+                  <button className="bg-red-500 text-black text-2xl rounded w-20 h-full" onClick={onClose}>X</button>
                 </div>
                 <div className="mb-1 flex">
                   <Image src="/edit.svg" width={30} height={18} className="mr-2 cursor-pointer" onClick={handleEditClick} alt="Icono de edición"/>
