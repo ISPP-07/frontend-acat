@@ -1,6 +1,6 @@
 project:
-  name: 'ISPP-2024-TT-07-front-ACAT'
-  owner: 'ISPP-2024-07'
+  name: 'ISPP-2024-L2-07-frontACAT'
+  owner: 'L2'
   teamId: '07'
   identities: {}
   notifications:
