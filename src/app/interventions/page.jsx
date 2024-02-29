@@ -1,5 +1,7 @@
 "use client";
-import React ,{useState} from 'react';
+/* eslint-disable no-unused-vars */
+import React, {useState} from 'react';
+/* eslint-enable no-unused-vars */
 import Searchbar from '../components/searchbar';
 import Sidebar from '../components/sidebar';
 import Modal from './modal'

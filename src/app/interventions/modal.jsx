@@ -1,5 +1,7 @@
 'use client'
-import React, { useEffect } from "react";
+/* eslint-disable no-unused-vars */
+import React, {useEffect} from 'react';
+/* eslint-enable no-unused-vars */
 import Image from 'next/image'
 
 export default function Modal ({isVisible, onClose, selectedIntervention}) {
