@@ -12,13 +12,13 @@ function InterventionCard({ intervention }) {
 				<div className="flex flex-col w-full p-4">
 					<div className="flex flex-col items-start justify-between w-full h-full">
 						<div>
-							<h3 className="text-xl font-bold">{intervention.user}</h3>
+							<h3 className="text-xl font-bold">{intervention.patient}</h3>
 						</div>
 						<div className="flex flex-col items-start w-full">
 							<div className="flex flex-row items-center justify-center w-full gap-5">
 								<Tags
 									svg={<img src="/calendar.svg" alt="calendar" />}
-									text={intervention.date}
+									text={intervention.intervention_date}
 									color={'text-[#117b34] bg-[#EEFDF3]'}
 								/>
 								{/* Agregar más tags según sea necesario */}
