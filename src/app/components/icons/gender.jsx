@@ -1,3 +1,6 @@
+/* eslint-disable no-unused-vars */
+import React from 'react'
+/* eslint-enable no-unused-vars */
 const Gender = props => (
 	<svg
 		xmlns="http://www.w3.org/2000/svg"

@@ -3,7 +3,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-  
+
 :root {
 	--foreground-rgb: 0, 0, 0;
 	--background-start-rgb: 214, 219, 220;
@@ -34,11 +34,9 @@ body {
 	}
 }
 
-.wallpaper{
-position: absolute; 
-  background: #FFFF; /* white */
-  width: 100%;
-  height: 100%;
+.wallpaper {
+	position: absolute;
+	background: #fff; /* white */
+	width: 100%;
+	height: 100%;
 }
-
-

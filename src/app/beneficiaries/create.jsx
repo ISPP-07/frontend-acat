@@ -7,6 +7,9 @@ import Clipboard from '../components/icons/clipboard'
 import Identification from '../components/icons/id'
 import Gender from '../components/icons/gender'
 import { useRouter } from 'next/navigation'
+/* eslint-disable no-unused-vars */
+import React from 'react'
+/* eslint-enable no-unused-vars */
 
 const axios = require('axios').default
 
