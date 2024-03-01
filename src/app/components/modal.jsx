@@ -1,8 +1,6 @@
 'use client'
-
-import { useEffect } from 'react'
 /* eslint-disable no-unused-vars */
-import React from 'react'
+import { useEffect, React } from 'react'
 /* eslint-enable no-unused-vars */
 
 export default function Modal({ isVisible, onClose }) {

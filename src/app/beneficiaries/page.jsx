@@ -1,9 +1,8 @@
 'use client'
-import { useState } from 'react'
-import CreateModal from './create'
 /* eslint-disable no-unused-vars */
-import React from 'react'
+import { useState, React } from 'react'
 /* eslint-enable no-unused-vars */
+import CreateModal from './create'
 
 export default function Page() {
 	const [verModal, setVerModal] = useState(false)
