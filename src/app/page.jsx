@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import LoginForm from './components/LoginForm'
-
+import React from 'react'
 export default function Home() {
 	return (
 		<main className="flex flex-row items-center justify-around w-screen h-screen">
