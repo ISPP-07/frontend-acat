@@ -3,6 +3,9 @@ import { useState } from 'react'
 import Modal from './components/modal'
 import Searchbar from './components/searchbar'
 import Sidebar from './components/sidebar'
+/* eslint-disable no-unused-vars */
+import React from 'react'
+/* eslint-enable no-unused-vars */
 
 export default function Home() {
 	const [verModal, setVerModal] = useState(false)
