@@ -26,21 +26,14 @@ export default function Modal({ isVisible, onClose, selectedIntervention }) {
 		}
 	}
 
-	const handleEditClick = () => {
-		console.log('Clic en el icono de edición')
-	}
-
-	const handleTrashClick = () => {
-		console.log('Clic en el icono de eliminación')
-	}
-
 	return (
 		<div
 			className={`fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex justify-center items-center ${isVisible ? 'z-30' : 'z-0'} `}
 			id="close"
 			onClick={toClose}
+			data-testid="close"
 		>
-			<div className="w-[400px] h-[400px] ">
+			<div className="w-[400px] h-[400px] " data-testid="modal">
 				<div className="bg-white p-5 rounded-3xl text-black font-Varela">
 					<div className="flex items-center w-full">
 						<h1 className="mb-3 text-left text-4xl max-w-56">
@@ -70,7 +63,6 @@ export default function Modal({ isVisible, onClose, selectedIntervention }) {
 							width={30}
 							height={18}
 							className="mr-2 cursor-pointer"
-							onClick={handleEditClick}
 							alt="Icono de edición"
 						/>
 						<Image
@@ -78,7 +70,6 @@ export default function Modal({ isVisible, onClose, selectedIntervention }) {
 							width={30}
 							height={18}
 							className="mr-2 cursor-pointer"
-							onClick={handleTrashClick}
 							alt="Icono de eliminación"
 						/>
 					</div>
