@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars */
 import React from 'react'
 /* eslint-enable no-unused-vars */
-import { test, expect, describe, jest } from '@jest/globals'
 import { render, fireEvent } from '@testing-library/react'
+import { test, expect, describe, jest } from '@jest/globals'
 import Modal from '../../app/interventions/modal.jsx'
 
 describe('Modal component', () => {
