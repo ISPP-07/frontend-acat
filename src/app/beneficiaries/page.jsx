@@ -1,6 +1,7 @@
 'use client'
 /* eslint-disable no-unused-vars */
-import { useState, React } from 'react'
+import { useState } from 'react'
+import React from 'react'
 /* eslint-enable no-unused-vars */
 import CreateModal from './create'
 
