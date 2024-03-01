@@ -2,7 +2,6 @@
 import React from 'react'
 /* eslint-enable no-unused-vars */
 import { test, expect, describe, jest } from '@jest/globals'
-
 import { render, fireEvent } from '@testing-library/react'
 import Modal from '../../app/interventions/modal.jsx'
 
