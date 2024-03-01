@@ -25,7 +25,7 @@ export default function Sidebar() {
 						className="relative left-[10px]"
 					></Image>
 					<Link
-						href="/link1"
+						href="/beneficiaries"
 						className="ml-5 font-Varela text-171a1fcf text-base text3"
 					>
 						Beneficiarios
@@ -67,7 +67,7 @@ export default function Sidebar() {
 						className="relative left-[10px]"
 					></Image>
 					<Link
-						href="/link4"
+						href="/interventions"
 						className="ml-5 font-Varela text-171a1fcf text-base text3"
 					>
 						Intervenciones
