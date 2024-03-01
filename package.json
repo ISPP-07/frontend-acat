@@ -49,4 +49,5 @@
 			"\\.(css|less)$": "<rootDir>/transformerCSS.js"
 		}
 	}
-}
+  }
+  
