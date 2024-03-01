@@ -1,3 +1,6 @@
+/* eslint-disable no-unused-vars */
+import React from 'react'
+/* eslint-enable no-unused-vars */
 function Card({ beneficiary }) {
 	const age = calculateAge(beneficiary.birthday) + ' años'
 	const Calendar = <img src="/calendar.svg" alt="calendar" />
