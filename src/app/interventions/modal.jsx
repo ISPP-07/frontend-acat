@@ -42,25 +42,27 @@ export default function Modal({ isVisible, onClose, selectedIntervention }) {
 		>
 			<div className="w-[400px] h-[400px] ">
 				<div className="bg-white p-5 rounded-3xl text-black font-Varela">
-					<div className="flex w-full justify-end">
-						<button
-							className="bg-red-500 text-black text-2xl rounded-md shadow-lg w-1/6 h-full mb-3"
-							onClick={onClose}
-						>
-							X
-						</button>
-					</div>
-					<div className="flex items-center">
-						<h1 className="mb-3 text-left text-4xl">
+					<div className="flex items-center w-full">
+						<h1 className="mb-3 text-left text-4xl max-w-56">
 							<strong>Datos de la intervención</strong>
 						</h1>
-						<Image
-							src="/calendar.svg"
-							width={120}
-							height={18}
-							className="ml-2"
-							alt="Icono de calendario"
-						></Image>
+						<div className="flex flex-col w-full">
+							<div className="flex justify-end">
+								<button
+									className="bg-red-500 text-white text-xl rounded-md shadow-lg w-1/3 h-full mb-3"
+									onClick={onClose}
+								>
+									X
+								</button>
+							</div>
+							<Image
+								src="/calendar.svg"
+								width={66}
+								height={66}
+								className="ml-6"
+								alt="Icono de calendario"
+							></Image>
+						</div>
 					</div>
 					<div className="mb-1 flex">
 						<Image
