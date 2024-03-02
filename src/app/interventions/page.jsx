@@ -11,7 +11,7 @@ export default function AppointmentsPage({ searchParams }) {
 
 	return (
 		<>
-			<Link href="/interventions/?show=true">SUMMON THE MODAL</Link>
+			<Link href="/interventions/?show=true"></Link>
 			{show && <RegisterInterventionModal className="z-50 absolute" />}
 			<InterventionList />
 		</>
