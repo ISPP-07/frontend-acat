@@ -49,7 +49,7 @@
             "html"
         ],
         "moduleNameMapper": {
-            "\.(css|less)$": "<rootDir>/transformerCSS.js"
-        }
+			"\\.(css|less)$": "<rootDir>/transformerCSS.js"
+		}
     }
 }

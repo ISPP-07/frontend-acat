@@ -1,5 +1,9 @@
+'use client'
 import Sidebar from '../components/sidebar'
 import Searchbar from '../components/searchbar'
+/* eslint-disable no-unused-vars */
+import React, { useState } from 'react'
+/* eslint-enable no-unused-vars */
 
 export default function Layout({ children }) {
 	return (
