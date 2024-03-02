@@ -1,10 +1,12 @@
+'use client'
+/* eslint-disable no-unused-vars */
 import React from 'react'
+/* eslint-enable no-unused-vars */
 import Link from 'next/link'
 
 function RegisterInterventionModal({ searchParams }) {
-	const show = searchParams?.show
 	return (
-		<div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center">
+		<div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center z-20">
 			<div className="p-8 border w-[32rem] h-fit shadow-lg rounded-md bg-white">
 				<div>
 					<div className="mt-2 px-10 py-3">
@@ -115,12 +117,18 @@ function RegisterInterventionModal({ searchParams }) {
 							</fieldset>
 						</form>
 					</div>
-					<div className="flex justify-center mt-4">
+					<div className="flex justify-center mt-9">
 						<Link
 							href="/interventions"
 							className="px-4 py-2 w-72 shadow-lg text-center bg-[#75AF73] text-white text-base font-medium rounded-md hover:bg-[#557e53] flex-grow focus:outline-none focus:ring-2 focus:ring-gray-300"
 						>
 							Dar de Alta
+						</Link>
+						<Link
+							href="/interventions"
+							className="px-4 py-2 bg-red-500 text-white rounded focus:outline-none focus:ring focus:ring-blue-300"
+						>
+							Cerrar
 						</Link>
 					</div>
 				</div>
