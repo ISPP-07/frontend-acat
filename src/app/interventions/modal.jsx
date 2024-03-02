@@ -78,7 +78,7 @@ export default function Modal({ isVisible, onClose, selectedIntervention }) {
 							<strong>Beneficiario:</strong>
 						</p>
 						<p className="inline">
-							<strong>{selectedIntervention.name}</strong>
+							<strong>{selectedIntervention.patient}</strong>
 						</p>
 					</div>
 					<div className="mb-1 flex items-center">
@@ -86,7 +86,7 @@ export default function Modal({ isVisible, onClose, selectedIntervention }) {
 							<strong>Fecha de atención:</strong>
 						</p>
 						<p className="inline">
-							<strong>{selectedIntervention.fecha}</strong>
+							<strong>{selectedIntervention.intervention_date}</strong>
 						</p>
 					</div>
 					<div className="mb-1 flex items-center">
@@ -94,7 +94,7 @@ export default function Modal({ isVisible, onClose, selectedIntervention }) {
 							<strong>Tipología:</strong>
 						</p>
 						<p className="inline">
-							<strong>{selectedIntervention.tipología}</strong>
+							<strong>{selectedIntervention.technician}</strong>
 						</p>
 					</div>
 					<div className="mb-1 flex items-center">
@@ -102,7 +102,7 @@ export default function Modal({ isVisible, onClose, selectedIntervention }) {
 							<strong>Técnico:</strong>
 						</p>
 						<p className="inline">
-							<strong>{selectedIntervention.técnico}</strong>
+							<strong>{selectedIntervention.technician}</strong>
 						</p>
 					</div>
 					<div className="mb-1 flex items-center">
@@ -110,14 +110,14 @@ export default function Modal({ isVisible, onClose, selectedIntervention }) {
 							<strong>Motivo:</strong>
 						</p>
 						<p className="inline">
-							<strong>{selectedIntervention.motivo}</strong>
+							<strong>{selectedIntervention.technician}</strong>
 						</p>
 					</div>
 					<p className="text-blue-500">
 						<strong>Observaciones:</strong>
 					</p>
 					<p>
-						<strong>-{selectedIntervention.observaciones}</strong>
+						<strong>-{selectedIntervention.technician}</strong>
 					</p>
 				</div>
 			</div>
