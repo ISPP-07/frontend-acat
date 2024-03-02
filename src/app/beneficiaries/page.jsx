@@ -1,9 +1,9 @@
-import Link from 'next/link.js'
-import Card from './card.jsx'
-import { fetchDataBeneficiaries } from './fetch.js'
 /* eslint-disable no-unused-vars */
 import React from 'react'
 /* eslint-enable no-unused-vars */
+import Link from 'next/link.js'
+import Card from './card.jsx'
+import { fetchDataBeneficiaries } from './fetch.js'
 
 export default async function BeneficiariesList() {
 	const data = await fetchDataBeneficiaries()
