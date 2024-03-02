@@ -26,7 +26,7 @@ const Searchbar = () => {
 					height={20}
 				></Image>
 			</button>
-			<button className="bg-green-700 relative rounded-full font-Varela text-sm w-2/12 h-8 float-right">
+			<button className="bg-green-700 text-white relative rounded-full font-Varela text-sm w-2/12 h-8 float-right">
 				Dar de alta
 			</button>
 		</div>
