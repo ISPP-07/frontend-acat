@@ -62,15 +62,11 @@ describe('Card', () => {
 			/>
 		)
 
-		// Find the component by its data-testid
 		const clickable = getByTestId('intervention-card')
 
-		// Simulate a click on the component
 		fireEvent.click(clickable)
 
 		const modal = getByTestId('close')
-
-		// Check if the click handler function was called
 
 		expect(modal).not.toBeNull()
 	})
