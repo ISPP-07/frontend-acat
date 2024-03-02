@@ -7,6 +7,12 @@ import React, { useState } from 'react'
 const Searchbar = ({ Modal }) => {
 	const [verModal, setVerModal] = useState(false)
 
+	let modal
+	if (Modal) {
+		modal = <Modal isVisible={verModal} onClose={() => setVerModal(false)} />
+	} else {
+		modal = null
+	}
 	return (
 		<div className="absolute top-10 left-1/4 w-4/6 h-10 flex items-center">
 			<Image
@@ -34,7 +40,7 @@ const Searchbar = ({ Modal }) => {
 			>
 				Dar de alta
 			</button>
-			<Modal isVisible={verModal} onClose={() => setVerModal(false)} />
+			{modal}
 		</div>
 	)
 }
