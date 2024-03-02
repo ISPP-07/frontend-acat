@@ -1,25 +1,25 @@
-'use client'
+import Image from 'next/image'
+import LoginForm from './components/LoginForm'
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react'
+import React from 'react'
 /* eslint-enable no-unused-vars */
-import Modal from './components/modal'
-import Searchbar from './components/searchbar'
-import Sidebar from './components/sidebar'
-
 export default function Home() {
-	const [verModal, setVerModal] = useState(false)
-
 	return (
-		<main className="absolute bg-white w-full h-full ">
-			<Sidebar />
-			<Searchbar />
-			<Modal isVisible={verModal} onClose={() => setVerModal(false)} />
-			<button
-				className={`bg-cyan-500 rounded-full top-3/4 left-1/4 w-28 absolute ${verModal ? 'blur' : ''}`}
-				onClick={() => setVerModal(true)}
-			>
-				Probar modal
-			</button>
+		<main className="flex flex-row items-center justify-around w-screen h-screen">
+			<Image
+				src="/acatbackground.png"
+				fill="true"
+				style={{
+					objectFit: 'fill',
+					position: 'absolute',
+					zIndex: -10
+				}}
+				quality={100}
+			/>
+
+			<Image src="/acatlogo.png" alt="ACAT Logo" width={600} height={800} />
+
+			<LoginForm />
 		</main>
 	)
 }
