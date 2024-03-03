@@ -62,7 +62,7 @@ export default function CreateModal({ isVisible, onClose }) {
 								<strong>Nombre</strong>
 							</label>
 							<div className="flex items-center border-2 rounded-md border-gray-200 bg-white">
-								<User />
+								<User height="18" width="18" />
 								<input
 									type="text"
 									name="name"
