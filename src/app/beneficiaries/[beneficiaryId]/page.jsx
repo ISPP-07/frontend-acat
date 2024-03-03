@@ -2,12 +2,12 @@
 import React from 'react'
 /* eslint-enable no-unused-vars */
 import { fetchDataBeneficiary } from './fetch'
-import User from '@/app/components/icons/user'
-import Phone from '@/app/components/icons/phone'
-import Location2 from '@/app/components/icons/location-2'
+import User from '../../components/icons/user'
+import Phone from '../../components/icons/phone'
+import Location2 from '../../components/icons/location-2'
 import IconButton from './iconButton'
-import InboxArrowDown from '@/app/components/icons/inbox-arrow-down'
-import Pen3 from '@/app/components/icons/pen-3'
+import InboxArrowDown from '../../components/icons/inbox-arrow-down'
+import Pen3 from '../../components/icons/pen-3'
 import MockSwitch from './mockSwitch'
 
 export default async function BeneficiaryDetails({ params }) {
