@@ -15,7 +15,7 @@ function LoginForm() {
 			<h1 className="mb-10 text-center font-poppins text-2xl">
 				<strong>Iniciar Sesión</strong>
 			</h1>
-			<form method="post" className="flex flex-col gap-3">
+			<form action="/beneficiaries" method="post" className="flex flex-col gap-3">
 				<article className="flex flex-col">
 					<label htmlFor="username">Usuario:</label>
 					<div className="flex items-center border-2 rounded-md border-gray-200 bg-white">
@@ -116,7 +116,7 @@ function LoginForm() {
 						className="bg-blue-600 rounded-md drop-shadow-lg p-1 cursor-pointer text-white w-full"
 					/>
 					<Link
-						href="/beneficiaries"
+						href=""
 						className="flex items-center justify-center bg-red-600 w-10 p-2 rounded-full"
 					>
 						<svg
