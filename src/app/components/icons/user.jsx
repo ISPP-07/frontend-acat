@@ -3,12 +3,7 @@ import React from 'react'
 /* eslint-enable no-unused-vars */
 function User(props) {
 	return (
-		<svg
-			height="18"
-			width="18"
-			viewBox="0 0 18 18"
-			xmlns="http://www.w3.org/2000/svg"
-		>
+		<svg {...props} viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
 			<g fill="#212121" stroke="#212121">
 				<circle
 					cx="9"

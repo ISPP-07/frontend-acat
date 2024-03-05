@@ -26,20 +26,20 @@ export default function CreateModal({ isVisible, onClose }) {
 	async function onSubmit(event) {
 		event.preventDefault()
 		// TODO: waiting for creation API implementation
-		const formData = new FormData(event.target)
-		axios
-			.post(
-				'https://65dc59f1e7edadead7ebb34d.mockapi.io/api/v1/beneficiary',
-				formData
-			)
-			.then(function (response) {
-				// Navigate to the newly created beneficiary
-				router.push('/beneficiaries/' + response.data.id.toString())
-			})
-			.catch(function (error) {
-				// TODO: handle error
-				console.log(error)
-			})
+		// const formData = new FormData(event.target)
+		// axios
+		// 	.post(
+		// 		'https://65dc59f1e7edadead7ebb34d.mockapi.io/api/v1/beneficiary',
+		// 		formData
+		// 	)
+		// 	.then(function (response) {
+		// 		// Navigate to the newly created beneficiary
+		// 		router.push('/beneficiaries/' + response.data.id.toString())
+		// 	})
+		// 	.catch(function (error) {
+		// 		// TODO: handle error
+		// 		console.log(error)
+		// 	})
 	}
 
 	return (
@@ -62,7 +62,7 @@ export default function CreateModal({ isVisible, onClose }) {
 								<strong>Nombre</strong>
 							</label>
 							<div className="flex items-center border-2 rounded-md border-gray-200 bg-white">
-								<User />
+								<User height="18" width="18" />
 								<input
 									type="text"
 									name="name"

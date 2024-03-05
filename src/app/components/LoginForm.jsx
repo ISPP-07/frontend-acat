@@ -1,9 +1,8 @@
 'use client'
 /* eslint-disable no-unused-vars */
-import React,{ useState } from 'react'
+import React, { useState } from 'react'
 /* eslint-enable no-unused-vars */
 import Link from 'next/link'
-
 
 function LoginForm() {
 	const [showPassword, setShowPassword] = useState(false)
@@ -117,7 +116,7 @@ function LoginForm() {
 						className="bg-blue-600 rounded-md drop-shadow-lg p-1 cursor-pointer text-white w-full"
 					/>
 					<Link
-						href="/"
+						href="/beneficiaries"
 						className="flex items-center justify-center bg-red-600 w-10 p-2 rounded-full"
 					>
 						<svg
