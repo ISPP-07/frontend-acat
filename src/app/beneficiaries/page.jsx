@@ -14,7 +14,7 @@ export default async function BeneficiariesList() {
 	return (
 		<div className='max-w-fit'>
 			<div className="h-12 w-12 top-28 absolute" >
-						<button className=" bg-green-400 h-8 w-8 rounded-full shadow-2xl mt-3 mr-2" onClick={()=>exportData(data,'Familias')}>
+						<button className=" bg-green-400 h-8 w-8 rounded-full shadow-2xl mt-3 mr-2" onClick={()=>exportData(data,'Beneficiados')}>
 							<Image
 								src="/excel.svg"
 								className="ml-2"
