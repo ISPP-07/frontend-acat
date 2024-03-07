@@ -82,7 +82,7 @@ export default async function BeneficiaryDetails({ params }) {
 				<div className="mt-6">
 					<p>
 						<strong style={{ color: '#4B7BECFF' }}>Técnico: </strong>{' '}
-						{beneficiary.first_technician_name}
+						{beneficiary.name}
 					</p>
 				</div>
 				<div className="mt-6">
@@ -101,7 +101,7 @@ export default async function BeneficiaryDetails({ params }) {
 					<p>
 						<strong style={{ color: '#4B7BECFF' }}>Observaciones:</strong>
 					</p>
-					<p>{beneficiary.observation_text}</p>
+					<p>{beneficiary.name}</p>
 				</div>
 			</div>
 		</div>
