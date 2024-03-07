@@ -1,136 +1,138 @@
 'use client'
 /* eslint-disable no-unused-vars */
+'use client'
+import Phone from '../components/icons/phone'
+import Location2 from '../components/icons/location-2'
+import User from '../components/icons/user'
+import UserLaptop from '../components/icons/user-laptop'
+import Clipboard from '../components/icons/clipboard'
+import Identification from '../components/icons/id'
+import Gender from '../components/icons/gender'
+import { useRouter } from 'next/navigation'
+/* eslint-disable no-unused-vars */
 import React from 'react'
 /* eslint-enable no-unused-vars */
-import Link from 'next/link'
 
-function RegisterInterventionModal({ searchParams }) {
+// const axios = require('axios').default
+
+function RegisterInterventionModal({ isVisible, onClose }) {
+	if (!isVisible) return null
+
+	const toClose = x => {
+		if (x.target.id === 'close') {
+			onClose()
+		}
+	}
+
+	// const router = useRouter()
+	async function onSubmit(event) {
+		event.preventDefault()
+		// TODO: waiting for creation API implementation
+		// const formData = new FormData(event.target)
+		// axios
+		// 	.post(
+		// 		'https://65dc59f1e7edadead7ebb34d.mockapi.io/api/v1/interventions',
+		// 		formData
+		// 	)
+		// 	.then(function (response) {
+		// 		// Navigate to the newly created beneficiary
+		// 		router.push('/interventions/' + response.data.id.toString())
+		// 	})
+		// 	.catch(function (error) {
+		// 		// TODO: handle error
+		// 		console.log(error)
+		// 	})
+	}
+
 	return (
-		<div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center z-20">
-			<div className="p-8 border w-[32rem] h-fit shadow-lg rounded-md bg-white">
-				<div>
-					<div className="mt-2 px-10 py-3">
-						<div className="group relative">
-							<strong className="text-2xl text-gray-700  border-black-300 rounded-md h-8 w-full mt-2">
-								Registro de intervención
-							</strong>
+		<div
+			className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex justify-center items-center"
+			id="close"
+			onClick={toClose}
+		>
+			<div>
+				<button className="text-gray-500 text-xl" onClick={onClose}>
+					X
+				</button>
+				<div className="bg-white p-4 rounded-3xl text-black font-Varela">
+					<h1 className="mb-10 text-center font-poppins text-2xl">
+						<strong>Registro de Beneficiarios</strong>
+					</h1>
+					<form onSubmit={onSubmit} className="grid grid-cols-2 gap-4">
+						<div>
+							<label htmlFor="name">
+								<strong>Nombre</strong>
+							</label>
+							<div className="flex items-center border-2 rounded-md border-gray-200 bg-white">
+								<User height="18" width="18" />
+								<input
+									type="text"
+									name="name"
+									placeholder="Usuario"
+									className="p-1 w-full"
+								/>
+							</div>
 						</div>
-						<form>
-							<fieldset className="flex flex-col mt-5">
-								<label className="text-gray-700 font-bold">Nombre</label>
-								<div className="flex items-center">
-									<div className="w-8 h-8 mr-2">
-										<img
-											src="/user.svg"
-											alt="face"
-											className="h-full w-full object-cover"
-										/>
-									</div>
-									<input
-										className="border-2 border-gray-300 rounded-md h-8 flex-grow"
-										type="text"
-									/>
-								</div>
-							</fieldset>
-							<fieldset className="flex flex-col mt-5">
-								<label className="text-gray-700 font-bold">
-									Fecha de atención
-								</label>
-								<div className="flex items-center">
-									<div className="w-8 h-8 mr-2">
-										<img
-											src="/calendar.svg"
-											alt="calendar"
-											className="h-full w-full object-cover"
-										/>
-									</div>
-									<input
-										className="border-2 border-gray-300 rounded-md h-8 flex-grow"
-										type="date"
-									/>
-								</div>
-							</fieldset>
-							<fieldset className="flex flex-col mt-5">
-								<label className="text-gray-700 font-bold">Tipología</label>
-								<div className="flex items-center">
-									<div className="w-8 h-8 mr-2">
-										<img
-											src="/align-3-vertical.svg"
-											alt="tipologia"
-											className="h-full w-full object-cover"
-										/>
-									</div>
-									<input
-										className="border-2 border-gray-300 rounded-md h-8 flex-grow"
-										type="text"
-									/>
-								</div>
-							</fieldset>
+						<div>
+							<label htmlFor="dni">
+								<strong>DNI</strong>
+							</label>
+							<div className="flex items-center border-2 rounded-md border-gray-200 bg-white">
+								<Identification />
+								<input
+									type="text"
+									name="dni"
+									placeholder="DNI"
+									className="p-1 w-full"
+								/>
+							</div>
+						</div>
+						<div>
+							<label htmlFor="birthdate">
+								<strong>Fecha de nacimiento</strong>
+							</label>
+							<div className="flex items-center border-2 rounded-md border-gray-200 bg-white">
+								<input type="date" name="birthdate" className="p-1 w-full" />
+							</div>
+						</div>
 
-							<fieldset className="flex flex-col mt-5">
-								<label className="text-gray-700 font-bold">Técnico</label>
-								<div className="flex items-center">
-									<div className="w-8 h-8 mr-2">
-										<img
-											src="/gear-2.svg"
-											alt="gear"
-											className="h-full w-full object-cover"
-										/>
-									</div>
-									<input
-										className="border-2 border-gray-300 rounded-md h-8 flex-grow"
-										type="text"
-									/>
-								</div>
-							</fieldset>
-							<fieldset className="flex flex-col mt-5">
-								<label className="text-gray-700 font-bold">Motivo</label>
-								<div className="flex items-center">
-									<div className="w-8 h-8 mr-2">
-										<img
-											src="/bookmark.svg"
-											alt="gear"
-											className="h-full w-full object-cover"
-										/>
-									</div>
-									<input
-										className="border-2 border-gray-300 rounded-md h-8 flex-grow"
-										type="text"
-									/>
-								</div>
-							</fieldset>
-							<fieldset className="flex flex-col mt-5">
-								<label className="text-gray-700 font-bold">Observaciones</label>
-								<div className="flex items-center">
-									<div className="w-8 h-8 mr-2">
-										<img
-											src="/msg-bubble-user.svg"
-											alt="gear"
-											className="h-full w-full object-cover"
-										/>
-									</div>
-									<textarea
-										className="border-2 border-gray-300 rounded-md flex-grow"
-										type="text"
-									/>
-								</div>
-							</fieldset>
-						</form>
-					</div>
-					<div className="flex justify-center mt-9">
-						<Link
-							href="/interventions"
-							className="px-4 py-2 w-72 shadow-lg text-center bg-[#75AF73] text-white text-base font-medium rounded-md hover:bg-[#557e53] flex-grow focus:outline-none focus:ring-2 focus:ring-gray-300"
+						<div>
+							<label htmlFor="technician">
+								<strong>Técnico</strong>
+							</label>
+							<div className="flex items-center border-2 rounded-md border-gray-200 bg-white">
+								<UserLaptop />
+								<input
+									type="text"
+									name="technician"
+									placeholder="Técnico que lo ha atendido"
+									className="p-1 w-full"
+								/>
+							</div>
+						</div>
+
+						<div className="col-span-2">
+							<label htmlFor="observations">
+								<strong>Observaciones</strong>
+							</label>
+							<div className="flex items-center border-2 rounded-md border-gray-200 bg-white">
+								<Clipboard />
+								<input
+									type="text"
+									name="observations"
+									placeholder="Observaciones sobre el beneficiario"
+									className="p-1 w-full"
+								/>
+							</div>
+						</div>
+
+						<button
+							type="submit"
+							className="col-span-2 bg-blue-600 rounded-md drop-shadow-lg p-1 cursor-pointer text-white w-full"
 						>
-							Dar de Alta
-						</Link>
-						<Link
-							href="/interventions"
-							className="px-4 py-2 bg-red-500 text-white rounded focus:outline-none focus:ring focus:ring-blue-300"
-						>
-							Cerrar
-						</Link>
-					</div>
+							Registrar
+						</button>
+					</form>
 				</div>
 			</div>
 		</div>
