@@ -1,27 +1,20 @@
-'use client'
 /* eslint-disable no-unused-vars */
 'use client'
 import Pen3 from '../components/icons/pen-3'
 import User from '../components/icons/user'
 import UserLaptop from '../components/icons/user-laptop'
 import Clipboard from '../components/icons/clipboard'
-import Identification from '../components/icons/id'
-import Gender from '../components/icons/gender'
-import { useRouter } from 'next/navigation'
+
 /* eslint-disable no-unused-vars */
 import React from 'react'
+import { useRouter } from 'next/navigation'
+import router from 'next/router'
 /* eslint-enable no-unused-vars */
 
 // const axios = require('axios').default
 
 function RegisterInterventionModal({ isVisible, onClose }) {
 	if (!isVisible) return null
-
-	const toClose = x => {
-		if (x.target.id === 'close') {
-			onClose()
-		}
-	}
 
 	// const router = useRouter()
 	async function onSubmit(event) {
@@ -42,12 +35,15 @@ function RegisterInterventionModal({ isVisible, onClose }) {
 		// 		console.log(error)
 		// 	})
 	}
+	const closedModal = () => {
+		window.location.href = '/interventions'
+	}
 
 	return (
 		<div
-			className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex justify-center items-center"
+			className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex justify-center items-center z-30"
 			id="close"
-			onClick={toClose}
+			onClick={closedModal}
 		>
 			<div className="w-96 p-8 bg-white rounded-xl space-y-6">
 				<button className="text-gray-500 text-xl l" onClick={onClose}>
@@ -131,7 +127,7 @@ function RegisterInterventionModal({ isVisible, onClose }) {
 							<input
 								type="text"
 								name="observations"
-								placeholder="Observaciones sobre el beneficiario"
+								placeholder="Motivo"
 								className="p-1 w-full"
 							/>
 						</div>
@@ -139,6 +135,7 @@ function RegisterInterventionModal({ isVisible, onClose }) {
 					<button
 						type="submit"
 						className="bg-blue-600 rounded-md drop-shadow-lg p-2 cursor-pointer text-white w-full"
+						onClick={closedModal}
 					>
 						Registrar
 					</button>
