@@ -3,7 +3,6 @@
 import React, { useState } from 'react'
 /* eslint-enable no-unused-vars */
 import axios from 'axios'
-import { useRouter } from 'next/navigation'
 
 function CreateUserForm() {
 	const [showPassword, setShowPassword] = useState(false)
@@ -18,15 +17,21 @@ function CreateUserForm() {
 
 		formData.delete('confirmPassword')
 
-		axios
-			.post(process.env.NEXT_PUBLIC_BASE_URL + '/shared/user/', formData)
-			.then(function (response) {
-				useRouter().push('/create-user/')
-			})
-			.catch(function (error) {
-				// TODO: handle error
-				console.log(error)
-			})
+		const jsonData = {
+			username: formData.get('username').toString(),
+			password: formData.get('password').toString(),
+			email: formData.get('email').toString()
+		}
+
+		axios.post(
+			process.env.NEXT_PUBLIC_BASE_URL + '/shared/user/',
+			JSON.stringify(jsonData),
+			{
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			}
+		)
 	}
 	return (
 		<div className="flex flex-col bg-gray-50 rounded p-10 drop-shadow-lg border border-gray-300">
