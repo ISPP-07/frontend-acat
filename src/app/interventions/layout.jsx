@@ -9,8 +9,8 @@ import RegisterInterventionModal from './RegisterInterventionModal'
 export default function Layout({ children }) {
 	return (
 		<main className="absolute bg-white w-full h-full ">
-			<div className="flex h-full flex-col md:flex-row overflow-x-hidden bg-white">
-				<div className="w-full h-full flex-none md:w-64 fixed z-20">
+			<div className="flex h-full flex-col md:flex-row overflow-x-hidden ">
+				<div className="w-full h-full flex-none md:w-64 fixed z-10">
 					<Sidebar />
 				</div>
 				<div className="left-80 relative w-full overflow-x-hidden">

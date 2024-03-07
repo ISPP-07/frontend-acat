@@ -1,8 +1,7 @@
 'use client'
 /* eslint-disable no-unused-vars */
 'use client'
-import Phone from '../components/icons/phone'
-import Location2 from '../components/icons/location-2'
+import Pen3 from '../components/icons/pen-3'
 import User from '../components/icons/user'
 import UserLaptop from '../components/icons/user-laptop'
 import Clipboard from '../components/icons/clipboard'
@@ -50,90 +49,100 @@ function RegisterInterventionModal({ isVisible, onClose }) {
 			id="close"
 			onClick={toClose}
 		>
-			<div>
-				<button className="text-gray-500 text-xl" onClick={onClose}>
+			<div className="w-96 p-8 bg-white rounded-xl space-y-6">
+				<button className="text-gray-500 text-xl l" onClick={onClose}>
 					X
 				</button>
-				<div className="bg-white p-4 rounded-3xl text-black font-Varela">
-					<h1 className="mb-10 text-center font-poppins text-2xl">
-						<strong>Registro de Beneficiarios</strong>
-					</h1>
-					<form onSubmit={onSubmit} className="grid grid-cols-2 gap-4">
-						<div>
-							<label htmlFor="name">
-								<strong>Nombre</strong>
-							</label>
-							<div className="flex items-center border-2 rounded-md border-gray-200 bg-white">
-								<User height="18" width="18" />
-								<input
-									type="text"
-									name="name"
-									placeholder="Usuario"
-									className="p-1 w-full"
-								/>
-							</div>
-						</div>
-						<div>
-							<label htmlFor="dni">
-								<strong>DNI</strong>
-							</label>
-							<div className="flex items-center border-2 rounded-md border-gray-200 bg-white">
-								<Identification />
-								<input
-									type="text"
-									name="dni"
-									placeholder="DNI"
-									className="p-1 w-full"
-								/>
-							</div>
-						</div>
-						<div>
-							<label htmlFor="birthdate">
-								<strong>Fecha de nacimiento</strong>
-							</label>
-							<div className="flex items-center border-2 rounded-md border-gray-200 bg-white">
-								<input type="date" name="birthdate" className="p-1 w-full" />
-							</div>
-						</div>
 
-						<div>
-							<label htmlFor="technician">
-								<strong>Técnico</strong>
-							</label>
-							<div className="flex items-center border-2 rounded-md border-gray-200 bg-white">
-								<UserLaptop />
-								<input
-									type="text"
-									name="technician"
-									placeholder="Técnico que lo ha atendido"
-									className="p-1 w-full"
-								/>
-							</div>
+				<h1 className="text-center font-poppins text-2xl">
+					<strong>Registro de Intervenciones</strong>
+				</h1>
+				<form onSubmit={onSubmit} className="space-y-4">
+					<div>
+						<label htmlFor="name" className="block">
+							<strong>Nombre</strong>
+						</label>
+						<div className="flex items-center border-2 rounded-md border-gray-200 bg-white">
+							<User height="18" width="18" />
+							<input
+								type="text"
+								name="name"
+								placeholder="Usuario"
+								className="p-1 w-full"
+							/>
 						</div>
-
-						<div className="col-span-2">
-							<label htmlFor="observations">
-								<strong>Observaciones</strong>
-							</label>
-							<div className="flex items-center border-2 rounded-md border-gray-200 bg-white">
-								<Clipboard />
-								<input
-									type="text"
-									name="observations"
-									placeholder="Observaciones sobre el beneficiario"
-									className="p-1 w-full"
-								/>
-							</div>
+					</div>
+					<div>
+						<label htmlFor="tipologia" className="block">
+							<strong>Tipologia</strong>
+						</label>
+						<div className="flex items-center border-2 rounded-md border-gray-200 bg-white">
+							<Pen3 />
+							<input
+								type="text"
+								name="Tipologia"
+								placeholder="tipologia"
+								className="p-1 w-full"
+							/>
 						</div>
-
-						<button
-							type="submit"
-							className="col-span-2 bg-blue-600 rounded-md drop-shadow-lg p-1 cursor-pointer text-white w-full"
-						>
-							Registrar
-						</button>
-					</form>
-				</div>
+					</div>
+					<div>
+						<label htmlFor="birthdate" className="block">
+							<strong>Fecha de atencion</strong>
+						</label>
+						<div className="flex items-center border-2 rounded-md border-gray-200 bg-white">
+							<input type="date" name="birthdate" className="p-1 w-full" />
+						</div>
+					</div>
+					<div>
+						<label htmlFor="technician" className="block">
+							<strong>Técnico</strong>
+						</label>
+						<div className="flex items-center border-2 rounded-md border-gray-200 bg-white">
+							<UserLaptop />
+							<input
+								type="text"
+								name="technician"
+								placeholder="Técnico que lo ha atendido"
+								className="p-1 w-full"
+							/>
+						</div>
+					</div>
+					<div>
+						<label htmlFor="observations" className="block">
+							<strong>Motivo</strong>
+						</label>
+						<div className="flex items-center border-2 rounded-md border-gray-200 bg-white">
+							<Clipboard />
+							<input
+								type="text"
+								name="observations"
+								placeholder="Observaciones sobre el beneficiario"
+								className="p-1 w-full"
+							/>
+						</div>
+					</div>
+					<div>
+						<label htmlFor="observations" className="block">
+							<strong>Observaciones</strong>
+						</label>
+						<div className="flex items-center border-2 rounded-md border-gray-200 bg-white">
+							<Clipboard />
+							<input
+								type="text"
+								name="observations"
+								placeholder="Observaciones sobre el beneficiario"
+								className="p-1 w-full"
+							/>
+						</div>
+					</div>
+					<button
+						type="submit"
+						className="bg-blue-600 rounded-md drop-shadow-lg p-2 cursor-pointer text-white w-full"
+					>
+						Registrar
+					</button>
+				</form>
 			</div>
 		</div>
 	)

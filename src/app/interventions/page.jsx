@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import RegisterInterventionModal from './RegisterInterventionModal'
 import InterventionList from './InterventionList'
 
@@ -9,10 +8,15 @@ import React from 'react'
 export default function AppointmentsPage({ searchParams }) {
 	const show = searchParams?.show === 'true'
 
+	if (show) {
+		return (
+			<>
+				<RegisterInterventionModal isVisible={show} className="z-50 absolute" />
+			</>
+		)
+	}
 	return (
 		<>
-			<Link href="/interventions/?show=true"></Link>
-			{show && <RegisterInterventionModal className="z-50 absolute" />}
 			<InterventionList />
 		</>
 	)
