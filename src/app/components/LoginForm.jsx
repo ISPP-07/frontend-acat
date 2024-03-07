@@ -130,7 +130,7 @@ function LoginForm() {
 						className="bg-blue-600 rounded-md drop-shadow-lg p-1 cursor-pointer text-white w-full"
 					/>
 					<Link
-						href="/beneficiaries"
+						href=""
 						className="flex items-center justify-center bg-red-600 w-10 p-2 rounded-full"
 					>
 						<svg
