@@ -2,18 +2,38 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react'
 /* eslint-enable no-unused-vars */
+import axios from 'axios'
+import { useRouter } from 'next/navigation'
+
 function CreateUserForm() {
 	const [showPassword, setShowPassword] = useState(false)
 
 	const togglePassword = () => {
 		setShowPassword(!showPassword)
 	}
+
+	async function onSubmit(event) {
+		event.preventDefault()
+		const formData = new FormData(event.target)
+
+		formData.delete('confirmPassword')
+
+		axios
+			.post(process.env.NEXT_PUBLIC_BASE_URL + '/shared/user/', formData)
+			.then(function (response) {
+				useRouter().push('/create-user/')
+			})
+			.catch(function (error) {
+				// TODO: handle error
+				console.log(error)
+			})
+	}
 	return (
 		<div className="flex flex-col bg-gray-50 rounded p-10 drop-shadow-lg border border-gray-300">
 			<h1 className="mb-10 text-center font-poppins text-2xl">
 				<strong>Crear Nuevo Usuario</strong>
 			</h1>
-			<form method="post" className="flex flex-col gap-3">
+			<form onSubmit={onSubmit} className="flex flex-col gap-3">
 				<article className="flex flex-col">
 					<label htmlFor="username">Usuario</label>
 					<div className="flex items-center border-2 rounded-md border-gray-200 bg-white">
@@ -36,6 +56,32 @@ function CreateUserForm() {
 							id="username"
 							name="username"
 							placeholder="Usuario"
+							className="p-1 w-full"
+						/>
+					</div>
+				</article>
+				<article className="flex flex-col">
+					<label htmlFor="email">Correo electrónico</label>
+					<div className="flex items-center border-2 rounded-md border-gray-200 bg-white">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							fill="none"
+							viewBox="0 0 24 24"
+							strokeWidth="1.5"
+							stroke="currentColor"
+							className="w-4 h-4 m-1"
+						>
+							<path
+								strokeLinecap="round"
+								strokeLinejoin="round"
+								d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
+							/>
+						</svg>
+						<input
+							type="text"
+							id="email"
+							name="email"
+							placeholder="Correo electrónico"
 							className="p-1 w-full"
 						/>
 					</div>
@@ -108,7 +154,7 @@ function CreateUserForm() {
 					</div>
 				</article>
 				<article className="flex flex-col">
-					<label htmlFor="confirm-password">Confirmar contraseña</label>
+					<label htmlFor="confirmPassword">Confirmar contraseña</label>
 					<div className="flex items-center border-2 rounded-md border-gray-200 bg-white">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
@@ -126,8 +172,8 @@ function CreateUserForm() {
 						</svg>
 						<input
 							type={'password'}
-							id="confirm-password"
-							name="confirm-password"
+							id="confirmPassword"
+							name="confirmPassword"
 							placeholder="Contraseña"
 							className="p-1 w-full"
 							data-testid="password2-input"
