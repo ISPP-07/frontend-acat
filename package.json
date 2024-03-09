@@ -51,6 +51,10 @@
 		],
 		"moduleNameMapper": {
 			"\\.(css|less)$": "<rootDir>/transformerCSS.js"
-		}
+		},
+		"coveragePathIgnorePatterns": [
+			"/node_modules/",
+			"/src/app/components/icons/"
+		]
     }
 }
