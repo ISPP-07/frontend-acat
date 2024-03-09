@@ -33,7 +33,14 @@ export default async function BeneficiariesList() {
 			<div className="h-12 w-max top-28 absolute flex flex-row">
 				<button
 					className=" bg-green-400 h-8 w-8 rounded-full shadow-2xl mt-3 mr-2"
-					onClick={() => exportData(data, 'Beneficiados')}
+					onClick={() =>
+						exportData(data, 'Beneficiados', [
+							'id',
+							'alias',
+							'birthday',
+							'isFinished'
+						])
+					}
 				>
 					<Image
 						src="/excel.svg"
