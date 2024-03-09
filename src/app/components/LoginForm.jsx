@@ -133,6 +133,7 @@ function LoginForm() {
 						type="submit"
 						value="Iniciar Sesión"
 						className="bg-blue-600 rounded-md drop-shadow-lg p-1 cursor-pointer text-white w-full"
+						data-testid="submit-button"
 					/>
 					<Link
 						href=""
