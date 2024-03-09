@@ -27,7 +27,7 @@ function Card({ beneficiary }) {
 							<div className="flex flex-row items-center justify-center w-full gap-5">
 								<Tags
 									svg={Calendar}
-									text={beneficiary.interventions.length}
+									text={beneficiary.interventions.age}
 									color={'text-[#117b34] bg-[#EEFDF3]'}
 								/>
 								<Tags

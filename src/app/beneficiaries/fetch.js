@@ -1,8 +1,9 @@
 import axios from 'axios'
 export function fetchDataBeneficiaries() {
-	const beneficiaries = axios.get(
-		'https://65d9c9f1bcc50200fcdc1cb8.mockapi.io/Beneficiaries'
-	)
+	const BASEURL = process.env.BASEURL
+    const beneficiaries = axios.get(
+        `${BASEURL}/acat/patient`
+    )
 	return beneficiaries.then(response => {
 		return response.data
 	})
