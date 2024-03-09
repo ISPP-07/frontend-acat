@@ -3,6 +3,7 @@
 import React, { useState } from 'react'
 /* eslint-enable no-unused-vars */
 import axios from 'axios'
+import { useRouter } from 'next/navigation'
 
 function CreateUserForm() {
 	const [showPassword, setShowPassword] = useState(false)
@@ -10,6 +11,8 @@ function CreateUserForm() {
 	const togglePassword = () => {
 		setShowPassword(!showPassword)
 	}
+
+	const router = useRouter()
 
 	async function onSubmit(event) {
 		event.preventDefault()
@@ -23,15 +26,28 @@ function CreateUserForm() {
 			email: formData.get('email').toString()
 		}
 
-		axios.post(
-			process.env.NEXT_PUBLIC_BASE_URL + '/shared/user/',
-			JSON.stringify(jsonData),
-			{
-				headers: {
-					'Content-Type': 'application/json'
+		axios
+			.post(
+				process.env.NEXT_PUBLIC_BASE_URL + '/shared/user/',
+				JSON.stringify(jsonData),
+				{
+					headers: {
+						'Content-Type': 'application/json'
+					}
 				}
-			}
-		)
+			)
+			.then(function (response) {
+				alert(
+					`El usuario ${response.data.username} con email ${response.data.email} ha sido creado correctamente`
+				)
+
+				router.refresh()
+			})
+			.catch(function (error) {
+				alert(
+					`Ha habido un error al crear al nuevo usuario: ${error.response.data.detail}`
+				)
+			})
 	}
 	return (
 		<div className="flex flex-col bg-gray-50 rounded p-10 drop-shadow-lg border border-gray-300">

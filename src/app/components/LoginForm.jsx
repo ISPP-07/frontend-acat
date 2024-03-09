@@ -26,7 +26,7 @@ function LoginForm() {
 				router.push('/beneficiaries')
 			})
 			.catch(function (error) {
-				alert('Error al iniciar sesión ' + error.toString())
+				alert('Error al iniciar sesión: ' + error.response.data.detail)
 			})
 	}
 	return (
