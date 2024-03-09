@@ -41,6 +41,7 @@ export default async function BeneficiariesList() {
 							'isFinished'
 						])
 					}
+					data-testid="export-button"
 				>
 					<Image
 						src="/excel.svg"

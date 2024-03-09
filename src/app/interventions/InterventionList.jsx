@@ -33,6 +33,7 @@ export default async function InterventionList() {
 				<button
 					className=" bg-green-400 h-8 w-8 rounded-full shadow-2xl mt-3 mr-2"
 					onClick={() => exportData(data, 'Intervenciones')}
+					data-testid="export-button"
 				>
 					<Image
 						src="/excel.svg"
