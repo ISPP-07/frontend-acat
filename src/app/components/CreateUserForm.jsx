@@ -41,7 +41,7 @@ function CreateUserForm() {
 					`El usuario ${response.data.username} con email ${response.data.email} ha sido creado correctamente`
 				)
 
-				router.refresh()
+				router.push('/beneficiaries')
 			})
 			.catch(function (error) {
 				alert(
