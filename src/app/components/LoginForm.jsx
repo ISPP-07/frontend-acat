@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 /* eslint-enable no-unused-vars */
 import Link from 'next/link'
 import axios from 'axios'
+import { useRouter } from 'next/navigation'
 
 function LoginForm() {
 	const [showPassword, setShowPassword] = useState(false)
@@ -11,17 +12,21 @@ function LoginForm() {
 	const togglePassword = () => {
 		setShowPassword(!showPassword)
 	}
+	const router = useRouter()
 
 	async function onSubmit(event) {
 		event.preventDefault()
 		const formData = new FormData(event.target)
 
-		formData.delete('confirmPassword')
-
 		axios
 			.post(process.env.NEXT_PUBLIC_BASE_URL + '/shared/auth/login', formData)
+			.then(function (response) {
+				document.cookie = `access_token=${response.data.access_token}; Secure; HttpOnly; SameSite=Strict`
+				document.cookie = `refresh_token=${response.data.refresh_token}; Secure; HttpOnly; SameSite=Strict`
+				router.push('/beneficiaries')
+			})
 			.catch(function (error) {
-				console.log(error)
+				alert('Error al iniciar sesión ' + error.toString())
 			})
 	}
 	return (
