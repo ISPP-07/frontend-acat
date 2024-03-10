@@ -3,6 +3,13 @@
 import React from 'react'
 import { useRouter } from 'next/navigation'
 /* eslint-enable no-unused-vars */
+import User from '../../app/components/icons/user'
+import Identification from '../../app/components/icons/id'
+import Location2 from '../../app/components/icons/location-2'
+import Gender from '../components/icons/gender'
+import Phone from '../components/icons/phone'
+import UserLaptop from '../components/icons/user-laptop'
+import Clipboard from '../components/icons/clipboard'
 
 const axios = require('axios').default
 
