@@ -324,7 +324,7 @@ export default function InterventionPage() {
 				<Sidebar />
 			</Suspense>
 			<div className="w-full h-full flex flex-col items-center">
-				<Searchbar handleClick={toggleModal} stext="Dar de alta" />
+				<Searchbar handleClick={toggleModal} text="Registrar intervención" />
 				<div className="container p-10 flex flex-wrap gap-5 justify-center items-center">
 					{data.map(intervention => (
 						<Link
