@@ -3,6 +3,8 @@
 import React, { useState } from 'react'
 /* eslint-enable no-unused-vars */
 import Link from 'next/link'
+import axios from 'axios'
+import { useRouter } from 'next/navigation'
 
 function LoginForm() {
 	const [showPassword, setShowPassword] = useState(false)
@@ -10,12 +12,29 @@ function LoginForm() {
 	const togglePassword = () => {
 		setShowPassword(!showPassword)
 	}
+	const router = useRouter()
+
+	async function onSubmit(event) {
+		event.preventDefault()
+		const formData = new FormData(event.target)
+
+		axios
+			.post(process.env.NEXT_PUBLIC_BASE_URL + '/shared/auth/login', formData)
+			.then(function (response) {
+				document.cookie = `access_token=${response.data.access_token}; Secure; HttpOnly; SameSite=Strict`
+				document.cookie = `refresh_token=${response.data.refresh_token}; Secure; HttpOnly; SameSite=Strict`
+				router.push('/beneficiaries')
+			})
+			.catch(function (error) {
+				alert('Error al iniciar sesión: ' + error.response.data.detail)
+			})
+	}
 	return (
 		<div className="flex flex-col bg-gray-50 rounded-xl p-10 drop-shadow-lg">
 			<h1 className="mb-10 text-center font-poppins text-2xl">
 				<strong>Iniciar Sesión</strong>
 			</h1>
-			<div className="flex flex-col gap-3">
+			<form onSubmit={onSubmit} className="flex flex-col gap-3">
 				<article className="flex flex-col">
 					<label htmlFor="username">Usuario:</label>
 					<div className="flex items-center border-2 rounded-xl border-gray-200 bg-white">
@@ -110,12 +129,12 @@ function LoginForm() {
 					</div>
 				</article>
 				<div className="flex items-center justify-between gap-5 mt-5">
-					<Link
-						href="/beneficiaries"
-						className="bg-blue-500 hover:bg-blue-700 rounded-md drop-shadow-lg p-1 cursor-pointer text-center text-white w-full"
-					>
-						Iniciar Sesión
-					</Link>
+					<input
+						type="submit"
+						value="Iniciar Sesión"
+						className="bg-blue-600 rounded-md drop-shadow-lg p-1 cursor-pointer text-white w-full"
+						data-testid="submit-button"
+					/>
 					<Link
 						href="/"
 						className="flex items-center justify-center bg-red-500 hover:bg-red-700 w-10 p-2 rounded-full cursor-pointer"
@@ -136,7 +155,7 @@ function LoginForm() {
 						</svg>
 					</Link>
 				</div>
-			</div>
+			</form>
 		</div>
 	)
 }
