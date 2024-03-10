@@ -6,12 +6,12 @@ import UserLaptop from '../components/icons/user-laptop'
 import Clipboard from '../components/icons/clipboard'
 import Identification from '../components/icons/id'
 import Gender from '../components/icons/gender'
-import { useRouter } from 'next/navigation'
+
 /* eslint-disable no-unused-vars */
 import React from 'react'
 /* eslint-enable no-unused-vars */
 
-const axios = require('axios').default
+// const axios = require('axios').default
 
 export default function CreateModal({ isVisible, onClose }) {
 	if (!isVisible) return null
@@ -22,7 +22,7 @@ export default function CreateModal({ isVisible, onClose }) {
 		}
 	}
 
-	const router = useRouter()
+	// const router = useRouter()
 	async function onSubmit(event) {
 		event.preventDefault()
 		// TODO: waiting for creation API implementation
