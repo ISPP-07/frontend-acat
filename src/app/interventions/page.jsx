@@ -327,16 +327,19 @@ export default function InterventionPage() {
 				<Searchbar handleClick={toggleModal} text="Registrar intervención" />
 				<div className="container p-10 flex flex-wrap gap-5 justify-center items-center">
 					{data.map(intervention => (
-						<Link href={`/interventions`} key={intervention.id}>
+						<Link
+							href={`/interventions/${intervention.id}`}
+							key={intervention.id}
+						>
 							<CardIntervention
 								key={intervention.id}
 								intervention={intervention}
+								handleClick={toggleModal}
 							/>
 						</Link>
 					))}
 				</div>
 			</div>
-			{/* {showModal ? <Modal closeModal={toggleModal} /> : null} */}
 		</main>
 	)
 }
