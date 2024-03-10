@@ -3,56 +3,22 @@
 import React from 'react'
 /* eslint-enable no-unused-vars */
 
-// const axios = require('axios').default
-
-export default function CreateModal({ isVisible, onClose }) {
-	if (!isVisible) return null
-
-	const toClose = x => {
-		if (x.target.id === 'close') {
-			onClose()
-		}
-	}
-
-	// const router = useRouter()
-	async function onSubmit(event) {
-		event.preventDefault()
-		// TODO: waiting for creation API implementation
-		// const formData = new FormData(event.target)
-		// axios
-		// 	.post(
-		// 		'https://65dc59f1e7edadead7ebb34d.mockapi.io/api/v1/beneficiary',
-		// 		formData
-		// 	)
-		// 	.then(function (response) {
-		// 		// Navigate to the newly created beneficiary
-		// 		router.push('/beneficiaries/' + response.data.id.toString())
-		// 	})
-		// 	.catch(function (error) {
-		// 		// TODO: handle error
-		// 		console.log(error)
-		// 	})
-	}
-
+export default function CreateModal({ closeModal }) {
 	return (
 		<div
 			className="fixed top-0 left-0 bg-gray-600 bg-opacity-50 h-full w-full flex items-center justify-center z-50"
 			id="close"
-			onClick={toClose}
 		>
 			<div className="p-10 border h-fit shadow-lg rounded-xl bg-white font-Varela text-black">
 				<div className="flex justify-end">
 					<button
+						onClick={closeModal}
 						className="bg-red-500 text-white text-xl rounded-md shadow-lg w-[30px] h-[30px] mb-3"
-						onClick={onClose}
 					>
 						X
 					</button>
 				</div>
-				<form
-					onSubmit={onSubmit}
-					className="flex flex-col md:flex-row md:flex-wrap justify-center max-w-[600px] gap-3 mt-2"
-				>
+				<form className="flex flex-col md:flex-row md:flex-wrap justify-center max-w-[600px] gap-3 mt-2">
 					<fieldset className="flex flex-col w-full md:w-5/12">
 						<label htmlFor="name" className="hidden md:block text-black">
 							Nombre
@@ -291,7 +257,7 @@ export default function CreateModal({ isVisible, onClose }) {
 					<div className="flex justify-center w-full mt-6">
 						<button
 							className="bg-green-500 hover:bg-green-700 rounded-md drop-shadow-lg p-1 cursor-pointer text-white w-3/4 md:w-2/4 text-center"
-							onClick={onClose}
+							onClick={closeModal}
 						>
 							Dar de alta
 						</button>
