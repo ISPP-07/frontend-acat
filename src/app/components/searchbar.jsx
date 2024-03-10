@@ -14,7 +14,7 @@ const Searchbar = ({ Modal }) => {
 		modal = null
 	}
 	return (
-		<div className="absolute top-10 left-1/4 w-4/6 h-10 flex items-center">
+		<div className=" top-10 left-1/4 w-4/6 h-10 flex items-center">
 			<Image
 				width={18}
 				height={18}
