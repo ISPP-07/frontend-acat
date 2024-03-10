@@ -9,7 +9,9 @@ import { fetchDataBeneficiary } from './fetch'
 
 export default async function BeneficiaryDetails({ params }) {
 	const beneficiary = await fetchDataBeneficiary(params.beneficiaryId)
-
+	const birthDate = new Date(beneficiary.birth_date)
+		.toLocaleString()
+		.split(',')[0]
 	return (
 		<main className="flex w-full">
 			<Suspense fallback={<div></div>}>
@@ -106,7 +108,7 @@ export default async function BeneficiaryDetails({ params }) {
 							<span className="font-Varela text-blue-500 font-bold mr-2">
 								Fecha de nacimiento:
 							</span>
-							{beneficiary.birth_date}
+							{birthDate}
 						</p>
 						<p className="font-Varela text-gray-800">
 							<span className="font-Varela text-blue-500 font-bold mr-2">
