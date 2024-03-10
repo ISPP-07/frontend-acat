@@ -4,7 +4,11 @@ export function fetchDataBeneficiary(beneficiaryId) {
 	const beneficiaries = axios.get(
 		`${BASEURL}/acat/patient/details/${beneficiaryId}`
 	)
-	return beneficiaries.then(response => {
-		return response.data
-	})
+	return beneficiaries
+		.then(response => {
+			return response.data
+		})
+		.catch(error => {
+			throw error
+		})
 }

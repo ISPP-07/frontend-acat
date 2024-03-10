@@ -11,7 +11,16 @@ import Pen3 from '../../components/icons/pen-3'
 import MockSwitch from './mockSwitch'
 
 export default async function BeneficiaryDetails({ params }) {
-	const beneficiary = await fetchDataBeneficiary(params.beneficiaryId)
+	let beneficiary = {};
+
+	try {
+        beneficiary = await fetchDataBeneficiary(params.beneficiaryId);
+		if (!beneficiary) {
+			return console.log('No se ha encontrado el beneficiario');
+		}
+    } catch (error) {
+    	return error
+    }
 
 	return (
 		<div className="font-Varela text-black relative top-12 text-lg">
