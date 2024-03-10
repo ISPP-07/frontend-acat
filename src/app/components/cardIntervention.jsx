@@ -7,9 +7,16 @@ export default function CardIntervention({ intervention, handleClick }) {
 	const dateIntervention = new Date(intervention.intervention_date)
 		.toLocaleString()
 		.split(',')[0]
+
 	const hourIntervention = new Date(intervention.intervention_date)
-		.toLocaleString()
-		.split(',')[1]
+		.toLocaleTimeString('es-ES', {
+			hour12: false,
+			hour: '2-digit',
+			minute: '2-digit'
+		})
+		.slice(0, 5)
+
+	console.log(hourIntervention)
 	return (
 		<div
 			className="flex border-[1px] border-solid border-gray-100 shadow-lg p-4 w-full min-w-[300px] max-w-[300px] rounded-xl hover:scale-105 hover:cursor-pointer"
