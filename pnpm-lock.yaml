@@ -3373,7 +3373,7 @@ packages:
       jest-message-util: 29.7.0
       jest-util: 29.7.0
     dev: false
-   
+
   /export-from-json@1.7.4:
     resolution: {integrity: sha512-FjmpluvZS2PTYyhkoMfQoyEJMfe2bfAyNpa5Apa6C9n7SWUWyJkG/VFnzERuj3q9Jjo3iwBjwVsDQ7Z7sczthA==}
     dev: false

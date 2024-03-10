@@ -11,7 +11,7 @@ import React from 'react'
 import { useRouter } from 'next/navigation'
 /* eslint-enable no-unused-vars */
 
-// const axios = require('axios').default
+const axios = require('axios').default
 
 export default function CreateModal({ isVisible, onClose }) {
 	if (!isVisible) return null
