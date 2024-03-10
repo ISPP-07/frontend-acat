@@ -17,6 +17,9 @@ dependencies:
   eslint-config-prettier:
     specifier: ^9.1.0
     version: 9.1.0(eslint@8.56.0)
+  export-from-json:
+    specifier: ^1.7.4
+    version: 1.7.4
   jest:
     specifier: ^29.7.0
     version: 29.7.0
@@ -3369,6 +3372,10 @@ packages:
       jest-matcher-utils: 29.7.0
       jest-message-util: 29.7.0
       jest-util: 29.7.0
+    dev: false
+   
+  /export-from-json@1.7.4:
+    resolution: {integrity: sha512-FjmpluvZS2PTYyhkoMfQoyEJMfe2bfAyNpa5Apa6C9n7SWUWyJkG/VFnzERuj3q9Jjo3iwBjwVsDQ7Z7sczthA==}
     dev: false
 
   /fast-deep-equal@3.1.3:

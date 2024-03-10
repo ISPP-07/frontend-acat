@@ -1,3 +1,4 @@
+'use client'
 import RegisterInterventionModal from './RegisterInterventionModal'
 import InterventionList from './InterventionList'
 /* eslint-disable no-unused-vars */

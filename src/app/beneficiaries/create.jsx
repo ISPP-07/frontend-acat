@@ -6,9 +6,9 @@ import UserLaptop from '../components/icons/user-laptop'
 import Clipboard from '../components/icons/clipboard'
 import Identification from '../components/icons/id'
 import Gender from '../components/icons/gender'
-
 /* eslint-disable no-unused-vars */
 import React from 'react'
+import { useRouter } from 'next/navigation'
 /* eslint-enable no-unused-vars */
 
 // const axios = require('axios').default
@@ -22,24 +22,45 @@ export default function CreateModal({ isVisible, onClose }) {
 		}
 	}
 
-	// const router = useRouter()
+	const router = useRouter()
+
+	function getCurrentDate() {
+		const currentDate = new Date()
+		const year = currentDate.getFullYear()
+		const month = String(currentDate.getMonth() + 1).padStart(2, '0') // Months are zero-based
+		const day = String(currentDate.getDate()).padStart(2, '0')
+
+		return `${year}-${month}-${day}`
+	}
+
+	const formattedDate = getCurrentDate()
+
 	async function onSubmit(event) {
 		event.preventDefault()
-		// TODO: waiting for creation API implementation
-		// const formData = new FormData(event.target)
-		// axios
-		// 	.post(
-		// 		'https://65dc59f1e7edadead7ebb34d.mockapi.io/api/v1/beneficiary',
-		// 		formData
-		// 	)
-		// 	.then(function (response) {
-		// 		// Navigate to the newly created beneficiary
-		// 		router.push('/beneficiaries/' + response.data.id.toString())
-		// 	})
-		// 	.catch(function (error) {
-		// 		// TODO: handle error
-		// 		console.log(error)
-		// 	})
+		const formData = new FormData(event.target)
+		// WARNING this might be deleted in future development
+		formData.append('registration_date', formattedDate)
+		formData.append('age', '0')
+		// up until here
+		const object = {}
+		formData.forEach((value, key) => (object[key] = value))
+		const json = JSON.stringify(object)
+		axios
+			.post(process.env.NEXT_PUBLIC_BASE_URL + '/acat/patient', json, {
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			})
+			.then(function (response) {
+				// Navigate to the newly created beneficiary
+				onClose()
+				router.push('/beneficiaries/' + response.data.id.toString())
+			})
+			.catch(function (error) {
+				alert(
+					`Ha habido un error al crear al nuevo beneficiario: ${error.response.data.detail}`
+				)
+			})
 	}
 
 	return (
@@ -66,7 +87,53 @@ export default function CreateModal({ isVisible, onClose }) {
 								<input
 									type="text"
 									name="name"
+									id="name"
 									placeholder="Usuario"
+									className="p-1 w-full"
+								/>
+							</div>
+						</div>
+						<div>
+							<label htmlFor="first_surname">
+								<strong>Primer apellido</strong>
+							</label>
+							<div className="flex items-center border-2 rounded-md border-gray-200 bg-white">
+								<User height="18" width="18" />
+								<input
+									type="text"
+									name="first_surname"
+									id="first_surname"
+									placeholder="Primer apellido"
+									className="p-1 w-full"
+								/>
+							</div>
+						</div>
+						<div>
+							<label htmlFor="second_surname">
+								<strong>Segundo apellido</strong>
+							</label>
+							<div className="flex items-center border-2 rounded-md border-gray-200 bg-white">
+								<User height="18" width="18" />
+								<input
+									type="text"
+									name="second_surname"
+									id="second_surname"
+									placeholder="Segundo apellido"
+									className="p-1 w-full"
+								/>
+							</div>
+						</div>
+						<div>
+							<label htmlFor="alias">
+								<strong>Alias</strong>
+							</label>
+							<div className="flex items-center border-2 rounded-md border-gray-200 bg-white">
+								<User height="18" width="18" />
+								<input
+									type="text"
+									name="alias"
+									id="alias"
+									placeholder="Alias"
 									className="p-1 w-full"
 								/>
 							</div>
@@ -80,17 +147,38 @@ export default function CreateModal({ isVisible, onClose }) {
 								<input
 									type="text"
 									name="dni"
+									id="dni"
 									placeholder="DNI"
 									className="p-1 w-full"
 								/>
 							</div>
 						</div>
 						<div>
-							<label htmlFor="birthdate">
+							<label htmlFor="dossier_number">
+								<strong>Numero de registro</strong>
+							</label>
+							<div className="flex items-center border-2 rounded-md border-gray-200 bg-white">
+								<Identification />
+								<input
+									type="text"
+									name="dossier_number"
+									id="dossier_number"
+									placeholder="Numero de registro"
+									className="p-1 w-full"
+								/>
+							</div>
+						</div>
+						<div>
+							<label htmlFor="birth_date">
 								<strong>Fecha de nacimiento</strong>
 							</label>
 							<div className="flex items-center border-2 rounded-md border-gray-200 bg-white">
-								<input type="date" name="birthdate" className="p-1 w-full" />
+								<input
+									type="date"
+									name="birth_date"
+									id="birth_date"
+									className="p-1 w-full"
+								/>
 							</div>
 						</div>
 						<div>
@@ -102,34 +190,37 @@ export default function CreateModal({ isVisible, onClose }) {
 								<input
 									type="text"
 									name="address"
+									id="address"
 									placeholder="Dirección"
 									className="p-1 w-full"
 								/>
 							</div>
 						</div>
 						<div>
-							<label htmlFor="gender">
+							<label htmlFor="sex">
 								<strong>Sexo</strong>
 							</label>
 							<div className="flex items-center border-2 rounded-md border-gray-200 bg-white">
 								<Gender />
 								<input
 									type="text"
-									name="gender"
+									name="sex"
+									id="sex"
 									placeholder="Sexo"
 									className="p-1 w-full"
 								/>
 							</div>
 						</div>
 						<div>
-							<label htmlFor="telephone">
-								<strong>Teléfono</strong>
+							<label htmlFor="contact_phone">
+								<strong>Teléfono de contacto</strong>
 							</label>
 							<div className="flex items-center border-2 rounded-md border-gray-200 bg-white">
 								<Phone />
 								<input
 									type="text"
-									name="telephone"
+									name="contact_phone"
+									id="contact_phone"
 									placeholder="Teléfono"
 									className="p-1 w-full"
 								/>
@@ -137,13 +228,14 @@ export default function CreateModal({ isVisible, onClose }) {
 						</div>
 
 						<div>
-							<label htmlFor="firstTimeAttended">
+							<label htmlFor="first_appointment_date">
 								<strong>Primera atención</strong>
 							</label>
 							<div className="flex items-center border-2 rounded-md border-gray-200 bg-white">
 								<input
 									type="date"
-									name="firstTimeAttended"
+									name="first_appointment_date"
+									id="first_appointment_date"
 									className="p-1 w-full"
 								/>
 							</div>
@@ -165,14 +257,15 @@ export default function CreateModal({ isVisible, onClose }) {
 						</div>
 
 						<div className="col-span-2">
-							<label htmlFor="observations">
+							<label htmlFor="observation_text">
 								<strong>Observaciones</strong>
 							</label>
 							<div className="flex items-center border-2 rounded-md border-gray-200 bg-white">
 								<Clipboard />
 								<input
 									type="text"
-									name="observations"
+									name="observation_text"
+									id="observation_text"
 									placeholder="Observaciones sobre el beneficiario"
 									className="p-1 w-full"
 								/>
