@@ -1,5 +1,6 @@
+'use client'
 /* eslint-disable no-unused-vars */
-import React from 'react'
+import React, { useState, useEffect } from 'react';
 /* eslint-enable no-unused-vars */
 import { fetchDataBeneficiary } from './fetch'
 import User from '../../components/icons/user'
@@ -9,17 +10,32 @@ import IconButton from './iconButton'
 import InboxArrowDown from '../../components/icons/inbox-arrow-down'
 import Pen3 from '../../components/icons/pen-3'
 import MockSwitch from './mockSwitch'
+import { useRouter } from 'next/navigation'
 
 export default async function BeneficiaryDetails({ params }) {
-	let beneficiary = {};
+	const [beneficiary, setBeneficiary] = useState([]);
+    const router = useRouter();
 
-	try {
-        beneficiary = await fetchDataBeneficiary(params.beneficiaryId);
-		if (!beneficiary) {
-			return console.log('No se ha encontrado el beneficiario');
+	const fetchBeneficiaryData = async () => {
+		try {
+			const data = await fetchDataBeneficiary(params.beneficiaryId);
+			console.log(data);
+			setBeneficiary(data);
+			
+		} catch (error) {
+			alert('Ocurrió un error al cargar los detalles del beneficiario');
+			router.push('/beneficiaries');
 		}
-    } catch (error) {
-    	return error
+	};
+
+    useEffect(() => {
+        fetchBeneficiaryData();
+    }, [params.beneficiaryId, router]);
+
+	if (!beneficiary) {
+		alert('No se ha encontrado el beneficiario');
+		router.push('/beneficiaries');
+        return null;
     }
 
 	return (
@@ -91,7 +107,7 @@ export default async function BeneficiaryDetails({ params }) {
 				<div className="mt-6">
 					<p>
 						<strong style={{ color: '#4B7BECFF' }}>Técnico: </strong>{' '}
-						{beneficiary.first_technician_name}
+						{beneficiary.name}
 					</p>
 				</div>
 				<div className="mt-6">
@@ -110,7 +126,7 @@ export default async function BeneficiaryDetails({ params }) {
 					<p>
 						<strong style={{ color: '#4B7BECFF' }}>Observaciones:</strong>
 					</p>
-					<p>{beneficiary.observation_text}</p>
+					<p>{beneficiary.name}</p>
 				</div>
 			</div>
 		</div>
