@@ -11,7 +11,7 @@ import Image from 'next/image'
 import exportData from '../exportData'
 import axios from 'axios'
 
-export default async function InterventionPage() {
+export default function InterventionPage() {
 	const [showModal, setShowModal] = useState(false)
 	const toggleModal = () => {
 		setShowModal(!showModal)
@@ -33,7 +33,7 @@ export default async function InterventionPage() {
 			alert('Error al importar los datos')
 		}
 	}
-	const data = await fetchDataInterventions()
+	const data = fetchDataInterventions()
 	return (
 		<main className="flex w-full">
 			<Suspense fallback={<div></div>}>
@@ -69,18 +69,27 @@ export default async function InterventionPage() {
 					/>
 				</div>
 				<div className="container p-10 flex flex-wrap gap-5 justify-center items-center">
-					{data.map(intervention => (
-						<Link
-							href={`/interventions/${intervention.id}`}
-							key={intervention.id}
-						>
-							<CardIntervention
-								key={intervention.id}
-								intervention={intervention}
-								handleClick={toggleModal}
-							/>
-						</Link>
-					))}
+					<Suspense fallback={<div>Cargando...</div>}>
+						{data
+							.then(res =>
+								res.map(intervention => (
+									<Link
+										href={`/interventions/${intervention.id}`}
+										key={intervention.id}
+									>
+										<CardIntervention
+											key={intervention.id}
+											intervention={intervention}
+											handleClick={toggleModal}
+										/>
+									</Link>
+								))
+							)
+							.catch(err => {
+								console.error(err)
+								return <div>No hay datos</div>
+							})}
+					</Suspense>
 				</div>
 			</div>
 		</main>

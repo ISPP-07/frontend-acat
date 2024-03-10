@@ -6,13 +6,13 @@ import Link from 'next/link.js'
 import CardBeneficiary from '../components/cardBeneficiary.jsx'
 import Sidebar from '../components/sidebar.jsx'
 import Searchbar from '../components/searchbar.jsx'
-import { fetchDataBeneficiaries } from './fetch.jsx'
+import { fetchDataBeneficiaries } from './fetch.js'
 import Image from 'next/image'
 import exportData from '../exportData.js'
 import axios from 'axios'
-import CreateModal from '../components/CreateModal.jsx'
+import CreateModal from './create.jsx'
 
-export default async function BeneficiariesList() {
+export default function BeneficiariesList() {
 	const [showModal, setShowModal] = useState(false)
 	const toggleModal = () => {
 		setShowModal(!showModal)
@@ -33,7 +33,7 @@ export default async function BeneficiariesList() {
 			alert('Error al importar los datos')
 		}
 	}
-	const data = await fetchDataBeneficiaries()
+	const data = fetchDataBeneficiaries()
 
 	return (
 		<main className="flex w-full">
@@ -77,14 +77,26 @@ export default async function BeneficiariesList() {
 					/>
 				</div>
 				<div className="container p-10 flex flex-wrap gap-5 justify-center items-center">
-					{data.map(beneficiary => (
-						<Link
-							href={`/beneficiaries/${beneficiary.id}`}
-							key={beneficiary.id}
-						>
-							<CardBeneficiary key={beneficiary.id} beneficiary={beneficiary} />
-						</Link>
-					))}
+					<Suspense fallback={<div>Cargando...</div>}>
+						{data
+							.then(res =>
+								res.map(beneficiary => (
+									<Link
+										href={`/beneficiaries/${beneficiary.id}`}
+										key={beneficiary.id}
+									>
+										<CardBeneficiary
+											key={beneficiary.id}
+											beneficiary={beneficiary}
+										/>
+									</Link>
+								))
+							)
+							.catch(err => {
+								console.error(err)
+								return <div>No hay datos</div>
+							})}
+					</Suspense>
 				</div>
 			</div>
 			{showModal ? <CreateModal closeModal={toggleModal} /> : null}
