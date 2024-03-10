@@ -27,8 +27,8 @@ export default async function InterventionList() {
 		}
 	}
 	const data = await fetchDataInterventions()
-	return (
-		<div className="max-w-fit">
+	return (  
+    <div className="max-w-fit">
 			<div className="h-12 w-max top-28 absolute flex flex-row">
 				<button
 					className=" bg-green-400 h-8 w-8 rounded-full shadow-2xl mt-3 mr-2"
@@ -56,16 +56,14 @@ export default async function InterventionList() {
 					accept=".xls"
 				/>
 			</div>
-			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 overflow-y-scroll relative top-28">
-				{data.map(intervention => (
-					<Link href={'interventions'} key={intervention.id}>
-						<InterventionCard
-							key={intervention.id}
-							intervention={intervention}
-						/>
-					</Link>
-				))}
-			</div>
+   
+		<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 overflow-y-scroll relative top-28 z-10">
+			{data.map(intervention => (
+				<Link href={'interventions'} key={intervention.id}>
+					<InterventionCard key={intervention.id} intervention={intervention} />
+				</Link>
+			))}
 		</div>
+</div>
 	)
 }

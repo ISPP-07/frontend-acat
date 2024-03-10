@@ -37,6 +37,7 @@
 		"eslint-plugin-import": "^2.25.2",
 		"eslint-plugin-n": "^15.0.0 || ^16.0.0 ",
 		"eslint-plugin-promise": "^6.0.0",
+		"export-from-json": "^1.7.4",
 		"eslint-plugin-react": "^7.33.2",
 		"jest": "^29.7.0",
 		"jest-environment-jsdom": "^29.7.0",
