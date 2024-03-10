@@ -7,7 +7,7 @@ import Sidebar from '../components/sidebar'
 import Searchbar from '../components/searchbar'
 import Link from 'next/link'
 
-export default async function InterventionPage() {
+export default function InterventionPage() {
 	const [showModal, setShowModal] = useState(false)
 	const toggleModal = () => {
 		setShowModal(!showModal)
