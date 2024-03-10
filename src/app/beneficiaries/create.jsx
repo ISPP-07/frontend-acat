@@ -2,8 +2,51 @@
 /* eslint-disable no-unused-vars */
 import React from 'react'
 /* eslint-enable no-unused-vars */
+import { useRouter } from 'next/navigation'
+import axios from 'axios'
 
 export default function CreateModal({ closeModal }) {
+	const router = useRouter()
+
+	function getCurrentDate() {
+		const currentDate = new Date()
+		const year = currentDate.getFullYear()
+		const month = String(currentDate.getMonth() + 1).padStart(2, '0') // Months are zero-based
+		const day = String(currentDate.getDate()).padStart(2, '0')
+
+		return `${year}-${month}-${day}`
+	}
+
+	const formattedDate = getCurrentDate()
+
+	async function onSubmit(event) {
+		event.preventDefault()
+		const formData = new FormData(event.target)
+		// WARNING this might be deleted in future development
+		formData.append('registration_date', formattedDate)
+		formData.append('age', '0')
+		// up until here
+		const object = {}
+		formData.forEach((value, key) => (object[key] = value))
+		const json = JSON.stringify(object)
+		axios
+			.post(process.env.NEXT_PUBLIC_BASE_URL + '/acat/patient', json, {
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			})
+			.then(function (response) {
+				// Navigate to the newly created beneficiary
+				closeModal()
+				router.push('/beneficiaries/' + response.data.id.toString())
+			})
+			.catch(function (error) {
+				alert(
+					`Ha habido un error al crear al nuevo beneficiario: ${error.response.data.detail}`
+				)
+			})
+	}
+
 	return (
 		<div
 			className="fixed top-0 left-0 bg-gray-600 bg-opacity-50 h-full w-full flex items-center justify-center z-50"
@@ -18,7 +61,10 @@ export default function CreateModal({ closeModal }) {
 						X
 					</button>
 				</div>
-				<form className="flex flex-col md:flex-row md:flex-wrap justify-center max-w-[600px] gap-3 mt-2">
+				<form
+					onSubmit={onSubmit}
+					className="flex flex-row flex-wrap justify-center max-w-[600px] gap-3 mt-2"
+				>
 					<fieldset className="flex flex-col w-full md:w-5/12">
 						<label htmlFor="name" className="hidden md:block text-black">
 							Nombre
@@ -44,6 +90,96 @@ export default function CreateModal({ closeModal }) {
 								placeholder="Nombre"
 								id="name"
 								name="name"
+							/>
+						</div>
+					</fieldset>
+					<fieldset className="flex flex-col w-full md:w-5/12">
+						<label
+							htmlFor="first_surname"
+							className="hidden md:block text-black"
+						>
+							Primer apellido
+						</label>
+						<div className="relative flex items-center border-2 rounded-xl border-gray-200 bg-white">
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								fill="none"
+								viewBox="0 0 24 24"
+								strokeWidth="1.5"
+								stroke="currentColor"
+								className="w-4 h-4 absolute left-0 m-1"
+							>
+								<path
+									strokeLinecap="round"
+									strokeLinejoin="round"
+									d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
+								/>
+							</svg>
+							<input
+								className="flex items-center rounded-xl p-1 pl-6 w-full"
+								type="text"
+								placeholder="Primer apellido"
+								id="first_surname"
+								name="first_surname"
+							/>
+						</div>
+					</fieldset>
+					<fieldset className="flex flex-col w-full md:w-5/12">
+						<label
+							htmlFor="second_surname"
+							className="hidden md:block text-black"
+						>
+							Segundo apellido
+						</label>
+						<div className="relative flex items-center border-2 rounded-xl border-gray-200 bg-white">
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								fill="none"
+								viewBox="0 0 24 24"
+								strokeWidth="1.5"
+								stroke="currentColor"
+								className="w-4 h-4 absolute left-0 m-1"
+							>
+								<path
+									strokeLinecap="round"
+									strokeLinejoin="round"
+									d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
+								/>
+							</svg>
+							<input
+								className="flex items-center rounded-xl p-1 pl-6 w-full"
+								type="text"
+								placeholder="Segundo apellido"
+								id="second_surname"
+								name="second_surname"
+							/>
+						</div>
+					</fieldset>
+					<fieldset className="flex flex-col w-full md:w-5/12">
+						<label htmlFor="alias" className="hidden md:block text-black">
+							Alias
+						</label>
+						<div className="relative flex items-center border-2 rounded-xl border-gray-200 bg-white">
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								fill="none"
+								viewBox="0 0 24 24"
+								strokeWidth="1.5"
+								stroke="currentColor"
+								className="w-4 h-4 absolute left-0 m-1"
+							>
+								<path
+									strokeLinecap="round"
+									strokeLinejoin="round"
+									d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
+								/>
+							</svg>
+							<input
+								className="flex items-center rounded-xl p-1 pl-6 w-full"
+								type="text"
+								placeholder="Alias"
+								id="alias"
+								name="alias"
 							/>
 						</div>
 					</fieldset>
@@ -76,20 +212,51 @@ export default function CreateModal({ closeModal }) {
 						</div>
 					</fieldset>
 					<fieldset className="flex flex-col w-full md:w-5/12">
-						<label htmlFor="fecha-nacimiento" className="text-black">
+						<label
+							htmlFor="dossier_number"
+							className="hidden md:block text-black"
+						>
+							Número de registro
+						</label>
+						<div className="relative flex items-center border-2 rounded-xl border-gray-200 bg-white">
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								fill="none"
+								viewBox="0 0 24 24"
+								strokeWidth="1.5"
+								stroke="currentColor"
+								className="w-4 h-4 absolute left-0 m-1"
+							>
+								<path
+									strokeLinecap="round"
+									strokeLinejoin="round"
+									d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Zm6-10.125a1.875 1.875 0 1 1-3.75 0 1.875 1.875 0 0 1 3.75 0Zm1.294 6.336a6.721 6.721 0 0 1-3.17.789 6.721 6.721 0 0 1-3.168-.789 3.376 3.376 0 0 1 6.338 0Z"
+								/>
+							</svg>
+							<input
+								className="flex items-center rounded-xl p-1 pl-6 w-full"
+								type="text"
+								placeholder="Numero de registro"
+								id="dossier_number"
+								name="dossier_number"
+							/>
+						</div>
+					</fieldset>
+					<fieldset className="flex flex-col w-full md:w-5/12">
+						<label htmlFor="birth-date" className="text-black">
 							Fecha de nacimiento
 						</label>
 						<div className="relative flex items-center border-2 rounded-xl border-gray-200 bg-white">
 							<input
 								className="flex items-center rounded-xl p-1 w-full"
 								type="date"
-								id="fecha-nacimiento"
-								name="fecha-nacimiento"
+								id="birth-date"
+								name="birth-date"
 							/>
 						</div>
 					</fieldset>
 					<fieldset className="flex flex-col w-full md:w-5/12">
-						<label htmlFor="direccion" className="hidden md:block text-black">
+						<label htmlFor="address" className="hidden md:block text-black">
 							Dirección
 						</label>
 						<div className="relative flex items-center border-2 rounded-xl border-gray-200 bg-white">
@@ -117,13 +284,13 @@ export default function CreateModal({ closeModal }) {
 								className="flex items-center rounded-xl p-1 pl-6 w-full"
 								type="text"
 								placeholder="Dirección"
-								id="direccion"
-								name="direccion"
+								id="address"
+								name="address"
 							/>
 						</div>
 					</fieldset>
 					<fieldset className="flex flex-col w-full md:w-5/12">
-						<label htmlFor="sexo" className="hidden md:block text-black">
+						<label htmlFor="sex" className="hidden md:block text-black">
 							Sexo
 						</label>
 						<div className="relative flex items-center border-2 rounded-xl border-gray-200 bg-white">
@@ -146,14 +313,17 @@ export default function CreateModal({ closeModal }) {
 								className="flex items-center rounded-xl p-1 pl-6 w-full"
 								type="text"
 								placeholder="Sexo"
-								id="sexo"
-								name="sexo"
+								id="sex"
+								name="sex"
 							/>
 						</div>
 					</fieldset>
 					<fieldset className="flex flex-col w-full md:w-5/12">
-						<label htmlFor="telefono" className="hidden md:block text-black">
-							Teléfono
+						<label
+							htmlFor="contact_phone"
+							className="hidden md:block text-black"
+						>
+							Teléfono de contácto
 						</label>
 						<div className="relative flex items-center border-2 rounded-xl border-gray-200 bg-white">
 							<svg
@@ -175,26 +345,26 @@ export default function CreateModal({ closeModal }) {
 								className="flex items-center rounded-xl p-1 pl-6 w-full"
 								type="tel"
 								placeholder="Teléfono"
-								id="telefono"
-								name="telefono"
+								id="contact_phone"
+								name="contact_phone"
 							/>
 						</div>
 					</fieldset>
 					<fieldset className="flex flex-col w-full md:w-5/12">
-						<label htmlFor="primera-atencion" className="text-black">
+						<label htmlFor="first_appointment_date" className="text-black">
 							Primera atención
 						</label>
 						<div className="relative flex items-center border-2 rounded-xl border-gray-200 bg-white">
 							<input
 								className="flex items-center rounded-xl p-1 w-full"
 								type="date"
-								id="primera-atencion"
-								name="primera-atencion"
+								id="first_appointment_date"
+								name="first_appointment_date"
 							/>
 						</div>
 					</fieldset>
 					<fieldset className="flex flex-col w-full md:w-5/12">
-						<label htmlFor="tecnico" className="hidden md:block text-black">
+						<label htmlFor="technician" className="hidden md:block text-black">
 							Técnico
 						</label>
 						<div className="relative flex items-center border-2 rounded-xl border-gray-200 bg-white">
@@ -216,15 +386,15 @@ export default function CreateModal({ closeModal }) {
 							<input
 								className="flex items-center rounded-xl p-1 pl-6 w-full"
 								type="text"
-								placeholder="Técnico"
-								id="tecnico"
-								name="tecnico"
+								placeholder="Técnico que lo ha atendido"
+								id="technician"
+								name="technician"
 							/>
 						</div>
 					</fieldset>
 					<fieldset className="flex flex-col w-full md:w-10/12">
 						<label
-							htmlFor="observaciones"
+							htmlFor="observation_text"
 							className="hidden md:block text-black"
 						>
 							Observaciones
@@ -248,19 +418,18 @@ export default function CreateModal({ closeModal }) {
 							<textarea
 								className="flex items-center rounded-xl p-1 pl-6 w-full"
 								type="text"
-								placeholder="Observaciones"
-								id="observaciones"
-								name="observaciones"
+								placeholder="Observaciones sobre el beneficiario"
+								id="observation_text"
+								name="observation_text"
 							/>
 						</div>
 					</fieldset>
 					<div className="flex justify-center w-full mt-6">
-						<button
+						<input
+							type="submit"
+							value="Dar de alta"
 							className="bg-green-500 hover:bg-green-700 rounded-md drop-shadow-lg p-1 cursor-pointer text-white w-3/4 md:w-2/4 text-center"
-							onClick={closeModal}
-						>
-							Dar de alta
-						</button>
+						/>
 					</div>
 				</form>
 			</div>
