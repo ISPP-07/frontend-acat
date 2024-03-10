@@ -3,7 +3,6 @@
 import React, { Suspense, useState } from 'react'
 /* eslint-enable no-unused-vars */
 import Link from 'next/link.js'
-import { fetchDataBeneficiaries } from './fetch.js'
 import CardBeneficiary from '../components/cardBeneficiary.jsx'
 import Sidebar from '../components/sidebar.jsx'
 import Searchbar from '../components/searchbar.jsx'
