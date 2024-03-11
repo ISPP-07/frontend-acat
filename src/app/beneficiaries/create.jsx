@@ -250,8 +250,8 @@ export default function CreateModal({ closeModal }) {
 							<input
 								className="flex items-center rounded-xl p-1 w-full"
 								type="date"
-								id="birth-date"
-								name="birth-date"
+								id="birth_date"
+								name="birth_date"
 							/>
 						</div>
 					</fieldset>
