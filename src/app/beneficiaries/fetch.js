@@ -10,6 +10,6 @@ export function fetchDataBeneficiaries() {
 		})
 	}
     catch (error) {
-		return error
+		return null
 	}
 }
