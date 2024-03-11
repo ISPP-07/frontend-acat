@@ -60,21 +60,21 @@ function CreateUserForm() {
 		return password === confirmPassword
 	}
 	return (
-		<div className="flex flex-col bg-gray-50 rounded p-10 drop-shadow-lg border border-gray-300">
+		<div className="flex flex-col bg-gray-50 rounded-xl p-10 drop-shadow-lg border border-gray-300">
 			<h1 className="mb-10 text-center font-poppins text-2xl">
 				<strong>Crear Nuevo Usuario</strong>
 			</h1>
 			<form onSubmit={onSubmit} className="flex flex-col gap-3">
 				<article className="flex flex-col">
 					<label htmlFor="username">Usuario</label>
-					<div className="flex items-center border-2 rounded-md border-gray-200 bg-white">
+					<div className="flex items-center border-2 rounded-xl border-gray-200 bg-white">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							fill="none"
 							viewBox="0 0 24 24"
 							strokeWidth="1.5"
 							stroke="currentColor"
-							className="w-4 h-4 m-1"
+							className="w-4 h-4 left-11 m-1 absolute"
 						>
 							<path
 								strokeLinecap="round"
@@ -87,7 +87,7 @@ function CreateUserForm() {
 							id="username"
 							name="username"
 							placeholder="Usuario"
-							className="p-1 w-full"
+							className="p-1 pl-7 w-full rounded-xl"
 						/>
 					</div>
 				</article>
@@ -126,7 +126,7 @@ function CreateUserForm() {
 							viewBox="0 0 24 24"
 							strokeWidth="1.5"
 							stroke="currentColor"
-							className="w-4 h-4 m-1"
+							className="absolute left-11 w-4 h-4 m-1"
 						>
 							<path
 								strokeLinecap="round"
@@ -139,7 +139,7 @@ function CreateUserForm() {
 							id="password"
 							name="password"
 							placeholder="Contraseña"
-							className="p-1"
+							className="p-1 pl-7 pr-7 w-full rounded-xl"
 							data-testid="password-input"
 						/>
 						{showPassword ? (
@@ -149,7 +149,7 @@ function CreateUserForm() {
 								viewBox="0 0 24 24"
 								strokeWidth="1.5"
 								stroke="currentColor"
-								className="w-4 h-4 m-1 cursor-pointer"
+								className="absolute right-11 w-4 h-4 m-1 cursor-pointer bg-white"
 								onClick={togglePassword}
 								data-testid="toggle-button"
 							>
@@ -166,7 +166,7 @@ function CreateUserForm() {
 								viewBox="0 0 24 24"
 								strokeWidth="1.5"
 								stroke="currentColor"
-								className="w-4 h-4 m-1 cursor-pointer"
+								className="absolute right-11 w-4 h-4 m-1 cursor-pointer"
 								onClick={togglePassword}
 								data-testid="toggle-button"
 							>
@@ -185,15 +185,15 @@ function CreateUserForm() {
 					</div>
 				</article>
 				<article className="flex flex-col">
-					<label htmlFor="confirmPassword">Confirmar contraseña</label>
-					<div className="flex items-center border-2 rounded-md border-gray-200 bg-white">
+					<label htmlFor="confirm-password">Confirmar contraseña:</label>
+					<div className="flex items-center border-2 rounded-xl border-gray-200 bg-white">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							fill="none"
 							viewBox="0 0 24 24"
 							strokeWidth="1.5"
 							stroke="currentColor"
-							className="w-4 h-4 m-1"
+							className="absolute left-11 w-4 h-4 m-1"
 						>
 							<path
 								strokeLinecap="round"
@@ -202,12 +202,12 @@ function CreateUserForm() {
 							/>
 						</svg>
 						<input
-							type={'password'}
-							id="confirmPassword"
-							name="confirmPassword"
+							type="password"
+							id="confirm-password"
+							name="confirm-password"
 							placeholder="Contraseña"
-							className="p-1 w-full"
-							data-testid="password2-input"
+							className="p-1 pl-7 w-full rounded-xl"
+							data-testid="password-input"
 						/>
 					</div>
 				</article>
