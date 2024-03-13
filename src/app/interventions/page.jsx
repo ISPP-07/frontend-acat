@@ -1,6 +1,6 @@
 'use client'
 /* eslint-disable no-unused-vars */
-import React, { Suspense, useState } from 'react'
+import React, { Suspense, useState, useEffect } from 'react'
 /* eslint-enable no-unused-vars */
 import CardIntervention from '../components/cardIntervention'
 import Sidebar from '../components/sidebar'
@@ -12,7 +12,10 @@ import exportData from '../exportData'
 import axios from 'axios'
 
 export default function InterventionPage() {
+
+	const [data, setData] = useState(null);
 	const [showModal, setShowModal] = useState(false)
+
 	const toggleModal = () => {
 		setShowModal(!showModal)
 	}
@@ -33,7 +36,20 @@ export default function InterventionPage() {
 			alert('Error al importar los datos')
 		}
 	}
-	const data = fetchDataInterventions()
+
+	useEffect(() => {
+        const fetchData = async () => {
+            try {
+				const data = fetchDataInterventions()
+				setData(data)
+			} catch (error) {
+				console.error('Error al cargar los datos:', error);
+				alert('Se produjo un error al cargar los datos. Por favor, inténtalo de nuevo.');
+			}
+        };
+        fetchData();
+    }, []);
+
 	return (
 		<main className="flex w-full">
 			<Suspense fallback={<div></div>}>
@@ -70,7 +86,7 @@ export default function InterventionPage() {
 				</div>
 				<div className="container p-10 flex flex-wrap gap-5 justify-center items-center">
 					<Suspense fallback={<div>Cargando...</div>}>
-						{data
+						{data && data
 							.then(res =>
 								res.map(intervention => (
 									<Link

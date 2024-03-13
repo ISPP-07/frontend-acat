@@ -1,9 +1,9 @@
 import axios from 'axios'
-export function fetchDataBeneficiaries() {
-	const BASEURL = process.env.BASEURL
+export async function fetchDataBeneficiaries() {
+	const BASEURL = process.env.NEXT_PUBLIC_BASE_URL
 	try{
-		const beneficiaries = axios.get(
-			`${BASEURL}/acat/patient`)
+		const beneficiaries = await axios.get(
+			`${BASEURL}/acat/patient/`)
 		return beneficiaries.data
 	}
     catch (error) {
