@@ -2,10 +2,8 @@
 import React from 'react'
 /* eslint-enable no-unused-vars */
 import Tag from './tag'
-import calculateAge from '../beneficiaries/calculateAge'
 
 export default function CardBeneficiary({ beneficiary }) {
-	const age = calculateAge(beneficiary.age)
 	return (
 		<div className="flex border-[1px] border-solid border-gray-100 shadow-lg p-4 w-full min-w-[300px] max-w-[300px] rounded-xl hover:scale-105 hover:cursor-pointer transition duration-100">
 			<div className="mr-3">
@@ -28,7 +26,7 @@ export default function CardBeneficiary({ beneficiary }) {
 							pathsvg={'/face.svg'}
 							color={'bg-gray-100'}
 							textColor={'text-gray-700'}
-							text={age}
+							text={beneficiary.age}
 						/>
 					)}
 					{beneficiary.isFinished && (

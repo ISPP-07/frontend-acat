@@ -1,10 +1,13 @@
 import axios from 'axios'
-
-export function fetchDataInterventions() {
-	const interventions = axios.get(
-		'https://65df8753ff5e305f32a26916.mockapi.io/Interventions/interventions'
-	)
-	return interventions.then(response => {
-		return response.data
-	})
+export async function fetchDataInterventions() {
+	const BASEURL = process.env.NEXT_PUBLIC_BASE_URL
+	try{
+		const interventions = await axios.get(
+			`${BASEURL}/acat/appointment/`
+		)
+		return interventions.data
+	}
+	catch (error) {
+		return null
+	}
 }
