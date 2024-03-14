@@ -1,14 +1,12 @@
 import axios from 'axios'
-export function fetchDataBeneficiary(beneficiaryId) {
-	const BASEURL = process.env.BASEURL
-	const beneficiaries = axios.get(
-		`${BASEURL}/acat/patient/details/${beneficiaryId}`
-	)
-	return beneficiaries
-		.then(response => {
-			return response.data
-		})
-		.catch(error => {
-			throw error
-		})
+export async function fetchDataBeneficiary(beneficiaryId) {
+	const BASEURL = process.env.NEXT_PUBLIC_BASE_URL
+	try{
+		const beneficiarie = await axios.get(
+			`${BASEURL}/acat/patient/details/${beneficiaryId}`)
+		return beneficiarie.data
+	}
+	catch (error) {
+		return null
+	}
 }
