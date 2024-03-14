@@ -12,15 +12,22 @@ import exportData from '../exportData.js'
 import axios from 'axios'
 import CreateModal from './create.jsx'
 
-export default function BeneficiariesList() {
-
-	const [data, setData] = useState(null);
+export default function BeneficiariesList({ searchParams }) {
+	const [data, setData] = useState(null)
 	const [showModal, setShowModal] = useState(false)
+	let page = parseInt(searchParams.page, 10)
+	const perPage = 3
+	const totalPages = Math.ceil(10 / perPage)
+
+	page = !page || page < 1 ? 1 : page
+
+	const prevPage = page - 1 > 0 ? page - 1 : 1
+	const nextPage = page + 1 <= totalPages ? page + 1 : totalPages
 
 	const toggleModal = () => {
 		setShowModal(!showModal)
 	}
-	
+
 	const handleFileChange = async event => {
 		const selectedFile = event.target.files[0]
 		try {
@@ -39,17 +46,19 @@ export default function BeneficiariesList() {
 	}
 
 	useEffect(() => {
-        const fetchData = async () => {
-            try {
-				const data = await fetchDataBeneficiaries()
+		const fetchData = async () => {
+			try {
+				const data = await fetchDataBeneficiaries(perPage, page)
 				setData(data)
 			} catch (error) {
-				console.error('Error al cargar los datos:', error);
-				alert('Se produjo un error al cargar los datos. Por favor, inténtalo de nuevo.');
+				console.error('Error al cargar los datos:', error)
+				alert(
+					'Se produjo un error al cargar los datos. Por favor, inténtalo de nuevo.'
+				)
 			}
-        };
-        fetchData();
-    }, []);
+		}
+		fetchData()
+	}, [])
 
 	return (
 		<main className="flex w-full">
@@ -94,18 +103,46 @@ export default function BeneficiariesList() {
 				</div>
 				<div className="container p-10 flex flex-wrap gap-5 justify-center items-center">
 					<Suspense fallback={<div>Cargando...</div>}>
-						{data && data.map(beneficiary => (
-							<Link
-								href={`/beneficiaries/${beneficiary.id}`}
-								key={beneficiary.id}
-							>
-								<CardBeneficiary
+						{data &&
+							data.map(beneficiary => (
+								<Link
+									href={`/beneficiaries/${beneficiary.id}`}
 									key={beneficiary.id}
-									beneficiary={beneficiary}
-																		/>
-							</Link>
-						))}
+								>
+									<CardBeneficiary
+										key={beneficiary.id}
+										beneficiary={beneficiary}
+									/>
+								</Link>
+							))}
 					</Suspense>
+				</div>
+				<div className="flex justify-center items-center">
+					{page === 1 ? (
+						<div className="opacity-60" aria-disabled="true">
+							Anterior
+						</div>
+					) : (
+						<Link
+							href={`?page=${prevPage}`}
+							className=" bg-green-400 w-32 h-6 mt-4 rounded-full font-Varela text-white cursor-pointer text-center text-sm"
+						>
+							Anterior
+						</Link>
+					)}
+
+					{page === totalPages ? (
+						<div className="opacity-60" aria-disabled="true">
+							Siguiente
+						</div>
+					) : (
+						<Link
+							href={`?page=${nextPage}`}
+							className=" bg-green-400 w-32 h-6 mt-4 rounded-full font-Varela text-white cursor-pointer text-center text-sm"
+						>
+							Siguiente
+						</Link>
+					)}
 				</div>
 			</div>
 			{showModal ? <CreateModal closeModal={toggleModal} /> : null}
