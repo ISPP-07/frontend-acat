@@ -40,7 +40,7 @@ export default function InterventionPage() {
 	useEffect(() => {
         const fetchData = async () => {
             try {
-				const data = fetchDataInterventions()
+				const data = await fetchDataInterventions()
 				setData(data)
 			} catch (error) {
 				console.error('Error al cargar los datos:', error);
@@ -86,9 +86,7 @@ export default function InterventionPage() {
 				</div>
 				<div className="container p-10 flex flex-wrap gap-5 justify-center items-center">
 					<Suspense fallback={<div>Cargando...</div>}>
-						{data && data
-							.then(res =>
-								res.map(intervention => (
+						{data && data.map(intervention => (
 									<Link
 										href={`/interventions/${intervention.id}`}
 										key={intervention.id}
@@ -99,12 +97,7 @@ export default function InterventionPage() {
 											handleClick={toggleModal}
 										/>
 									</Link>
-								))
-							)
-							.catch(err => {
-								console.error(err)
-								return <div>No hay datos</div>
-							})}
+						))}
 					</Suspense>
 				</div>
 			</div>

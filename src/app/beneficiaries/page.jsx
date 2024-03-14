@@ -41,7 +41,7 @@ export default function BeneficiariesList() {
 	useEffect(() => {
         const fetchData = async () => {
             try {
-				const data = fetchDataBeneficiaries()
+				const data = await fetchDataBeneficiaries()
 				setData(data)
 			} catch (error) {
 				console.error('Error al cargar los datos:', error);
@@ -94,9 +94,7 @@ export default function BeneficiariesList() {
 				</div>
 				<div className="container p-10 flex flex-wrap gap-5 justify-center items-center">
 					<Suspense fallback={<div>Cargando...</div>}>
-						{data && data
-							.then(res =>
-								res.map(beneficiary => (
+						{data && data.map(beneficiary => (
 							<Link
 								href={`/beneficiaries/${beneficiary.id}`}
 								key={beneficiary.id}
@@ -106,12 +104,7 @@ export default function BeneficiariesList() {
 									beneficiary={beneficiary}
 																		/>
 							</Link>
-						))
-					)
-					.catch(err => {
-						console.error(err)
-						return <div>No hay datos</div>
-					})}
+						))}
 					</Suspense>
 				</div>
 			</div>
