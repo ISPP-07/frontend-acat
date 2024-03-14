@@ -1,22 +1,36 @@
+'use client'
 /* eslint-disable no-unused-vars */
-import React, { Suspense } from 'react'
+import React, { Suspense, useState, useEffect  } from 'react'
+/* eslint-enable no-unused-vars */
 import Sidebar from '@/app/components/sidebar'
 import Image from 'next/image'
 import ButtonIcon from '../../components/buttonIcon'
 import ButtonText from '../../components/buttonText'
-/* eslint-enable no-unused-vars */
 import { fetchDataBeneficiary } from './fetch'
 
-export default async function BeneficiaryDetails({ params }) {
-	const beneficiary = await fetchDataBeneficiary(params.beneficiaryId)
-	const birthDate = new Date(beneficiary.birth_date)
-		.toLocaleString()
-		.split(',')[0]
+export default function BeneficiaryDetails({ params }) {
+
+	const [beneficiary, setBeneficiary] = useState(null)
+
+	useEffect(() => {
+        const fetchData = async () => {
+            try {
+				const beneficiary = await fetchDataBeneficiary(params.beneficiaryId)
+				setBeneficiary(beneficiary)
+			} catch (error) {
+				console.error('Error al cargar los datos:', error);
+				alert('Se produjo un error al cargar los datos. Por favor, inténtalo de nuevo.');
+			}
+        };
+        fetchData();
+    }, []);
+
 	return (
 		<main className="flex w-full">
 			<Suspense fallback={<div></div>}>
 				<Sidebar />
 			</Suspense>
+			{beneficiary && (
 			<div className="w-full h-full flex">
 				<div className="flex flex-col gap-4 h-screen w-[500px] bg-white border border-solid shadow-xl p-5 px-8">
 					<div className="flex items-center gap-4">
@@ -108,7 +122,7 @@ export default async function BeneficiaryDetails({ params }) {
 							<span className="font-Varela text-blue-500 font-bold mr-2">
 								Fecha de nacimiento:
 							</span>
-							{birthDate}
+							{beneficiary.birth_date}
 						</p>
 						<p className="font-Varela text-gray-800">
 							<span className="font-Varela text-blue-500 font-bold mr-2">
@@ -123,16 +137,16 @@ export default async function BeneficiaryDetails({ params }) {
 							{beneficiary.sex}
 						</p>
 						<p className="font-Varela text-gray-800">
-							<p className="font-Varela text-blue-500 font-bold">
+							<span className="font-Varela text-blue-500 font-bold">
 								Observaciones:
-							</p>
-							<p className="font-Varela text-gray-800 mt-2">
+							</span>
+							<span className="font-Varela text-gray-800 mt-2">
 								{beneficiary.observation_text}
-							</p>
+							</span>
 						</p>
 					</div>
 				</div>
-			</div>
+			</div>)}
 		</main>
 	)
 }
