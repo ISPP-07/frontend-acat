@@ -17,6 +17,7 @@ export default function BeneficiariesList({ searchParams }) {
 	const [showModal, setShowModal] = useState(false)
 	let page = parseInt(searchParams.page, 10)
 	const perPage = 3
+	// change
 	const totalPages = Math.ceil(10 / perPage)
 
 	page = !page || page < 1 ? 1 : page
@@ -119,26 +120,35 @@ export default function BeneficiariesList({ searchParams }) {
 				</div>
 				<div className="flex justify-center items-center">
 					{page === 1 ? (
-						<div className="opacity-60" aria-disabled="true">
+						<div
+							className="opacity-60 bg-green-400 w-20 h-6 mt-4 mr-2 rounded-full font-Varela text-white cursor-pointer text-center text-sm"
+							aria-disabled="true"
+						>
 							Anterior
 						</div>
 					) : (
 						<Link
 							href={`?page=${prevPage}`}
-							className=" bg-green-400 w-32 h-6 mt-4 rounded-full font-Varela text-white cursor-pointer text-center text-sm"
+							className=" bg-green-400 w-20 h-6 mt-4 mr-2 rounded-full font-Varela text-white cursor-pointer text-center text-sm"
 						>
 							Anterior
 						</Link>
 					)}
+					<div className="opacity-60 bg-blue-400 w-6 h-6 mt-4 rounded-full font-Varela text-white cursor-pointer text-center text-sm">
+						{page}
+					</div>
 
 					{page === totalPages ? (
-						<div className="opacity-60" aria-disabled="true">
+						<div
+							className="opacity-60 bg-green-400 w-20 h-6 mt-4 ml-2 rounded-full font-Varela text-white cursor-pointer text-center text-sm"
+							aria-disabled="true"
+						>
 							Siguiente
 						</div>
 					) : (
 						<Link
 							href={`?page=${nextPage}`}
-							className=" bg-green-400 w-32 h-6 mt-4 rounded-full font-Varela text-white cursor-pointer text-center text-sm"
+							className=" bg-green-400 w-20 h-6 mt-4  ml-2 rounded-full font-Varela text-white cursor-pointer text-center text-sm"
 						>
 							Siguiente
 						</Link>

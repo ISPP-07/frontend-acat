@@ -11,11 +11,19 @@ import Image from 'next/image'
 import exportData from '../exportData'
 import axios from 'axios'
 
-export default function InterventionPage() {
-
-	const [data, setData] = useState(null);
+export default function InterventionPage({ searchParams }) {
+	const [data, setData] = useState(null)
 	const [showModal, setShowModal] = useState(false)
 
+	let page = parseInt(searchParams.page, 10)
+	const perPage = 3
+	// change
+	const totalPages = Math.ceil(10 / perPage)
+
+	page = !page || page < 1 ? 1 : page
+
+	const prevPage = page - 1 > 0 ? page - 1 : 1
+	const nextPage = page + 1 <= totalPages ? page + 1 : totalPages
 	const toggleModal = () => {
 		setShowModal(!showModal)
 	}
@@ -38,17 +46,19 @@ export default function InterventionPage() {
 	}
 
 	useEffect(() => {
-        const fetchData = async () => {
-            try {
-				const data = await fetchDataInterventions()
+		const fetchData = async () => {
+			try {
+				const data = await fetchDataInterventions(perPage, page)
 				setData(data)
 			} catch (error) {
-				console.error('Error al cargar los datos:', error);
-				alert('Se produjo un error al cargar los datos. Por favor, inténtalo de nuevo.');
+				console.error('Error al cargar los datos:', error)
+				alert(
+					'Se produjo un error al cargar los datos. Por favor, inténtalo de nuevo.'
+				)
 			}
-        };
-        fetchData();
-    }, []);
+		}
+		fetchData()
+	}, [])
 
 	return (
 		<main className="flex w-full">
@@ -86,19 +96,56 @@ export default function InterventionPage() {
 				</div>
 				<div className="container p-10 flex flex-wrap gap-5 justify-center items-center">
 					<Suspense fallback={<div>Cargando...</div>}>
-						{data && data.map(intervention => (
-									<Link
-										href={`/interventions/${intervention.id}`}
+						{data &&
+							data.map(intervention => (
+								<Link
+									href={`/interventions/${intervention.id}`}
+									key={intervention.id}
+								>
+									<CardIntervention
 										key={intervention.id}
-									>
-										<CardIntervention
-											key={intervention.id}
-											intervention={intervention}
-											handleClick={toggleModal}
-										/>
-									</Link>
-						))}
+										intervention={intervention}
+										handleClick={toggleModal}
+									/>
+								</Link>
+							))}
 					</Suspense>
+				</div>
+				<div className="flex justify-center items-center">
+					{page === 1 ? (
+						<div
+							className="opacity-60 bg-green-400 w-20 h-6 mt-4 mr-2 rounded-full font-Varela text-white cursor-pointer text-center text-sm"
+							aria-disabled="true"
+						>
+							Anterior
+						</div>
+					) : (
+						<Link
+							href={`?page=${prevPage}`}
+							className=" bg-green-400 w-20 h-6 mt-4 mr-2 rounded-full font-Varela text-white cursor-pointer text-center text-sm"
+						>
+							Anterior
+						</Link>
+					)}
+					<div className="opacity-60 bg-blue-400 w-6 h-6 mt-4 rounded-full font-Varela text-white cursor-pointer text-center text-sm">
+						{page}
+					</div>
+
+					{page === totalPages ? (
+						<div
+							className="opacity-60 bg-green-400 w-20 h-6 mt-4 ml-2 rounded-full font-Varela text-white cursor-pointer text-center text-sm"
+							aria-disabled="true"
+						>
+							Siguiente
+						</div>
+					) : (
+						<Link
+							href={`?page=${nextPage}`}
+							className=" bg-green-400 w-20 h-6 mt-4  ml-2 rounded-full font-Varela text-white cursor-pointer text-center text-sm"
+						>
+							Siguiente
+						</Link>
+					)}
 				</div>
 			</div>
 		</main>
