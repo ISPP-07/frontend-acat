@@ -127,7 +127,7 @@ export default function InterventionPage({ searchParams }) {
 							Anterior
 						</Link>
 					)}
-					<div className="opacity-60 bg-blue-400 w-6 h-6 mt-4 rounded-full font-Varela text-white cursor-pointer text-center text-sm">
+					<div className=" bg-blue-400 w-6 h-6 mt-4 rounded-full font-Varela text-white cursor-pointer text-center text-sm">
 						{page}
 					</div>
 

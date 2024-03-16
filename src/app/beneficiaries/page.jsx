@@ -17,7 +17,7 @@ export default function BeneficiariesList({ searchParams }) {
 	const [showModal, setShowModal] = useState(false)
 	let page = parseInt(searchParams.page, 10)
 	const perPage = 3
-	// change
+	// change when backend retrieval is updated
 	const totalPages = Math.ceil(10 / perPage)
 
 	page = !page || page < 1 ? 1 : page
@@ -134,7 +134,7 @@ export default function BeneficiariesList({ searchParams }) {
 							Anterior
 						</Link>
 					)}
-					<div className="opacity-60 bg-blue-400 w-6 h-6 mt-4 rounded-full font-Varela text-white cursor-pointer text-center text-sm">
+					<div className=" bg-blue-400 w-6 h-6 mt-4 rounded-full font-Varela text-white cursor-pointer text-center text-sm">
 						{page}
 					</div>
 
