@@ -13,14 +13,13 @@ import axios from 'axios'
 import CreateModal from './create.jsx'
 
 export default function BeneficiariesList() {
-
-	const [data, setData] = useState(null);
+	const [data, setData] = useState(null)
 	const [showModal, setShowModal] = useState(false)
 
 	const toggleModal = () => {
 		setShowModal(!showModal)
 	}
-	
+
 	const handleFileChange = async event => {
 		const selectedFile = event.target.files[0]
 		try {
@@ -39,17 +38,19 @@ export default function BeneficiariesList() {
 	}
 
 	useEffect(() => {
-        const fetchData = async () => {
-            try {
+		const fetchData = async () => {
+			try {
 				const data = await fetchDataBeneficiaries()
 				setData(data)
 			} catch (error) {
-				console.error('Error al cargar los datos:', error);
-				alert('Se produjo un error al cargar los datos. Por favor, inténtalo de nuevo.');
+				console.error('Error al cargar los datos:', error)
+				alert(
+					'Se produjo un error al cargar los datos. Por favor, inténtalo de nuevo.'
+				)
 			}
-        };
-        fetchData();
-    }, []);
+		}
+		fetchData()
+	}, [])
 
 	return (
 		<main className="flex w-full">
@@ -72,6 +73,7 @@ export default function BeneficiariesList() {
 						data-testid="export-button"
 					>
 						<Image
+							alt="Exportar a excel"
 							src="/excel.svg"
 							className="ml-2"
 							width={15}
@@ -90,21 +92,23 @@ export default function BeneficiariesList() {
 						onChange={handleFileChange}
 						style={{ display: 'none' }}
 						accept=".xls"
+						data-testid="file"
 					/>
 				</div>
 				<div className="container p-10 flex flex-wrap gap-5 justify-center items-center">
 					<Suspense fallback={<div>Cargando...</div>}>
-						{data && data.map(beneficiary => (
-							<Link
-								href={`/beneficiaries/${beneficiary.id}`}
-								key={beneficiary.id}
-							>
-								<CardBeneficiary
+						{data &&
+							data.map(beneficiary => (
+								<Link
+									href={`/beneficiaries/${beneficiary.id}`}
 									key={beneficiary.id}
-									beneficiary={beneficiary}
-																		/>
-							</Link>
-						))}
+								>
+									<CardBeneficiary
+										key={beneficiary.id}
+										beneficiary={beneficiary}
+									/>
+								</Link>
+							))}
 					</Suspense>
 				</div>
 			</div>
