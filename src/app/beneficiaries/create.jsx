@@ -5,17 +5,17 @@ import React from 'react'
 import { useRouter } from 'next/navigation'
 import axios from 'axios'
 
-export default function CreateModal({ closeModal }) {
+export function getCurrentDate() {
+	const currentDate = new Date()
+	const year = currentDate.getFullYear()
+	const month = String(currentDate.getMonth() + 1).padStart(2, '0') // Months are zero-based
+	const day = String(currentDate.getDate()).padStart(2, '0')
+
+	return `${year}-${month}-${day}`
+}
+
+function CreateModal({ closeModal }) {
 	const router = useRouter()
-
-	function getCurrentDate() {
-		const currentDate = new Date()
-		const year = currentDate.getFullYear()
-		const month = String(currentDate.getMonth() + 1).padStart(2, '0') // Months are zero-based
-		const day = String(currentDate.getDate()).padStart(2, '0')
-
-		return `${year}-${month}-${day}`
-	}
 
 	const formattedDate = getCurrentDate()
 
@@ -64,6 +64,7 @@ export default function CreateModal({ closeModal }) {
 				<form
 					onSubmit={onSubmit}
 					className="flex flex-row flex-wrap justify-center max-w-[600px] gap-3 mt-2"
+					data-testid="form"
 				>
 					<fieldset className="flex flex-col w-full md:w-5/12">
 						<label htmlFor="name" className="hidden md:block text-black">
@@ -250,7 +251,7 @@ export default function CreateModal({ closeModal }) {
 							<input
 								className="flex items-center rounded-xl p-1 w-full"
 								type="date"
-								id="birth_date"
+								id="birth-date"
 								name="birth_date"
 							/>
 						</div>
@@ -426,6 +427,7 @@ export default function CreateModal({ closeModal }) {
 					</fieldset>
 					<div className="flex justify-center w-full mt-6">
 						<input
+							data-testid="submit"
 							type="submit"
 							value="Dar de alta"
 							className="bg-green-500 hover:bg-green-700 rounded-md drop-shadow-lg p-1 cursor-pointer text-white w-3/4 md:w-2/4 text-center"
@@ -436,3 +438,4 @@ export default function CreateModal({ closeModal }) {
 		</div>
 	)
 }
+export default CreateModal

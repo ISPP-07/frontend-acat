@@ -18,6 +18,7 @@ export default function CardIntervention({ intervention, handleClick }) {
 
 	return (
 		<div
+			data-testid="close"
 			className="flex items-center border-[1px] border-solid border-gray-100 shadow-lg p-4 w-full min-w-[300px] max-w-[300px] rounded-xl hover:scale-105 hover:cursor-pointer"
 			onClick={handleClick}
 		>

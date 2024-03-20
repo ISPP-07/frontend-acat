@@ -12,8 +12,7 @@ import exportData from '../exportData'
 import axios from 'axios'
 
 export default function InterventionPage() {
-
-	const [data, setData] = useState(null);
+	const [data, setData] = useState(null)
 	const [showModal, setShowModal] = useState(false)
 
 	const toggleModal = () => {
@@ -38,17 +37,19 @@ export default function InterventionPage() {
 	}
 
 	useEffect(() => {
-        const fetchData = async () => {
-            try {
+		const fetchData = async () => {
+			try {
 				const data = await fetchDataInterventions()
 				setData(data)
 			} catch (error) {
-				console.error('Error al cargar los datos:', error);
-				alert('Se produjo un error al cargar los datos. Por favor, inténtalo de nuevo.');
+				console.error('Error al cargar los datos:', error)
+				alert(
+					'Se produjo un error al cargar los datos. Por favor, inténtalo de nuevo.'
+				)
 			}
-        };
-        fetchData();
-    }, []);
+		}
+		fetchData()
+	}, [])
 
 	return (
 		<main className="flex w-full">
@@ -60,7 +61,7 @@ export default function InterventionPage() {
 				<div className="flex flex-row">
 					<button
 						className=" bg-green-400 h-8 w-8 rounded-full shadow-2xl mt-3 mr-2"
-						onClick={() => exportData(data, 'Intervenciones')}
+						onClick={() => exportData(data, 'Intervenciones', { id: 'ID' })}
 						data-testid="export-button"
 					>
 						<Image
@@ -82,22 +83,24 @@ export default function InterventionPage() {
 						onChange={handleFileChange}
 						style={{ display: 'none' }}
 						accept=".xls"
+						data-testid="file"
 					/>
 				</div>
 				<div className="container p-10 flex flex-wrap gap-5 justify-center items-center">
 					<Suspense fallback={<div>Cargando...</div>}>
-						{data && data.map(intervention => (
-									<Link
-										href={`/interventions/${intervention.id}`}
+						{data &&
+							data.map(intervention => (
+								<Link
+									href={`/interventions/${intervention.id}`}
+									key={intervention.id}
+								>
+									<CardIntervention
 										key={intervention.id}
-									>
-										<CardIntervention
-											key={intervention.id}
-											intervention={intervention}
-											handleClick={toggleModal}
-										/>
-									</Link>
-						))}
+										intervention={intervention}
+										handleClick={toggleModal}
+									/>
+								</Link>
+							))}
 					</Suspense>
 				</div>
 			</div>
