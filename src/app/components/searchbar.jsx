@@ -6,7 +6,12 @@ import React from 'react'
 import ButtonIcon from './buttonIcon'
 import ButtonText from './buttonText'
 
-const Searchbar = () => {
+const Searchbar = ({
+	text = 'Dar de alta',
+	handleClick = () => {
+		console.log('Funciona')
+	}
+}) => {
 	return (
 		<div className="flex w-full justify-end pt-3 self-start sticky top-0 left-0 bg-white">
 			<div className="flex justify-around items-center md:w-full w-5/6 p-3 gap-1">
@@ -22,11 +27,16 @@ const Searchbar = () => {
 				</div>
 				<ButtonIcon color={'bg-blue-500'} iconpath={'/filter.svg'} />
 				<div className="lg:hidden block">
-					<ButtonIcon color={'bg-[#75AF73]'} iconpath={'/plus.svg'} />
+					<ButtonIcon
+						color={'bg-[#75AF73]'}
+						iconpath={'/plus.svg'}
+						handleClick={handleClick}
+					/>
 				</div>
 				<div className="lg:block hidden">
 					<ButtonText
-						text={'Dar de alta'}
+						text={text}
+						handleClick={handleClick}
 						px={'md:px-3'}
 						isRounded={true}
 						color={'bg-[#75AF73]'}

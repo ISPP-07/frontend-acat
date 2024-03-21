@@ -1,82 +1,83 @@
-/* eslint-disable no-unused-vars */
 'use client'
+/* eslint-disable no-unused-vars */
+import React, { useState } from 'react'
+/* eslint-enable no-unused-vars */
 import Pen3 from '../components/icons/pen-3'
 import User from '../components/icons/user'
 import UserLaptop from '../components/icons/user-laptop'
 import Clipboard from '../components/icons/clipboard'
+import axios from 'axios'
 
-/* eslint-disable no-unused-vars */
-import React from 'react'
-import { useRouter } from 'next/navigation'
-import router from 'next/router'
-/* eslint-enable no-unused-vars */
+function RegisterInterventionModal({ onClickFunction }) {
+	// if (!isVisible) return null
+	const [formData, setFormData] = useState({
+		date: '',
+		reason: '',
+		typology: '',
+		observations: '',
+		patient_id: '',
+		technician: ''
+	})
 
-// const axios = require('axios').default
-
-function RegisterInterventionModal({ isVisible, onClose }) {
-	if (!isVisible) return null
-
-	// const router = useRouter()
-	async function onSubmit(event) {
-		event.preventDefault()
-		// TODO: waiting for creation API implementation
-		// const formData = new FormData(event.target)
-		// axios
-		// 	.post(
-		// 		'https://65dc59f1e7edadead7ebb34d.mockapi.io/api/v1/interventions',
-		// 		formData
-		// 	)
-		// 	.then(function (response) {
-		// 		// Navigate to the newly created beneficiary
-		// 		router.push('/interventions/' + response.data.id.toString())
-		// 	})
-		// 	.catch(function (error) {
-		// 		// TODO: handle error
-		// 		console.log(error)
-		// 	})
+	const handleInputChange = e => {
+		const { name, value } = e.target
+		setFormData({ ...formData, [name]: value })
 	}
-	const closedModal = () => {
-		window.location.href = '/interventions'
+
+	const BASEURL = process.env.NEXT_PUBLIC_BASE_URL
+
+	const handleAddIntervention = () => {
+		axios.post(`${BASEURL}/acat/intervention`, formData, {
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		})
+		console.log('Datos del formulario:', formData)
 	}
 
 	return (
-		<div
-			className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex justify-center items-center z-30"
-			id="close"
-			onClick={closedModal}
-		>
-			<div className="w-96 p-8 bg-white rounded-xl space-y-6">
-				<button className="text-gray-500 text-xl l" onClick={onClose}>
-					X
-				</button>
+		<div className="fixed bg-gray-600 bg-opacity-50 h-full w-full flex font-Varela items-center justify-center z-50">
+			<div className="p-10 border h-fit shadow-lg rounded-xl bg-white max-h-full overflow-y-auto space-y-6">
+				<div className="flex justify-end">
+					<button
+						className="bg-red-500 text-white text-xl rounded-md shadow-lg w-[30px] h-[30px] mb-3"
+						onClick={onClickFunction}
+					>
+						X
+					</button>
+				</div>
 
 				<h1 className="text-center font-poppins text-2xl">
 					<strong>Registro de Intervenciones</strong>
 				</h1>
-				<form onSubmit={onSubmit} className="space-y-4">
+				<form className="space-y-4">
 					<div>
-						<label htmlFor="name" className="block">
+						<label className="block">
 							<strong>Nombre</strong>
 						</label>
 						<div className="flex items-center border-2 rounded-md border-gray-200 bg-white">
 							<User height="18" width="18" />
 							<input
 								type="text"
-								name="name"
+								name="patient_id"
+								value={formData.patient_id}
+								onChange={handleInputChange}
 								placeholder="Usuario"
 								className="p-1 w-full"
 							/>
 						</div>
 					</div>
 					<div>
-						<label htmlFor="tipologia" className="block">
+						<label className="block">
 							<strong>Tipologia</strong>
 						</label>
 						<div className="flex items-center border-2 rounded-md border-gray-200 bg-white">
 							<Pen3 />
 							<input
 								type="text"
-								name="Tipologia"
+								name="typology"
+								value={formData.tipology}
+								onChange={handleInputChange}
 								placeholder="tipologia"
 								className="p-1 w-full"
 							/>
@@ -87,7 +88,13 @@ function RegisterInterventionModal({ isVisible, onClose }) {
 							<strong>Fecha de atencion</strong>
 						</label>
 						<div className="flex items-center border-2 rounded-md border-gray-200 bg-white">
-							<input type="date" name="birthdate" className="p-1 w-full" />
+							<input
+								type="date"
+								name="date"
+								value={formData.date}
+								onChange={handleInputChange}
+								className="p-1 w-full"
+							/>
 						</div>
 					</div>
 					<div>
@@ -99,6 +106,8 @@ function RegisterInterventionModal({ isVisible, onClose }) {
 							<input
 								type="text"
 								name="technician"
+								value={formData.technician}
+								onChange={handleInputChange}
 								placeholder="Técnico que lo ha atendido"
 								className="p-1 w-full"
 							/>
@@ -112,7 +121,9 @@ function RegisterInterventionModal({ isVisible, onClose }) {
 							<Clipboard />
 							<input
 								type="text"
-								name="observations"
+								name="reason"
+								value={formData.reason}
+								onChange={handleInputChange}
 								placeholder="Observaciones sobre el beneficiario"
 								className="p-1 w-full"
 							/>
@@ -127,18 +138,22 @@ function RegisterInterventionModal({ isVisible, onClose }) {
 							<input
 								type="text"
 								name="observations"
+								value={formData.observations}
+								onChange={handleInputChange}
 								placeholder="Motivo"
 								className="p-1 w-full"
 							/>
 						</div>
 					</div>
-					<button
-						type="submit"
-						className="bg-blue-600 rounded-md drop-shadow-lg p-2 cursor-pointer text-white w-full"
-						onClick={closedModal}
-					>
-						Registrar
-					</button>
+					<div className="flex justify-center w-full mt-6">
+						<button
+							type="submit"
+							className="bg-green-500 rounded-md drop-shadow-lg p-2 cursor-pointer text-white w-full"
+							onClick={handleAddIntervention}
+						>
+							Registrar
+						</button>
+					</div>
 				</form>
 			</div>
 		</div>
