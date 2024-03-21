@@ -10,6 +10,7 @@ import { fetchDataInterventions } from './fetchIntervention'
 import Image from 'next/image'
 import exportData from '../exportData'
 import axios from 'axios'
+import RegisterInterventionModal from './RegisterInterventionModal'
 
 export default function InterventionPage() {
 	const [data, setData] = useState(null)
@@ -97,13 +98,15 @@ export default function InterventionPage() {
 									<CardIntervention
 										key={intervention.id}
 										intervention={intervention}
-										handleClick={toggleModal}
 									/>
 								</Link>
 							))}
 					</Suspense>
 				</div>
 			</div>
+			{showModal ? (
+				<RegisterInterventionModal onClickFunction={toggleModal} />
+			) : null}
 		</main>
 	)
 }
