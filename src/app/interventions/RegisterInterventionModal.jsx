@@ -1,15 +1,20 @@
 'use client'
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 /* eslint-enable no-unused-vars */
 import Pen3 from '../components/icons/pen-3'
 import User from '../components/icons/user'
 import UserLaptop from '../components/icons/user-laptop'
 import Clipboard from '../components/icons/clipboard'
 import axios from 'axios'
+import Select from 'react-select'
+import { fetchDataBeneficiaries } from '../beneficiaries/fetch'
+import { useRouter } from 'next/navigation'
 
 function RegisterInterventionModal({ onClickFunction }) {
 	// if (!isVisible) return null
+	const router = useRouter()
+
 	const [formData, setFormData] = useState({
 		date: '',
 		reason: '',
@@ -19,6 +24,8 @@ function RegisterInterventionModal({ onClickFunction }) {
 		technician: ''
 	})
 
+	const [beneficiaryOptions, setBeneficiaryOptions] = useState([])
+
 	const handleInputChange = e => {
 		const { name, value } = e.target
 		setFormData({ ...formData, [name]: value })
@@ -26,14 +33,45 @@ function RegisterInterventionModal({ onClickFunction }) {
 
 	const BASEURL = process.env.NEXT_PUBLIC_BASE_URL
 
-	const handleAddIntervention = () => {
-		axios.post(`${BASEURL}/acat/intervention`, formData, {
-			headers: {
-				'Content-Type': 'application/json'
-			}
-		})
-		console.log('Datos del formulario:', formData)
+	async function handleAddIntervention(event) {
+		event.preventDefault()
+
+		axios
+			.post(`${BASEURL}/acat/intervention`, JSON.stringify(formData), {
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			})
+			.then(function (response) {
+				// Navigate to the newly created beneficiary
+				router.push('/interventions/' + response.data.id.toString())
+			})
+			.catch(function (error) {
+				alert(
+					`Ha habido un error al crear al nuevo beneficiario: ${error.response.data.detail}`
+				)
+			})
 	}
+
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const data = await fetchDataBeneficiaries()
+				setBeneficiaryOptions(
+					data.map(beneficiary => ({
+						value: beneficiary.id,
+						label: beneficiary.name
+					}))
+				)
+			} catch (error) {
+				console.error('Error al cargar los datos:', error)
+				alert(
+					'Se produjo un error al cargar los datos. Por favor, inténtalo de nuevo.'
+				)
+			}
+		}
+		fetchData()
+	}, [])
 
 	return (
 		<div className="fixed bg-gray-600 bg-opacity-50 h-full w-full flex font-Varela items-center justify-center z-50">
@@ -57,13 +95,23 @@ function RegisterInterventionModal({ onClickFunction }) {
 						</label>
 						<div className="flex items-center border-2 rounded-md border-gray-200 bg-white">
 							<User height="18" width="18" />
-							<input
-								type="text"
-								name="patient_id"
-								value={formData.patient_id}
-								onChange={handleInputChange}
-								placeholder="Usuario"
+							<Select
 								className="p-1 w-full"
+								classNamePrefix="Selecciona un beneficiario"
+								defaultValue={{ label: 'Selecciona un beneficiario', value: 0 }}
+								isDisabled={false}
+								isLoading={false}
+								isClearable={true}
+								isRtl={false}
+								isSearchable={true}
+								name="patient_id"
+								options={beneficiaryOptions}
+								onChange={opt =>
+									setFormData({
+										...formData,
+										patient_id: opt?.value ? opt.value : null
+									})
+								}
 							/>
 						</div>
 					</div>
@@ -146,13 +194,12 @@ function RegisterInterventionModal({ onClickFunction }) {
 						</div>
 					</div>
 					<div className="flex justify-center w-full mt-6">
-						<button
+						<input
 							type="submit"
 							className="bg-green-500 rounded-md drop-shadow-lg p-2 cursor-pointer text-white w-full"
 							onClick={handleAddIntervention}
-						>
-							Registrar
-						</button>
+							value="Registrar"
+						/>
 					</div>
 				</form>
 			</div>
