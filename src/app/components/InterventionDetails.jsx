@@ -8,6 +8,12 @@ import axios from 'axios'
 
 export default function InterventionDetails({ intervention }) {
 	const [toggleIntervention, setToggleIntervention] = useState(false)
+	const [date, setDate] = useState('')
+
+	function handleDateChange(newDate) {
+		setDate(newDate)
+		console.log(date)
+	}
 
 	function deleteIntervention() {
 		const BASEURL = process.env.NEXT_PUBLIC_BASE_URL
@@ -20,6 +26,7 @@ export default function InterventionDetails({ intervention }) {
 
 	function editView() {
 		setToggleIntervention(!toggleIntervention)
+		setDate(intervention.date)
 	}
 
 	async function onSubmit(event) {
@@ -57,7 +64,7 @@ export default function InterventionDetails({ intervention }) {
 
 	return (
 		<div className="flex flex-col gap-5 bg-gray-50 rounded-xl p-10 drop-shadow-lg border border-gray-300">
-			<div className="flex gap-3 justify-end w-full">
+			<div className="flex gap-3 justify-end items-center w-full">
 				<ButtonIcon
 					iconpath="/edit.svg"
 					iconWidth={20}
@@ -92,22 +99,34 @@ export default function InterventionDetails({ intervention }) {
 			{intervention && (
 				<form onSubmit={onSubmit} className="flex flex-col gap-3">
 					<article className="flex items-center w-full">
+						<p className="font-Varela w-fit text-blue-500 font-bold mr-2">
+							Paciente:
+						</p>
+						<div className={`flex items-center w-full border-gray-200`}>
+							<p className="p-1 w-full rounded-xl bg-gray-50">
+								{intervention.patient.alias}
+							</p>
+						</div>
+					</article>
+					<article className="flex items-center w-full">
 						<label
 							htmlFor="date"
-							className="font-Varela w-full text-blue-500 font-bold"
+							className="font-Varela w-fit text-blue-500 font-bold mr-2"
 						>
 							Fecha de atención:
 						</label>
 						<div
-							className={`flex items-center w-full ${toggleIntervention ? 'border-2 rounded-xl border-gray-200' : ''} bg-white`}
+							className={`flex items-center w-fit ${toggleIntervention ? 'border-2 rounded-xl border-gray-200' : ''} bg-white`}
 						>
 							<input
-								type="text"
+								type={toggleIntervention ? 'date' : 'text'}
 								id="date"
 								name="date"
-								placeholder={intervention.date}
+								placeholder={date === '' ? intervention.date : date}
 								className={`p-1 w-full rounded-xl ${toggleIntervention ? 'bg-white' : 'bg-gray-50 placeholder-black'}`}
 								disabled={!toggleIntervention}
+								value={toggleIntervention ? date : ''}
+								onChange={e => handleDateChange(e.target.value)}
 							/>
 						</div>
 					</article>
