@@ -15,7 +15,7 @@ function LoginForm() {
 	const router = useRouter()
 
 	const isMobile = () => {
-		return window.innerWidth <= 768
+		return typeof window !== 'undefined' ? window.innerWidth <= 768 : false
 	}
 
 	async function onSubmit(event) {
