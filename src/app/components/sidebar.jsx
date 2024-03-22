@@ -20,12 +20,6 @@ export default function Sidebar() {
 		},
 		{
 			link: '',
-			icon: '/square-plus.svg',
-			text: 'Dar de alta',
-			subentry: true
-		},
-		{
-			link: '',
 			icon: '/bye.svg',
 			text: 'Finalizados',
 			subentry: true
@@ -34,12 +28,6 @@ export default function Sidebar() {
 			link: '/interventions',
 			icon: '/calendar.svg',
 			text: 'Intervenciones'
-		},
-		{
-			link: '/',
-			icon: '/square-plus.svg',
-			text: 'Crear intervención',
-			subentry: true
 		},
 		{
 			link: '',
