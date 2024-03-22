@@ -140,14 +140,20 @@ export default function InterventionDetails({ intervention }) {
 						<div
 							className={`flex items-center w-full ${toggleIntervention ? 'border-2 rounded-xl border-gray-200' : ''} bg-white`}
 						>
-							<input
-								type="text"
+							<select
 								id="typology"
 								name="typology"
-								placeholder={intervention.typology}
 								className={`p-1 w-full rounded-xl ${toggleIntervention ? 'bg-white' : 'bg-gray-50 placeholder-black'}`}
 								disabled={!toggleIntervention}
-							/>
+								defaultValue="Prevencion"
+							>
+								<option value="Prevencion">Prevencion</option>
+								<option value="Atencion">Atencion</option>
+								<option value="Incorporacion sociolaborar">
+									Incorporacion sociolaborar
+								</option>
+								<option value="otro">Otro</option>
+							</select>
 						</div>
 					</article>
 					<article className="flex items-center w-full">
