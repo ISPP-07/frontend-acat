@@ -12,9 +12,15 @@ export default function Sidebar() {
 	const pathname = usePathname()
 	const { replace } = useRouter()
 
+	const isMobile = () => {
+		return window.innerWidth <= 768
+	}
+
+	const initialState = isMobile() ? 'false' : 'true'
+
 	const links = [
 		{
-			link: '/beneficiaries',
+			link: `/beneficiaries?showSidebar=${initialState}`,
 			icon: '/family.svg',
 			text: 'Beneficiarios'
 		},
@@ -25,7 +31,7 @@ export default function Sidebar() {
 			subentry: true
 		},
 		{
-			link: '/interventions',
+			link: `/interventions?showSidebar=${initialState}`,
 			icon: '/calendar.svg',
 			text: 'Intervenciones'
 		},
@@ -35,7 +41,7 @@ export default function Sidebar() {
 			text: 'Usuarios'
 		},
 		{
-			link: '/create-user',
+			link: `/create-user?showSidebar=${initialState}`,
 			icon: '/face-plus.svg',
 			text: 'Crear nuevo usuario',
 			subentry: true
