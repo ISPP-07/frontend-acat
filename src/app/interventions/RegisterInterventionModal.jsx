@@ -98,9 +98,22 @@ function RegisterInterventionModal({ onClickFunction }) {
 							<strong>Nombre</strong>
 						</label>
 						<div className="relative flex items-center border-2 rounded-xl border-gray-200 bg-white">
-							<User />
+							<User className="ml-1" />
 							<Select
-								className="p-1 w-full rounded-xl cursor-pointer"
+								className="border-0 w-full"
+								styles={{
+									control: provided => ({
+										...provided,
+										border: 'none',
+										borderRadius: '9999px',
+										boxShadow: 'none',
+										width: '100%'
+									}),
+									menu: provided => ({
+										...provided,
+										borderRadius: '0px'
+									})
+								}}
 								classNamePrefix="Selecciona un beneficiario"
 								defaultValue={{ label: 'Selecciona un beneficiario', value: 0 }}
 								isDisabled={false}
