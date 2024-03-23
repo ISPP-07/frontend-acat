@@ -95,7 +95,7 @@ function RegisterInterventionModal({ onClickFunction }) {
 				<form className="flex flex-row flex-wrap justify-center max-w-[330px] gap-3 mt-2">
 					<fieldset className="flex flex-col w-full">
 						<label htmlFor="name" className="hidden md:block text-black">
-							<strong>Nombre</strong>
+							<span>Nombre</span>
 						</label>
 						<div className="relative flex items-center border-2 rounded-xl border-gray-200 bg-white">
 							<User className="ml-1" />
@@ -134,7 +134,7 @@ function RegisterInterventionModal({ onClickFunction }) {
 					</fieldset>
 					<fieldset className="flex flex-col w-full">
 						<label htmlFor="tipology" className="hidden md:block text-black">
-							<strong>Tipologia</strong>
+							<span>Tipologia</span>
 						</label>
 						<div className="relative flex items-center border-2 rounded-xl border-gray-200 bg-white">
 							<Pen3 />
@@ -150,7 +150,7 @@ function RegisterInterventionModal({ onClickFunction }) {
 					</fieldset>
 					<fieldset className="flex flex-col w-full">
 						<label htmlFor="birthdate" className="hidden md:block text-black">
-							<strong>Fecha de atencion</strong>
+							<span>Fecha de atencion</span>
 						</label>
 						<div className="relative flex items-center border-2 rounded-xl border-gray-200 bg-white">
 							<input
@@ -158,13 +158,13 @@ function RegisterInterventionModal({ onClickFunction }) {
 								name="date"
 								value={formData.date}
 								onChange={handleInputChange}
-								className="items-center rounded-xl p-1 pl-6 w-full"
+								className="items-center rounded-xl p-1 w-full"
 							/>
 						</div>
 					</fieldset>
 					<fieldset className="flex flex-col w-full">
 						<label htmlFor="technician" className="hidden md:block text-black">
-							<strong>Técnico</strong>
+							<span>Técnico</span>
 						</label>
 						<div className="relative flex items-center border-2 rounded-xl border-gray-200 bg-white">
 							<UserLaptop />
@@ -183,7 +183,7 @@ function RegisterInterventionModal({ onClickFunction }) {
 							htmlFor="observations"
 							className="hidden md:block text-black"
 						>
-							<strong>Motivo</strong>
+							<span>Motivo</span>
 						</label>
 						<div className="relative flex items-center border-2 rounded-xl border-gray-200 bg-white">
 							<Clipboard />
@@ -202,7 +202,7 @@ function RegisterInterventionModal({ onClickFunction }) {
 							htmlFor="observations"
 							className="hidden md:block text-black"
 						>
-							<strong>Observaciones</strong>
+							<span>Observaciones</span>
 						</label>
 						<div className="relative flex items-center border-2 rounded-xl border-gray-200 bg-white">
 							<Clipboard />
