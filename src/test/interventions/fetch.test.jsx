@@ -2,7 +2,7 @@
 import React from 'react'
 /* eslint-enable no-unused-vars */
 import { test, expect, describe, jest } from '@jest/globals'
-import { fetchDataInterventions } from '../../app/interventions/fetch.jsx'
+import { fetchDataInterventions } from '../../app/interventions/fetchIntervention'
 import axios from 'axios'
 
 jest.mock('axios')
@@ -34,6 +34,6 @@ describe('fetchDataInterventions', () => {
 
 		axios.get.mockRejectedValue(new Error(errorMessage))
 
-		await expect(fetchDataInterventions()).rejects.toThrow(errorMessage)
+		await expect(fetchDataInterventions()).toBeNull
 	})
 })

@@ -8,6 +8,7 @@ function Clipboard(props) {
 			width="18"
 			viewBox="0 0 18 18"
 			xmlns="http://www.w3.org/2000/svg"
+			className="w-4 h-4 absolute left-0 m-1"
 		>
 			<g fill="#212121" stroke="#212121">
 				<path

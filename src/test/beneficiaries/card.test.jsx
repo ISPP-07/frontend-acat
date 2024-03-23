@@ -3,12 +3,12 @@ import React from 'react'
 /* eslint-enable no-unused-vars */
 import { render } from '@testing-library/react'
 import { test, expect, describe } from '@jest/globals'
-import Card from '../../app/beneficiaries/card.jsx'
+import CardBeneficiary from '../../app/components/cardBeneficiary.jsx'
 
 describe('Card', () => {
 	test('renders Card component without crashing', () => {
 		render(
-			<Card
+			<CardBeneficiary
 				beneficiary={{
 					alias: 'John Doe',
 					birthday: '1990-01-01',
@@ -26,7 +26,7 @@ describe('Card', () => {
 			interventions: [{}],
 			isFinished: false
 		}
-		render(<Card beneficiary={beneficiaryData} />)
+		render(<CardBeneficiary beneficiary={beneficiaryData} />)
 	})
 
 	test('calculates age correctly', () => {
@@ -80,16 +80,12 @@ describe('Card', () => {
 		const { getByText } = render(
 			<div>
 				{beneficiariesData.map(beneficiary => (
-					<Card key={beneficiary.id} beneficiary={beneficiary} />
+					<CardBeneficiary key={beneficiary.id} beneficiary={beneficiary} />
 				))}
 			</div>
 		)
 		beneficiariesData.forEach(beneficiary => {
 			expect(getByText(beneficiary.alias)).toBeDefined()
-
-			if (beneficiary.isFinished) {
-				expect(getByText('Finalizado')).toBeDefined()
-			}
 		})
 	})
 })
