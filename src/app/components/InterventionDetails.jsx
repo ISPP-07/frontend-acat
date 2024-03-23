@@ -12,7 +12,6 @@ export default function InterventionDetails({ intervention }) {
 
 	function handleDateChange(newDate) {
 		setDate(newDate)
-		console.log(date)
 	}
 
 	function deleteIntervention() {
@@ -63,7 +62,7 @@ export default function InterventionDetails({ intervention }) {
 	}
 
 	return (
-		<div className="flex flex-col gap-5 bg-gray-50 rounded-xl p-10 drop-shadow-lg border border-gray-300">
+		<div className="flex flex-col gap-5 bg-gray-50 rounded-xl p-10 drop-shadow-lg border border-gray-300 w-[45	0px]">
 			<div className="flex gap-3 justify-end items-center w-full">
 				<ButtonIcon
 					iconpath="/edit.svg"
@@ -80,7 +79,7 @@ export default function InterventionDetails({ intervention }) {
 					handleClick={deleteIntervention}
 				/>
 			</div>
-			<div className="flex gap-2 items-center justify-center">
+			<div className="flex gap-2 items-center justify-center w-full">
 				<Image
 					src="/calendar.svg"
 					width={40}
@@ -96,137 +95,159 @@ export default function InterventionDetails({ intervention }) {
 				</h1>
 			</div>
 			<hr></hr>
-			{intervention && (
-				<form onSubmit={onSubmit} className="flex flex-col gap-3">
-					<article className="flex items-center w-full">
-						<p className="font-Varela w-fit text-blue-500 font-bold mr-2">
-							Paciente:
-						</p>
-						<div className={`flex items-center w-full border-gray-200`}>
-							<p className="p-1 w-full rounded-xl bg-gray-50">
-								{intervention.patient.alias}
+			{intervention &&
+				(toggleIntervention ? (
+					<form onSubmit={onSubmit} className="flex flex-col gap-3 w-full">
+						<article className="flex items-center w-full">
+							<p className="font-Varela w-fit text-blue-500 font-bold mr-2">
+								Paciente:
 							</p>
-						</div>
-					</article>
-					<article className="flex items-center w-full">
-						<label
-							htmlFor="date"
-							className="font-Varela w-fit text-blue-500 font-bold mr-2"
-						>
-							Fecha de atención:
-						</label>
-						<div
-							className={`flex items-center w-fit ${toggleIntervention ? 'border-2 rounded-xl border-gray-200' : ''} bg-white`}
-						>
-							<input
-								type={toggleIntervention ? 'date' : 'text'}
-								id="date"
-								name="date"
-								placeholder={date === '' ? intervention.date : date}
-								className={`p-1 w-full rounded-xl ${toggleIntervention ? 'bg-white' : 'bg-gray-50 placeholder-black'}`}
-								disabled={!toggleIntervention}
-								value={toggleIntervention ? date : ''}
-								onChange={e => handleDateChange(e.target.value)}
-							/>
-						</div>
-					</article>
-					<article className="flex items-center w-full">
-						<label
-							htmlFor="typology"
-							className="font-Varela w-fit text-blue-500 font-bold mr-2"
-						>
-							Tipología:
-						</label>
-						<div
-							className={`flex items-center w-full ${toggleIntervention ? 'border-2 rounded-xl border-gray-200' : ''} bg-white`}
-						>
-							<select
-								id="typology"
-								name="typology"
-								className={`p-1 w-full rounded-xl ${toggleIntervention ? 'bg-white' : 'bg-gray-50 placeholder-black'}`}
-								disabled={!toggleIntervention}
-								defaultValue="Prevencion"
+							<div className="flex items-center w-full border-gray-200">
+								<p className="p-1 w-full rounded-xl bg-gray-50">
+									{intervention.patient.alias}
+								</p>
+							</div>
+						</article>
+						<article className="flex items-center w-full">
+							<label
+								htmlFor="date"
+								className="font-Varela w-fit text-blue-500 font-bold mr-2"
 							>
-								<option value="Prevencion">Prevencion</option>
-								<option value="Atencion">Atencion</option>
-								<option value="Incorporacion sociolaborar">
-									Incorporacion sociolaborar
-								</option>
-								<option value="otro">Otro</option>
-							</select>
-						</div>
-					</article>
-					<article className="flex items-center w-full">
-						<label
-							htmlFor="technician"
-							className="font-Varela w-fit text-blue-500 font-bold mr-2"
-						>
-							Técnico:
-						</label>
-						<div
-							className={`flex items-center w-full ${toggleIntervention ? 'border-2 rounded-xl border-gray-200' : ''} bg-white`}
-						>
+								Fecha de atención:
+							</label>
+							<div className="flex items-center w-full border-2 rounded-xl border-gray-200 bg-white">
+								<input
+									type="date"
+									id="date"
+									name="date"
+									placeholder={date === '' ? intervention.date : date}
+									className="p-1 w-full rounded-xl bg-white placeholder-black"
+									value={toggleIntervention ? date : ''}
+									onChange={e => handleDateChange(e.target.value)}
+								/>
+							</div>
+						</article>
+						<article className="flex items-center w-full">
+							<label
+								htmlFor="typology"
+								className="font-Varela w-fit text-blue-500 font-bold mr-2"
+							>
+								Tipología:
+							</label>
+							<div className="flex items-center w-full border-2 rounded-xl border-gray-200 bg-white">
+								<select
+									id="typology"
+									name="typology"
+									className="p-1 w-full rounded-xl bg-white placeholder-black"
+									defaultValue="Prevencion"
+								>
+									<option value="Prevencion">Prevencion</option>
+									<option value="Atencion">Atencion</option>
+									<option value="Incorporacion sociolaborar">
+										Incorporacion sociolaborar
+									</option>
+									<option value="otro">Otro</option>
+								</select>
+							</div>
+						</article>
+						<article className="flex items-center w-full">
+							<label
+								htmlFor="technician"
+								className="font-Varela w-fit text-blue-500 font-bold mr-2"
+							>
+								Técnico:
+							</label>
+							<div className="flex items-center w-full border-2 rounded-xl border-gray-200 bg-white">
+								<input
+									type="text"
+									id="technician"
+									name="technician"
+									placeholder={intervention.technician}
+									className="p-1 w-full rounded-xl bg-white placeholder-black"
+								/>
+							</div>
+						</article>
+						<article className="flex items-center w-full">
+							<label
+								htmlFor="technician"
+								className="font-Varela w-fit text-blue-500 font-bold mr-2"
+							>
+								Motivo:
+							</label>
+							<div className="flex items-center w-full border-2 rounded-xl border-gray-200 bg-white">
+								<input
+									type="text"
+									id="technician"
+									name="technician"
+									placeholder={intervention.reason}
+									value={intervention.reason}
+									className="p-1 w-full rounded-xl bg-white placeholder-black"
+								/>
+							</div>
+						</article>
+						<article className="flex flex-col">
+							<label
+								htmlFor="observations"
+								className="font-Varela text-blue-500 font-bold mr-2"
+							>
+								Observaciones:
+							</label>
+							<div className="flex items-center border-2 rounded-xl border-gray-200 bg-white">
+								<textarea
+									className="flex items-center rounded-xl p-1 w-full bg-white placeholder-black"
+									type="text"
+									placeholder={intervention.observations}
+									id="observations"
+									name="observations"
+								/>
+							</div>
+						</article>
+						<div className="flex items-center w-full justify-center gap-5 mt-5">
 							<input
-								type="text"
-								id="technician"
-								name="technician"
-								placeholder={intervention.technician}
-								className={`p-1 w-full rounded-xl ${toggleIntervention ? 'bg-white' : 'bg-gray-50 placeholder-black'}`}
-								disabled={!toggleIntervention}
+								type="submit"
+								value="Confirmar cambios"
+								className="bg-green-500 rounded-md drop-shadow-lg p-1 cursor-pointer text-white w-3/4"
 							/>
 						</div>
-					</article>
-					<article className="flex items-center w-full">
-						<label
-							htmlFor="technician"
-							className="font-Varela w-fit text-blue-500 font-bold mr-2"
-						>
-							Motivo:
-						</label>
-						<div
-							className={`flex items-center w-full ${toggleIntervention ? 'border-2 rounded-xl border-gray-200' : ''} bg-white`}
-						>
-							<input
-								type="text"
-								id="technician"
-								name="technician"
-								placeholder={intervention.reason}
-								className={`p-1 w-full rounded-xl ${toggleIntervention ? 'bg-white' : 'bg-gray-50 placeholder-black'}`}
-								disabled={!toggleIntervention}
-							/>
-						</div>
-					</article>
-					<article className="flex flex-col">
-						<label
-							htmlFor="observations"
-							className="font-Varela text-blue-500 font-bold mr-2"
-						>
-							Observaciones:
-						</label>
-						<div
-							className={`flex items-center ${toggleIntervention ? 'border-2 rounded-xl border-gray-200' : ''} bg-white`}
-						>
-							<textarea
-								className={`flex items-center rounded-xl p-1 w-full ${toggleIntervention ? 'bg-white' : 'bg-gray-50 placeholder-black'}`}
-								type="text"
-								placeholder={intervention.observations}
-								id="observations"
-								name="observations"
-								disabled={!toggleIntervention}
-							/>
-						</div>
-					</article>
-				</form>
-			)}
-			{toggleIntervention && (
-				<div className="flex items-center w-full justify-center gap-5 mt-5">
-					<input
-						type="submit"
-						value="Confirmar cambios"
-						className="bg-green-500 rounded-md drop-shadow-lg p-1 cursor-pointer text-white w-3/4"
-					/>
-				</div>
-			)}
+					</form>
+				) : (
+					<section className="flex flex-col gap-3 w-full">
+						<article className="flex items-center w-full">
+							<p className="font-Varela w-fit text-blue-500 font-bold mr-2">
+								Paciente:
+							</p>
+							<p className="p-1 w-full">{intervention.patient.alias}</p>
+						</article>
+						<article className="flex items-center w-full">
+							<p className="font-Varela text-blue-500 font-bold mr-2">
+								Fecha de atención:
+							</p>
+							<p className="p-1">{intervention.date}</p>
+						</article>
+						<article className="flex items-center w-full">
+							<p className="font-Varela text-blue-500 font-bold mr-2">
+								Tipología:
+							</p>
+							<p className="p-1">{intervention.typology}</p>
+						</article>
+						<article className="flex items-center w-full">
+							<p className="font-Varela text-blue-500 font-bold mr-2">
+								Técnico:
+							</p>
+							<p className="p-1">{intervention.technician}</p>
+						</article>
+						<article className="flex items-center w-full">
+							<p className="font-Varela text-blue-500 font-bold mr-2">Motivo</p>
+							<p className="p-1">{intervention.reason}</p>
+						</article>
+						<article className="flex flex-col w-full">
+							<p className="font-Varela text-blue-500 font-bold mr-2">
+								Observaciones:
+							</p>
+							<p className="p-1">{intervention.observations}</p>
+						</article>
+					</section>
+				))}
 		</div>
 	)
 }
