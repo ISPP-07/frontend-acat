@@ -309,6 +309,7 @@ export default function BeneficiaryDetails({ params }) {
 											iconHeight={18}
 											iconWidth={18}
 											color={'bg-red-500'}
+											handleClick={deleteView}
 										/>
 									</div>
 								</div>
