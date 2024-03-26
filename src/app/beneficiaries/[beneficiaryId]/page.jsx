@@ -7,14 +7,80 @@ import Image from 'next/image'
 import ButtonIcon from '../../components/buttonIcon'
 import ButtonText from '../../components/buttonText'
 import { fetchDataBeneficiary } from './fetch'
+import axios from 'axios'
+import { useRouter } from 'next/navigation'
+import ModalConfirmation from '@/app/components/modalConfirmation'
 
 export default function BeneficiaryDetails({ params }) {
 	const [beneficiary, setBeneficiary] = useState(null)
 	const [toggleEditView, setToggleEditView] = useState(false)
+	const [toggleDeleteView, setToggleDeleteView] = useState(false)
+	const router = useRouter()
 	const birthDate = new Date(beneficiary?.birth_date).toLocaleDateString()
 
 	function editView() {
 		setToggleEditView(!toggleEditView)
+	}
+
+	function deleteView() {
+		setToggleDeleteView(!toggleDeleteView)
+	}
+
+	function deleteBeneficiary() {
+		const BASEURL = process.env.NEXT_PUBLIC_BASE_URL
+		axios
+			.delete(BASEURL + '/acat/patient/' + params.beneficiaryId)
+			.then(_ => {
+				router.push('/beneficiaries')
+			})
+			.catch(error => {
+				console.error('Error al eliminar el beneficiario:', error)
+				alert(
+					'Se produjo un error al eliminar el beneficiario. Por favor, inténtalo de nuevo.'
+				)
+			})
+	}
+
+	function onSubmit(event) {
+		const BASEURL = process.env.NEXT_PUBLIC_BASE_URL
+		event.preventDefault()
+		const formData = new FormData(event.target)
+		const jsonData = {
+			name:
+				formData.get('name') === '' ? beneficiary.name : formData.get('name'),
+			contact_phone:
+				formData.get('contact_phone') === ''
+					? beneficiary.contact_phone
+					: formData.get('contact_phone'),
+			address:
+				formData.get('address') === ''
+					? beneficiary.address
+					: formData.get('address'),
+			dossier_number:
+				formData.get('dossier_number') === ''
+					? beneficiary.dossier_number
+					: formData.get('dossier_number'),
+			nid: formData.get('nid') === '' ? beneficiary.nid : formData.get('nid'),
+			gender:
+				formData.get('gender') === ''
+					? beneficiary.gender
+					: formData.get('gender'),
+			observation:
+				formData.get('observation') === ''
+					? beneficiary.observation
+					: formData.get('observation')
+		}
+		axios
+			.patch(BASEURL + '/acat/patient/' + params.beneficiaryId, jsonData)
+			.then(_ => {
+				setToggleEditView(!toggleEditView)
+			})
+			.catch(error => {
+				console.error('Error al enviar los datos:', error)
+				alert(
+					'Se produjo un error al enviar los datos. Por favor, inténtalo de nuevo.'
+				)
+			})
 	}
 
 	useEffect(() => {
@@ -39,7 +105,7 @@ export default function BeneficiaryDetails({ params }) {
 			</Suspense>
 			{beneficiary &&
 				(toggleEditView ? (
-					<form className="w-full h-full flex">
+					<form onSubmit={onSubmit} className="w-full h-full flex">
 						<div className="flex flex-col gap-4 h-screen w-[500px] bg-white border border-solid shadow-xl p-5 px-8">
 							<div className="flex items-center gap-4">
 								<Image
@@ -47,7 +113,7 @@ export default function BeneficiaryDetails({ params }) {
 									src="/face.svg"
 									width={50}
 									height={50}
-								></Image>
+								/>
 								<div className="flex items-center justify-between w-full">
 									<span className="font-Varela text-black text-2xl font-bold">
 										<input
@@ -59,18 +125,29 @@ export default function BeneficiaryDetails({ params }) {
 										/>
 									</span>
 									<div className="flex items-center gap-2">
-										<ButtonIcon
-											iconpath="/edit.svg"
-											iconHeight={18}
-											iconWidth={18}
-											border={'bg-blue-500'}
-											handleClick={editView}
-										/>
+										{toggleEditView ? (
+											<ButtonIcon
+												iconpath="/check.svg"
+												iconHeight={18}
+												iconWidth={18}
+												color={'bg-green-500'}
+												isSubmit
+											/>
+										) : (
+											<ButtonIcon
+												iconpath="/edit.svg"
+												iconHeight={18}
+												iconWidth={18}
+												color={'bg-blue-500'}
+												handleClick={editView}
+											/>
+										)}
 										<ButtonIcon
 											iconpath="/trash.svg"
 											iconHeight={18}
 											iconWidth={18}
 											color={'bg-red-500'}
+											handleClick={deleteView}
 										/>
 									</div>
 								</div>
@@ -189,12 +266,18 @@ export default function BeneficiaryDetails({ params }) {
 									</select>
 								</fieldset>
 								<fieldset className="font-Varela text-gray-800">
-									<label className="font-Varela text-blue-500 font-bold flex">
+									<label
+										htmlFor="observation"
+										className="font-Varela text-blue-500 font-bold flex"
+									>
 										Observaciones:
 									</label>
-									<textarea className="font-Varela text-gray-800 mt-2 w-full border-2 rounded-xl p-1">
-										{beneficiary.observation}
-									</textarea>
+									<textarea
+										className="font-Varela text-gray-800 mt-2 w-full border-2 rounded-xl p-1"
+										id="observation"
+										name="observation"
+										defaultValue={beneficiary.observation}
+									></textarea>
 								</fieldset>
 							</section>
 						</div>
@@ -312,6 +395,14 @@ export default function BeneficiaryDetails({ params }) {
 						</div>
 					</div>
 				))}
+			{toggleDeleteView && (
+				<ModalConfirmation
+					title="¿Estás seguro?"
+					message="Si aceptas borrarás permanentemente el usuario."
+					handleCancel={deleteView}
+					handleConfirm={deleteBeneficiary}
+				/>
+			)}
 		</main>
 	)
 }
