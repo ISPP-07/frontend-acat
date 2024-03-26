@@ -18,6 +18,18 @@ export default function BeneficiaryDetails({ params }) {
 	const router = useRouter()
 	const birthDate = new Date(beneficiary?.birth_date).toLocaleDateString()
 
+	const fetchData = async () => {
+		try {
+			const beneficiary = await fetchDataBeneficiary(params.beneficiaryId)
+			setBeneficiary(beneficiary)
+		} catch (error) {
+			console.error('Error al cargar los datos:', error)
+			alert(
+				'Se produjo un error al cargar los datos. Por favor, inténtalo de nuevo.'
+			)
+		}
+	}
+
 	function editView() {
 		setToggleEditView(!toggleEditView)
 	}
@@ -74,6 +86,7 @@ export default function BeneficiaryDetails({ params }) {
 			.patch(BASEURL + '/acat/patient/' + params.beneficiaryId, jsonData)
 			.then(_ => {
 				setToggleEditView(!toggleEditView)
+				fetchData()
 			})
 			.catch(error => {
 				console.error('Error al enviar los datos:', error)
@@ -84,17 +97,6 @@ export default function BeneficiaryDetails({ params }) {
 	}
 
 	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				const beneficiary = await fetchDataBeneficiary(params.beneficiaryId)
-				setBeneficiary(beneficiary)
-			} catch (error) {
-				console.error('Error al cargar los datos:', error)
-				alert(
-					'Se produjo un error al cargar los datos. Por favor, inténtalo de nuevo.'
-				)
-			}
-		}
 		fetchData()
 	}, [])
 
