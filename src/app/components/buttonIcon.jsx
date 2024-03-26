@@ -9,10 +9,12 @@ export default function ButtonIcon({
 	iconHeight = 18,
 	handleClick,
 	color,
-	border
+	border,
+	isSubmit = false
 }) {
 	return (
 		<button
+			type={isSubmit ? 'submit' : 'button'}
 			className={`${color} rounded-full text-white p-2 shadow-lg ${border}`}
 			onClick={handleClick}
 		>
