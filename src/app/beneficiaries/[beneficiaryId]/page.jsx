@@ -199,12 +199,13 @@ export default function BeneficiaryDetails({ params }) {
 									</label>
 									<div
 										id="toggle"
-										className={`border-2 rounded-full w-[50px] flex items-center ${beneficiary.is_rehabilitated ? 'bg-blue-600 justify-end' : 'bg-gray-300 justify-start'}`}
+										className={`border-2 rounded-full w-[50px] ${beneficiary.is_rehabilitated ? 'bg-blue-600' : 'bg-gray-300'} flex items-center`}
 									>
 										<input
 											type="checkbox"
 											name="is_rehabilitated"
 											id="is_rehabilitated"
+											defaultChecked={beneficiary.is_rehabilitated}
 											className="relative translate-x-0 ease-in duration-150 checked:translate-x-full block w-6 h-6 rounded-full appearance-none bg-white border-4 cursor-pointer"
 											onChange={handleToggle}
 										/>
