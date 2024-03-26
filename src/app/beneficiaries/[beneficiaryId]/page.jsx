@@ -30,6 +30,34 @@ export default function BeneficiaryDetails({ params }) {
 		}
 	}
 
+	const handleToggle = event => {
+		const BASEURL = process.env.NEXT_PUBLIC_BASE_URL
+		const jsonData = {
+			is_rehabilitated: event.target.checked
+		}
+		const toggle = document.getElementById('toggle')
+
+		if (event.target.checked) {
+			toggle.classList.remove('bg-gray-300')
+			toggle.classList.add('bg-blue-600')
+		} else {
+			toggle.classList.remove('bg-blue-600')
+			toggle.classList.add('bg-gray-300')
+		}
+
+		axios
+			.patch(BASEURL + '/acat/patient/' + params.beneficiaryId, jsonData)
+			.then(_ => {
+				fetchData()
+			})
+			.catch(error => {
+				console.error('Error al enviar los datos:', error)
+				alert(
+					'Se produjo un error al enviar los datos. Por favor, inténtalo de nuevo.'
+				)
+			})
+	}
+
 	function editView() {
 		setToggleEditView(!toggleEditView)
 	}
@@ -163,9 +191,23 @@ export default function BeneficiaryDetails({ params }) {
 									className="shadow-2xl font-Varela text-sm text-white"
 								/>
 								<div className="flex justfiy-center items-center gap-2">
-									<span>FINALIZADO</span>
-									<div className="border-2 rounded-full w-[50px] bg-blue-500 flex items-center justify-end">
-										<div className="rounded-full h-6 w-6 bg-white"></div>
+									<label
+										htmlFor="is_rehabilitated"
+										className="hover:cursor-pointer"
+									>
+										FINALIZADO
+									</label>
+									<div
+										id="toggle"
+										className={`border-2 rounded-full w-[50px] flex items-center ${beneficiary.is_rehabilitated ? 'bg-blue-600 justify-end' : 'bg-gray-300 justify-start'}`}
+									>
+										<input
+											type="checkbox"
+											name="is_rehabilitated"
+											id="is_rehabilitated"
+											className="relative translate-x-0 ease-in duration-150 checked:translate-x-full block w-6 h-6 rounded-full appearance-none bg-white border-4 cursor-pointer"
+											onChange={handleToggle}
+										/>
 									</div>
 								</div>
 							</div>
@@ -326,8 +368,18 @@ export default function BeneficiaryDetails({ params }) {
 								/>
 								<div className="flex justfiy-center items-center gap-2">
 									<span>FINALIZADO</span>
-									<div className="border-2 rounded-full w-[50px] bg-blue-500 flex items-center justify-end">
-										<div className="rounded-full h-6 w-6 bg-white"></div>
+									<div
+										id="toggle"
+										className={`border-2 rounded-full w-[50px] ${beneficiary.is_rehabilitated ? 'bg-blue-600' : 'bg-gray-300'} flex items-center`}
+									>
+										<input
+											type="checkbox"
+											name="is_rehabilitated"
+											id="is_rehabilitated"
+											defaultChecked={beneficiary.is_rehabilitated}
+											className="relative translate-x-0 ease-in duration-150 checked:translate-x-full block w-6 h-6 rounded-full appearance-none bg-white border-4 cursor-pointer"
+											onChange={handleToggle}
+										/>
 									</div>
 								</div>
 							</div>
@@ -340,7 +392,7 @@ export default function BeneficiaryDetails({ params }) {
 									height={20}
 								></Image>
 								<span className="font-Varela text-gray-800 text-base">
-									{beneficiary.address}
+									{beneficiary.contact_phone}
 								</span>
 							</div>
 							<div className="flex items-center gap-3">
@@ -351,7 +403,7 @@ export default function BeneficiaryDetails({ params }) {
 									height={20}
 								></Image>
 								<span className="font-Varela text-gray-800 text-base">
-									{beneficiary.contact_phone}
+									{beneficiary.address}
 								</span>
 							</div>
 							<hr />
