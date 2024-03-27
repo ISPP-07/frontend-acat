@@ -42,7 +42,7 @@ function CreateUserForm() {
 					alert(
 						`El usuario ${response.data.username} con email ${response.data.email} ha sido creado correctamente`
 					)
-					router.push('/beneficiaries')
+					router.push('/users')
 				})
 				.catch(function (error) {
 					alert(
@@ -56,7 +56,7 @@ function CreateUserForm() {
 
 	function validatePasswords(formData) {
 		const password = formData.get('password').toString()
-		const confirmPassword = formData.get('confirmPassword').toString()
+		const confirmPassword = formData.get('confirm-password').toString()
 		return password === confirmPassword
 	}
 	return (
