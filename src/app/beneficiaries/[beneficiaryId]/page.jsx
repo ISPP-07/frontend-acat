@@ -17,7 +17,6 @@ export default function BeneficiaryDetails({ params }) {
 	const [toggleDeleteView, setToggleDeleteView] = useState(false)
 	const [errors, setErrors] = useState(null)
 	const router = useRouter()
-	const birthDate = new Date(beneficiary?.birth_date).toLocaleDateString()
 
 	const fetchData = async () => {
 		try {
@@ -141,6 +140,14 @@ export default function BeneficiaryDetails({ params }) {
 					? beneficiary.dossier_number
 					: formData.get('dossier_number'),
 			nid: formData.get('nid') === '' ? beneficiary.nid : formData.get('nid'),
+			birth_date:
+				formData.get('birth_date') === ''
+					? beneficiary.birth_date
+					: formData.get('birth_date'),
+			first_technician:
+				formData.get('first_technician') === ''
+					? beneficiary.first_technician
+					: formData.get('first_technician'),
 			gender:
 				formData.get('gender') === ''
 					? beneficiary.gender
@@ -329,10 +336,28 @@ export default function BeneficiaryDetails({ params }) {
 									/>
 								</fieldset>
 								<fieldset className="font-Varela text-gray-800 flex items-center">
-									<span className="font-Varela text-blue-500 font-bold mr-2 w-fit text-nowrap">
+									<label
+										htmlFor="birth_date"
+										className="font-Varela text-blue-500 font-bold mr-2 w-fit text-nowrap"
+									>
 										Fecha de nacimiento:
-									</span>
-									{birthDate} ({beneficiary.age} años)
+									</label>
+									<input
+										type="date"
+										id="birth_date"
+										name="birth_date"
+										placeholder={
+											beneficiary.birth_date ?? 'Fecha de nacimiento:'
+										}
+										value={beneficiary.birth_date}
+										onChange={e =>
+											setBeneficiary({
+												...beneficiary,
+												birth_date: e.target.value
+											})
+										}
+										className="p-1 border-2 rounded-xl placeholder-black w-full"
+									/>
 								</fieldset>
 								<fieldset className="font-Varela text-gray-800 flex items-center">
 									<label
