@@ -15,6 +15,7 @@ export default function BeneficiaryDetails({ params }) {
 	const [beneficiary, setBeneficiary] = useState(null)
 	const [toggleEditView, setToggleEditView] = useState(false)
 	const [toggleDeleteView, setToggleDeleteView] = useState(false)
+	const [error, setError] = useState(null)
 	const router = useRouter()
 	const birthDate = new Date(beneficiary?.birth_date).toLocaleDateString()
 
@@ -84,7 +85,29 @@ export default function BeneficiaryDetails({ params }) {
 	function onSubmit(event) {
 		const BASEURL = process.env.NEXT_PUBLIC_BASE_URL
 		event.preventDefault()
+
 		const formData = new FormData(event.target)
+		const nifRegex = /^[0-9]{8}[TRWAGMYFPDXBNJZSQVHLCKET]{1}$/i
+		const nieRegex = /^[XYZ][0-9]{7}[TRWAGMYFPDXBNJZSQVHLCKET]{1}$/i
+		const passportRegex = /^[a-zA-Z0-9]+$/
+
+		if (
+			formData.get('nid') !== '' &&
+			(!nieRegex.test(formData.get('nid')) ||
+				!nifRegex.test(formData.get('nid')) ||
+				!passportRegex.test(formData.get('nid')))
+		) {
+			console.log(formData.get('nid'))
+			console.log(error)
+			setError({ nid: 'El DNI/NIE/pasaporte introducido no es válido.' })
+		}
+
+		if (error) {
+			alert(error.nid)
+			setError(null)
+			return
+		}
+
 		const jsonData = {
 			name:
 				formData.get('name') === '' ? beneficiary.name : formData.get('name'),
@@ -110,6 +133,7 @@ export default function BeneficiaryDetails({ params }) {
 					? beneficiary.observation
 					: formData.get('observation')
 		}
+
 		axios
 			.patch(BASEURL + '/acat/patient/' + params.beneficiaryId, jsonData)
 			.then(_ => {
