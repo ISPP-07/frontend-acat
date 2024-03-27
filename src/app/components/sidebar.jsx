@@ -25,7 +25,7 @@ export default function Sidebar() {
 			text: 'Beneficiarios'
 		},
 		{
-			link: '',
+			link: `/beneficiaries/rehabilited?showSidebar=${initialState}`,
 			icon: '/bye.svg',
 			text: 'Finalizados',
 			subentry: true
