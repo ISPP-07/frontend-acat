@@ -15,7 +15,7 @@ export default function BeneficiaryDetails({ params }) {
 	const [beneficiary, setBeneficiary] = useState(null)
 	const [toggleEditView, setToggleEditView] = useState(false)
 	const [toggleDeleteView, setToggleDeleteView] = useState(false)
-	const [error, setError] = useState(null)
+	const [errors, setErrors] = useState(null)
 	const router = useRouter()
 	const birthDate = new Date(beneficiary?.birth_date).toLocaleDateString()
 
@@ -82,29 +82,46 @@ export default function BeneficiaryDetails({ params }) {
 			})
 	}
 
+	const validateForm = formData => {
+		let valid = true
+		const newError = {}
+
+		const contactPhoneRegExp = /^\d{0,15}$/
+		const dniRegExp = /^\d{8}[A-Z]$/
+		const nieRegExp = /^[XYZ]\d{7}[A-Z]$/
+		const passportRegExp = /^[A-Z]{2}\d{7}$/
+
+		if (!contactPhoneRegExp.test(formData.get('contact_phone'))) {
+			valid = false
+			newError.contact_phone = 'El teléfono no es válido'
+		}
+
+		// This is a XOR operation, if one of the three conditions is true, the result is true
+		if (
+			!dniRegExp.test(formData.get('nid')) ^
+			!nieRegExp.test(formData.get('nid')) ^
+			!passportRegExp.test(formData.get('nid'))
+		) {
+			if (formData.get('nid') !== '') {
+				valid = false
+				newError.nid =
+					'El DNI/NIE/Pasaporte no coincide con el formato esperado'
+			}
+		}
+
+		setErrors(newError)
+		return valid
+	}
+
 	function onSubmit(event) {
 		const BASEURL = process.env.NEXT_PUBLIC_BASE_URL
 		event.preventDefault()
 
 		const formData = new FormData(event.target)
-		const nifRegex = /^[0-9]{8}[TRWAGMYFPDXBNJZSQVHLCKET]{1}$/i
-		const nieRegex = /^[XYZ][0-9]{7}[TRWAGMYFPDXBNJZSQVHLCKET]{1}$/i
-		const passportRegex = /^[a-zA-Z0-9]+$/
 
-		if (
-			formData.get('nid') !== '' &&
-			(!nieRegex.test(formData.get('nid')) ||
-				!nifRegex.test(formData.get('nid')) ||
-				!passportRegex.test(formData.get('nid')))
-		) {
-			console.log(formData.get('nid'))
-			console.log(error)
-			setError({ nid: 'El DNI/NIE/pasaporte introducido no es válido.' })
-		}
+		const valid = validateForm(formData)
 
-		if (error) {
-			alert(error.nid)
-			setError(null)
+		if (!valid) {
 			return
 		}
 
@@ -237,6 +254,9 @@ export default function BeneficiaryDetails({ params }) {
 								</div>
 							</div>
 							<hr />
+							{errors?.contact_phone && (
+								<span className="text-red-500">{errors.contact_phone}</span>
+							)}
 							<fieldset className="flex items-center gap-3">
 								<label htmlFor="contact_phone">
 									<Image
@@ -290,6 +310,9 @@ export default function BeneficiaryDetails({ params }) {
 										className="p-1 border-2 rounded-xl placeholder-black w-full"
 									/>
 								</fieldset>
+								{errors?.nid && (
+									<span className="text-red-500">{errors.nid}</span>
+								)}
 								<fieldset className="font-Varela text-gray-800 flex items-center">
 									<label
 										htmlFor="nid"
@@ -312,10 +335,19 @@ export default function BeneficiaryDetails({ params }) {
 									{birthDate} ({beneficiary.age} años)
 								</fieldset>
 								<fieldset className="font-Varela text-gray-800 flex items-center">
-									<span className="font-Varela text-blue-500 font-bold mr-2 w-fit text-nowrap">
+									<label
+										htmlFor="first_technician"
+										className="font-Varela text-blue-500 font-bold mr-2 w-fit text-nowrap"
+									>
 										Técnico:
-									</span>
-									{beneficiary.first_technician}
+									</label>
+									<input
+										type="text"
+										id="first_technician"
+										name="fist_technician"
+										placeholder={beneficiary.first_technician ?? 'Técnico:'}
+										className="p-1 border-2 rounded-xl placeholder-black w-full"
+									/>
 								</fieldset>
 								<fieldset className="font-Varela text-gray-800 flex items-center">
 									<label
