@@ -108,6 +108,14 @@ export default function BeneficiaryDetails({ params }) {
 			}
 		}
 
+		const birthDate = new Date(formData.get('birth_date'))
+		const today = new Date()
+
+		if (formData.get('birth_date') === '' || birthDate > today) {
+			valid = false
+			newError.birth_date = 'La fecha de nacimiento debe ser pasada'
+		}
+
 		setErrors(newError)
 		return valid
 	}
@@ -123,20 +131,23 @@ export default function BeneficiaryDetails({ params }) {
 		if (!valid) {
 			return
 		}
+		console.log(formData.get('first_technician'))
 
 		const jsonData = {
 			name:
-				formData.get('name') === '' ? beneficiary.name : formData.get('name'),
+				formData.get('name').trim() === ''
+					? beneficiary.name
+					: formData.get('name'),
 			contact_phone:
 				formData.get('contact_phone') === ''
 					? beneficiary.contact_phone
 					: formData.get('contact_phone'),
 			address:
-				formData.get('address') === ''
+				formData.get('address').trim() === ''
 					? beneficiary.address
 					: formData.get('address'),
 			dossier_number:
-				formData.get('dossier_number') === ''
+				formData.get('dossier_number').trim() === ''
 					? beneficiary.dossier_number
 					: formData.get('dossier_number'),
 			nid: formData.get('nid') === '' ? beneficiary.nid : formData.get('nid'),
@@ -145,7 +156,7 @@ export default function BeneficiaryDetails({ params }) {
 					? beneficiary.birth_date
 					: formData.get('birth_date'),
 			first_technician:
-				formData.get('first_technician') === ''
+				formData.get('first_technician').trim() === ''
 					? beneficiary.first_technician
 					: formData.get('first_technician'),
 			gender:
@@ -153,7 +164,7 @@ export default function BeneficiaryDetails({ params }) {
 					? beneficiary.gender
 					: formData.get('gender'),
 			observation:
-				formData.get('observation') === ''
+				formData.get('observation').trim() === ''
 					? beneficiary.observation
 					: formData.get('observation')
 		}
@@ -192,8 +203,8 @@ export default function BeneficiaryDetails({ params }) {
 									width={50}
 									height={50}
 								/>
-								<div className="flex items-center justify-between w-full">
-									<span className="font-Varela text-black text-2xl font-bold">
+								<div className="flex items-center justify-between w-full gap-1">
+									<span className="font-Varela text-black text-md md:text-2xl font-bold">
 										<input
 											type="text"
 											id="name"
@@ -203,23 +214,13 @@ export default function BeneficiaryDetails({ params }) {
 										/>
 									</span>
 									<div className="flex items-center gap-2">
-										{toggleEditView ? (
-											<ButtonIcon
-												iconpath="/check.svg"
-												iconHeight={18}
-												iconWidth={18}
-												color={'bg-green-500'}
-												isSubmit
-											/>
-										) : (
-											<ButtonIcon
-												iconpath="/edit.svg"
-												iconHeight={18}
-												iconWidth={18}
-												color={'bg-blue-500'}
-												handleClick={editView}
-											/>
-										)}
+										<ButtonIcon
+											iconpath="/check.svg"
+											iconHeight={18}
+											iconWidth={18}
+											color={'bg-green-500'}
+											isSubmit
+										/>
 										<ButtonIcon
 											iconpath="/trash.svg"
 											iconHeight={18}
@@ -335,6 +336,9 @@ export default function BeneficiaryDetails({ params }) {
 										className="p-1 border-2 rounded-xl placeholder-black w-full"
 									/>
 								</fieldset>
+								{errors?.birth_date && (
+									<span className="text-red-500">{errors.birth_date}</span>
+								)}
 								<fieldset className="font-Varela text-gray-800 flex items-center">
 									<label
 										htmlFor="birth_date"
@@ -369,7 +373,7 @@ export default function BeneficiaryDetails({ params }) {
 									<input
 										type="text"
 										id="first_technician"
-										name="fist_technician"
+										name="first_technician"
 										placeholder={beneficiary.first_technician ?? 'Técnico:'}
 										className="p-1 border-2 rounded-xl placeholder-black w-full"
 									/>
