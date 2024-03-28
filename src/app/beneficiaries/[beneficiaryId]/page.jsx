@@ -2,14 +2,14 @@
 /* eslint-disable no-unused-vars */
 import React, { Suspense, useState, useEffect } from 'react'
 /* eslint-enable no-unused-vars */
-import Sidebar from '@/app/components/sidebar'
+import Sidebar from '../../../app/components/sidebar'
 import Image from 'next/image'
 import ButtonIcon from '../../components/buttonIcon'
 import ButtonText from '../../components/buttonText'
 import { fetchDataBeneficiary } from './fetch'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
-import ModalConfirmation from '@/app/components/modalConfirmation'
+import ModalConfirmation from '../../../app/components/modalConfirmation'
 
 export default function BeneficiaryDetails({ params }) {
 	const [beneficiary, setBeneficiary] = useState(null)
@@ -20,7 +20,10 @@ export default function BeneficiaryDetails({ params }) {
 
 	const fetchData = async () => {
 		try {
-			const beneficiary = await fetchDataBeneficiary(params.beneficiaryId)
+			const beneficiary = await fetchDataBeneficiary(
+				params.beneficiaryId,
+				params.url
+			)
 			setBeneficiary(beneficiary)
 		} catch (error) {
 			console.error('Error al cargar los datos:', error)
