@@ -31,7 +31,13 @@ function LoginForm() {
 				router.push(`/beneficiaries?showSidebar=${stateSidebar}`)
 			})
 			.catch(function (error) {
-				alert('Error al iniciar sesión: ' + error.response.data.detail)
+				if (error.response) {
+					if (error.response.status === 401) {
+						alert('Usuario o contraseña incorrectos')
+					}
+				} else {
+					alert('Error con el servidor')
+				}
 			})
 	}
 	return (
