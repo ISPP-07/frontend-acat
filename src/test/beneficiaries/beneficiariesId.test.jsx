@@ -116,21 +116,18 @@ describe('BeneficiaryDetails', () => {
 
 		// Assert that the beneficiary details are rendered correctly
 		expect(screen.getByText(mockBeneficiary.name)).toBeInTheDocument()
-		expect(screen.getByText(mockBeneficiary.first_surname)).toBeInTheDocument()
-		expect(screen.getByText(mockBeneficiary.second_surname)).toBeInTheDocument()
-		expect(screen.getByText(mockBeneficiary.alias)).toBeInTheDocument()
 		expect(screen.getByText(mockBeneficiary.nid)).toBeInTheDocument()
-		expect(screen.getByText(mockBeneficiary.birth_date)).toBeInTheDocument()
+		expect(
+			screen.getByText(
+				mockBeneficiary.birth_date + ' (' + mockBeneficiary.age + ' años)'
+			)
+		).toBeInTheDocument()
 		expect(screen.getByText(mockBeneficiary.gender)).toBeInTheDocument()
 		expect(screen.getByText(mockBeneficiary.address)).toBeInTheDocument()
-		expect(screen.getByText(mockBeneficiary.age)).toBeInTheDocument()
 		expect(screen.getByText(mockBeneficiary.contact_phone)).toBeInTheDocument()
 		expect(screen.getByText(mockBeneficiary.dossier_number)).toBeInTheDocument()
 		expect(
 			screen.getByText(mockBeneficiary.first_technician)
-		).toBeInTheDocument()
-		expect(
-			screen.getByText(mockBeneficiary.registration_date)
 		).toBeInTheDocument()
 		expect(screen.getByText(mockBeneficiary.observation)).toBeInTheDocument()
 	})
