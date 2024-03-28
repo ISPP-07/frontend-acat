@@ -2,13 +2,13 @@
 /* eslint-disable no-unused-vars */
 import React, { Suspense, useState, useEffect } from 'react'
 /* eslint-enable no-unused-vars */
-import Sidebar from '../../../app/components/sidebar'
+import Sidebar from '../../components/sidebar'
 import { fetchDataBeneficiary } from './fetch'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
-import ModalConfirmation from '../../../app/components/modalConfirmation'
-import BeneficiaryDetailsView from '../../../app/components/beneficiaryDetailsView'
-import BeneficiaryDetailsEdit from '../../../app/components/beneficiaryDetailsEdit'
+import ModalConfirmation from '../../components/modalConfirmation'
+import BeneficiaryDetailsView from '../../components/beneficiaryDetailsView'
+import BeneficiaryDetailsEdit from '../../components/beneficiaryDetailsEdit'
 
 export default function BeneficiaryDetails({ params }) {
 	const [beneficiary, setBeneficiary] = useState(null)

@@ -20,7 +20,7 @@ export default function BeneficiaryDetailsEdit({
 				<div className="flex items-center gap-4">
 					<Image alt="imagen-familia" src="/face.svg" width={50} height={50} />
 					<div className="flex items-center justify-between w-full gap-1">
-						<span className="font-Varela text-black text-md md:text-2xl font-bold">
+						<span className="font-Varela text-black text-sm md:text-lg font-bold">
 							<input
 								type="text"
 								id="name"
