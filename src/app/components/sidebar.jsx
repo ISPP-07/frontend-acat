@@ -36,7 +36,7 @@ export default function Sidebar() {
 			text: 'Intervenciones'
 		},
 		{
-			link: '',
+			link: `/users?showSidebar=${initialState}`,
 			icon: '/face.svg',
 			text: 'Usuarios'
 		},
