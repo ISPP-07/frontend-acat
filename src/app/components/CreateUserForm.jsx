@@ -109,7 +109,7 @@ function CreateUserForm() {
 							/>
 						</svg>
 						<input
-							type="text"
+							type="email"
 							id="email"
 							name="email"
 							placeholder="Correo electrónico"
