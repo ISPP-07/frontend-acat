@@ -35,7 +35,7 @@ function RegisterInterventionModal({ onClickFunction }) {
 
 	async function handleAddIntervention(event) {
 		event.preventDefault()
-
+		formData.date = new Date(formData.date).toISOString()
 		axios
 			.post(`${BASEURL}/acat/intervention`, JSON.stringify(formData), {
 				headers: {
@@ -154,9 +154,9 @@ function RegisterInterventionModal({ onClickFunction }) {
 						</label>
 						<div className="relative flex items-center border-2 rounded-xl border-gray-200 bg-white">
 							<input
-								type="date"
+								type="datetime-local"
 								name="date"
-								value={formData.date}
+								id="date"
 								onChange={handleInputChange}
 								className="items-center rounded-xl p-1 w-full"
 							/>

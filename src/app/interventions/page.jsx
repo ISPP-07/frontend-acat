@@ -74,7 +74,7 @@ export default function InterventionPage() {
 					</button>
 					<label
 						htmlFor="file"
-						className="bg-green-400 h-6 mt-4 rounded-full font-Varela text-white cursor-pointer text-center text-sm"
+						className="bg-green-400 w-32 h-6 mt-4 rounded-full font-Varela text-white cursor-pointer text-center text-sm"
 					>
 						Importar datos
 					</label>

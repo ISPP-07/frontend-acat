@@ -185,7 +185,7 @@ function CreateModal({ closeModal }) {
 						</div>
 					</fieldset>
 					<fieldset className="flex flex-col w-full md:w-5/12">
-						<label htmlFor="dni" className="hidden md:block text-black">
+						<label htmlFor="nid" className="hidden md:block text-black">
 							DNI
 						</label>
 						<div className="relative flex items-center border-2 rounded-xl border-gray-200 bg-white">
@@ -207,8 +207,8 @@ function CreateModal({ closeModal }) {
 								className="flex items-center rounded-xl p-1 pl-6 w-full"
 								type="text"
 								placeholder="DNI"
-								id="dni"
-								name="dni"
+								id="nid"
+								name="nid"
 							/>
 						</div>
 					</fieldset>
