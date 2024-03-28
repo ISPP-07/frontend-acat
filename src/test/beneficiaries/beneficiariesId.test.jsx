@@ -2,11 +2,12 @@
 import React from 'react'
 /* eslint-enable no-unused-vars */
 import '@testing-library/jest-dom'
-import { render, screen } from '@testing-library/react'
+import { render, screen, act, fireEvent } from '@testing-library/react'
 import { test, expect, describe, jest } from '@jest/globals'
 import axios from 'axios'
 import BeneficiaryDetails from '../../app/beneficiaries/[beneficiaryId]/page.jsx'
 import { fetchDataBeneficiary } from '../../app/beneficiaries/[beneficiaryId]/fetch.js'
+import userEvent from '@testing-library/user-event'
 
 jest.mock('next/navigation', () => ({
 	useRouter: () => ({
@@ -56,7 +57,7 @@ describe('BeneficiaryDetails', () => {
 				)
 				return response.data
 			} catch (error) {
-				console.error(error)
+				console.log(error)
 				return null
 			}
 		}
@@ -66,7 +67,7 @@ describe('BeneficiaryDetails', () => {
 				createdBeneficiary = data
 			})
 			.catch(error => {
-				console.error('Error creating beneficiary', error)
+				console.log('Error creating beneficiary', error)
 			})
 	})
 
@@ -79,7 +80,7 @@ describe('BeneficiaryDetails', () => {
 				)
 				return response.data
 			} catch (error) {
-				console.error(error)
+				console.log(error)
 				return null
 			}
 		}
@@ -100,7 +101,6 @@ describe('BeneficiaryDetails', () => {
 
 		expect(beneficary).toEqual(mockBeneficiary)
 
-		// Clean up the mock
 		axiosPostSpy.mockRestore()
 	})
 
@@ -111,10 +111,8 @@ describe('BeneficiaryDetails', () => {
 		}
 		render(<BeneficiaryDetails params={params} />)
 
-		// Wait for the data to be fetched and rendered
 		await screen.findByText(mockBeneficiary.name)
 
-		// Assert that the beneficiary details are rendered correctly
 		expect(screen.getByText(mockBeneficiary.name)).toBeInTheDocument()
 		expect(screen.getByText(mockBeneficiary.nid)).toBeInTheDocument()
 		expect(
@@ -130,5 +128,134 @@ describe('BeneficiaryDetails', () => {
 			screen.getByText(mockBeneficiary.first_technician)
 		).toBeInTheDocument()
 		expect(screen.getByText(mockBeneficiary.observation)).toBeInTheDocument()
+	})
+
+	test('deletes the beneficiary view', async () => {
+		const params = {
+			beneficiaryId: createdBeneficiary.id,
+			url: 'http://localhost:8080/api/v1'
+		}
+		render(<BeneficiaryDetails params={params} />)
+
+		await screen.findByText(mockBeneficiary.name)
+
+		await act(async () => {
+			screen.getByTestId('deleteButton').click()
+		})
+		const modal = await screen.findByTestId('modalConfirmation')
+		expect(modal).toBeInTheDocument()
+		screen.getByTestId('confirmButton').click()
+	})
+
+	test('delete the beneficiary edit', async () => {
+		const params = {
+			beneficiaryId: createdBeneficiary.id,
+			url: 'http://localhost:8080/api/v1'
+		}
+		render(<BeneficiaryDetails params={params} />)
+
+		await screen.findByText(mockBeneficiary.name)
+
+		await act(async () => {
+			screen.getByTestId('editButton').click()
+		})
+		await act(async () => {
+			screen.getByTestId('deleteButton').click()
+		})
+		const modal = await screen.findByTestId('modalConfirmation')
+		expect(modal).toBeInTheDocument()
+		screen.getByTestId('confirmButton').click()
+	})
+
+	test('edit the beneficiary', async () => {
+		const params = {
+			beneficiaryId: createdBeneficiary.id,
+			url: 'http://localhost:8080/api/v1'
+		}
+		render(<BeneficiaryDetails params={params} />)
+
+		await screen.findByText(mockBeneficiary.name)
+
+		await act(async () => {
+			screen.getByTestId('is_rehabilitated').click()
+		})
+
+		await act(async () => {
+			screen.getByTestId('editButton').click()
+		})
+
+		await userEvent.type(screen.getByTestId('name'), 'AChanged')
+		await userEvent.type(screen.getByTestId('nid'), '00000000R')
+		await userEvent.selectOptions(screen.getByTestId('gender'), ['Woman'])
+		await userEvent.type(screen.getByTestId('address'), 'FChanged')
+		await userEvent.type(screen.getByTestId('contact_phone'), '111111111')
+		await userEvent.type(screen.getByTestId('dossier_number'), 'HChanged')
+		await userEvent.type(screen.getByTestId('first_technician'), 'IChanged')
+		fireEvent.change(screen.getByTestId('birth_date'), {
+			target: { value: '2022-01-01' }
+		})
+		fireEvent.change(screen.getByTestId('observation'), {
+			target: { value: 'JChanged' }
+		})
+
+		await act(async () => {
+			screen.getByTestId('saveButton').click()
+		})
+
+		await screen.findByText('AChanged')
+		expect(screen.getByText('AChanged')).toBeInTheDocument()
+		await screen.findByText('00000000R')
+		expect(screen.getByText('00000000R')).toBeInTheDocument()
+		await screen.findByText('Woman')
+		expect(screen.getByText('Woman')).toBeInTheDocument()
+		await screen.findByText('FChanged')
+		expect(screen.getByText('FChanged')).toBeInTheDocument()
+		await screen.findByText('111111111')
+		expect(screen.getByText('111111111')).toBeInTheDocument()
+		await screen.findByText('HChanged')
+		expect(screen.getByText('HChanged')).toBeInTheDocument()
+		await screen.findByText('IChanged')
+		expect(screen.getByText('IChanged')).toBeInTheDocument()
+		await screen.findByText('JChanged')
+		expect(screen.getByText('JChanged')).toBeInTheDocument()
+	})
+
+	test('check validation error', async () => {
+		const params = {
+			beneficiaryId: createdBeneficiary.id,
+			url: 'http://localhost:8080/api/v1'
+		}
+		render(<BeneficiaryDetails params={params} />)
+
+		await screen.findByText(mockBeneficiary.name)
+
+		await act(async () => {
+			screen.getByTestId('is_rehabilitated').click()
+		})
+
+		await act(async () => {
+			screen.getByTestId('editButton').click()
+		})
+
+		await userEvent.type(screen.getByTestId('nid'), '00031')
+		await userEvent.type(screen.getByTestId('contact_phone'), ' ')
+		fireEvent.change(screen.getByTestId('birth_date'), {
+			target: { value: '2032-01-01' }
+		})
+
+		await act(async () => {
+			screen.getByTestId('saveButton').click()
+		})
+
+		await screen.findByText('FINALIZADO')
+		expect(
+			screen.getByText(
+				'El DNI/NIE/Pasaporte no coincide con el formato esperado'
+			)
+		).toBeInTheDocument()
+		expect(
+			screen.getByText('La fecha de nacimiento debe ser pasada')
+		).toBeInTheDocument()
+		expect(screen.getByText('El teléfono no es válido')).toBeInTheDocument()
 	})
 })

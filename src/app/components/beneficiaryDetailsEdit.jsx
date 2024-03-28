@@ -27,10 +27,12 @@ export default function BeneficiaryDetailsEdit({
 								name="name"
 								placeholder={beneficiary.name ?? 'Nombre:'}
 								className="p-1 border-2 rounded-xl placeholder-black"
+								data-testid="name"
 							/>
 						</span>
 						<div className="flex items-center gap-2">
 							<ButtonIcon
+								datatestid="saveButton"
 								iconpath="/check.svg"
 								iconHeight={18}
 								iconWidth={18}
@@ -38,6 +40,7 @@ export default function BeneficiaryDetailsEdit({
 								isSubmit
 							/>
 							<ButtonIcon
+								datatestid="deleteButton"
 								iconpath="/trash.svg"
 								iconHeight={18}
 								iconWidth={18}
@@ -93,6 +96,7 @@ export default function BeneficiaryDetailsEdit({
 						name="contact_phone"
 						placeholder={beneficiary.contact_phone ?? 'Teléfono:'}
 						className="p-1 border-2 rounded-xl placeholder-black"
+						data-testid="contact_phone"
 					/>
 				</fieldset>
 				<fieldset className="flex items-center gap-3">
@@ -110,6 +114,7 @@ export default function BeneficiaryDetailsEdit({
 						name="address"
 						placeholder={beneficiary.address ?? 'Dirección:'}
 						className="p-1 border-2 rounded-xl placeholder-black"
+						data-testid="address"
 					/>
 				</fieldset>
 				<hr />
@@ -129,6 +134,7 @@ export default function BeneficiaryDetailsEdit({
 								beneficiary.dossier_number ?? 'Número de expediente:'
 							}
 							className="p-1 border-2 rounded-xl placeholder-black w-full"
+							data-testid="dossier_number"
 						/>
 					</fieldset>
 					{errors?.nid && <span className="text-red-500">{errors.nid}</span>}
@@ -145,6 +151,7 @@ export default function BeneficiaryDetailsEdit({
 							name="nid"
 							placeholder={beneficiary.nid ?? 'DNI:'}
 							className="p-1 border-2 rounded-xl placeholder-black w-full"
+							data-testid="nid"
 						/>
 					</fieldset>
 					{errors?.birth_date && (
@@ -170,6 +177,7 @@ export default function BeneficiaryDetailsEdit({
 								})
 							}
 							className="p-1 border-2 rounded-xl placeholder-black w-full"
+							data-testid="birth_date"
 						/>
 					</fieldset>
 					<fieldset className="font-Varela text-gray-800 flex items-center">
@@ -185,6 +193,7 @@ export default function BeneficiaryDetailsEdit({
 							name="first_technician"
 							placeholder={beneficiary.first_technician ?? 'Técnico:'}
 							className="p-1 border-2 rounded-xl placeholder-black w-full"
+							data-testid="first_technician"
 						/>
 					</fieldset>
 					<fieldset className="font-Varela text-gray-800 flex items-center">
@@ -199,6 +208,7 @@ export default function BeneficiaryDetailsEdit({
 							id="gender"
 							defaultValue={beneficiary.gender}
 							className="p-1 border-2 rounded-xl w-full bg-white"
+							data-testid="gender"
 						>
 							<option value="Man">Hombre</option>
 							<option value="Woman">Mujer</option>
@@ -216,6 +226,7 @@ export default function BeneficiaryDetailsEdit({
 							id="observation"
 							name="observation"
 							defaultValue={beneficiary.observation}
+							data-testid="observation"
 						></textarea>
 					</fieldset>
 				</section>

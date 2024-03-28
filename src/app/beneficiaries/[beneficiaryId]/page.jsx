@@ -69,7 +69,10 @@ export default function BeneficiaryDetails({ params }) {
 	}
 
 	function deleteBeneficiary() {
-		const BASEURL = process.env.NEXT_PUBLIC_BASE_URL
+		let BASEURL = process.env.NEXT_PUBLIC_BASE_URL
+		if (BASEURL === undefined) {
+			BASEURL = 'http://localhost:8080/api/v1'
+		}
 		axios
 			.delete(BASEURL + '/acat/patient/' + params.beneficiaryId)
 			.then(_ => {
@@ -123,7 +126,10 @@ export default function BeneficiaryDetails({ params }) {
 	}
 
 	function onSubmit(event) {
-		const BASEURL = process.env.NEXT_PUBLIC_BASE_URL
+		let BASEURL = process.env.NEXT_PUBLIC_BASE_URL
+		if (BASEURL === undefined) {
+			BASEURL = 'http://localhost:8080/api/v1'
+		}
 		event.preventDefault()
 
 		const formData = new FormData(event.target)

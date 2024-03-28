@@ -27,6 +27,7 @@ export default function BeneficiaryDetailsView({
 						</span>
 						<div className="flex items-center gap-2">
 							<ButtonIcon
+								datatestid="editButton"
 								iconpath="/edit.svg"
 								iconHeight={18}
 								iconWidth={18}
@@ -34,6 +35,7 @@ export default function BeneficiaryDetailsView({
 								handleClick={editView}
 							/>
 							<ButtonIcon
+								datatestid="deleteButton"
 								iconpath="/trash.svg"
 								iconHeight={18}
 								iconWidth={18}
@@ -64,6 +66,7 @@ export default function BeneficiaryDetailsView({
 								defaultChecked={beneficiary.is_rehabilitated}
 								className="relative translate-x-0 ease-in duration-150 checked:translate-x-full block w-6 h-6 rounded-full appearance-none bg-white border-4 cursor-pointer"
 								onChange={handleToggle}
+								data-testid="is_rehabilitated"
 							/>
 						</div>
 					</div>
