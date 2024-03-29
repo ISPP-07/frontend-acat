@@ -56,7 +56,7 @@ function CreateUserForm() {
 
 	function validatePasswords(formData) {
 		const password = formData.get('password').toString()
-		const confirmPassword = formData.get('confirm-password').toString()
+		const confirmPassword = formData.get('confirmPassword').toString()
 		return password === confirmPassword
 	}
 	return (

@@ -20,6 +20,11 @@ export default function BeneficiariesList() {
 		setShowModal(!showModal)
 	}
 
+	const isMobile = () => {
+		return typeof window !== 'undefined' ? window.innerWidth <= 768 : false
+	}
+	const mobile = isMobile() ? 'false' : 'true'
+
 	const handleFileChange = async event => {
 		const selectedFile = event.target.files[0]
 		try {
@@ -100,7 +105,7 @@ export default function BeneficiariesList() {
 						{data &&
 							data.map(beneficiary => (
 								<Link
-									href={`/beneficiaries/${beneficiary.id}`}
+									href={`/beneficiaries/${beneficiary.id}?showSidebar=${mobile}`}
 									key={beneficiary.id}
 								>
 									<CardBeneficiary
