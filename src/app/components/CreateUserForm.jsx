@@ -205,8 +205,8 @@ function CreateUserForm() {
 						</svg>
 						<input
 							type="password"
-							id="confirm-password"
-							name="confirm-password"
+							id="confirmPassword"
+							name="confirmPassword"
 							placeholder="Contraseña"
 							className="p-1 pl-7 w-full rounded-xl"
 							data-testid="passwordConfirm-input"
