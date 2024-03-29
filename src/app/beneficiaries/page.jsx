@@ -8,7 +8,7 @@ import Sidebar from '../components/sidebar.jsx'
 import Searchbar from '../components/searchbar.jsx'
 import { fetchDataBeneficiaries } from './fetch.js'
 import Image from 'next/image'
-import exportData from '../exportData.js'
+import { exportData } from '../exportData.js'
 import axios from 'axios'
 import CreateModal from './create.jsx'
 
@@ -63,12 +63,12 @@ export default function BeneficiariesList() {
 					<button
 						className=" bg-green-400 h-8 w-8 rounded-full shadow-2xl mt-3 mr-2"
 						onClick={() =>
-							exportData(data, 'Beneficiados', [
-								'id',
-								'alias',
-								'birthday',
-								'isFinished'
-							])
+							exportData(data, 'Beneficiados', {
+								id: 'id',
+								alias: 'alias',
+								birthday: 'birthday',
+								isFinished: 'isFinished'
+							})
 						}
 						data-testid="export-button"
 					>
