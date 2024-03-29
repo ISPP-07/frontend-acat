@@ -11,6 +11,14 @@ export default function BeneficiaryDetailsView({
 	deleteView,
 	handleToggle
 }) {
+	const birthDate = new Date(beneficiary.birth_date).toLocaleDateString(
+		'es-ES',
+		{
+			year: 'numeric',
+			month: '2-digit',
+			day: '2-digit'
+		}
+	)
 	return (
 		<div className="w-full h-full flex">
 			<div className="flex flex-col gap-4 h-screen w-[500px] bg-white border border-solid shadow-xl p-5 px-8">
@@ -112,7 +120,7 @@ export default function BeneficiaryDetailsView({
 						<span className="font-Varela text-blue-500 font-bold mr-2">
 							Fecha de nacimiento:
 						</span>
-						{beneficiary.birth_date} ({beneficiary.age} años)
+						{birthDate} ({beneficiary.age} años)
 					</article>
 					<article className="font-Varela text-gray-800">
 						<span className="font-Varela text-blue-500 font-bold mr-2">
