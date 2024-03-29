@@ -15,39 +15,9 @@ export default function InterventionDetails({ intervention }) {
 	const [errors, setErrors] = useState({})
 	const [confirmationModal, setConfirmationModal] = useState(false)
 
-	function formatDateDefaultValue(dateString) {
+	function formattedDate(dateString) {
 		const date = new Date(dateString)
-		let formattedDate = ''
-		if (date.getFullYear() < 10) {
-			formattedDate += `000${date.getFullYear()}-`
-		} else if (date.getFullYear() < 100) {
-			formattedDate += `00${date.getFullYear()}-`
-		} else if (date.getFullYear() < 1000) {
-			formattedDate += `0${date.getFullYear()}-`
-		} else {
-			formattedDate += `${date.getFullYear()}-`
-		}
-		if (date.getMonth() < 10) {
-			formattedDate += `0${date.getMonth() + 1}-`
-		} else {
-			formattedDate += `${date.getMonth() + 1}-`
-		}
-		if (date.getDate() < 10) {
-			formattedDate += `0${date.getDate()}T`
-		} else {
-			formattedDate += `${date.getDate()}T`
-		}
-		if (date.getHours() < 10) {
-			formattedDate += `0${date.getHours()}:`
-		} else {
-			formattedDate += `${date.getHours()}:`
-		}
-		if (date.getMinutes() < 10) {
-			formattedDate += `0${date.getMinutes()}`
-		} else {
-			formattedDate += `${date.getMinutes()}`
-		}
-		return formattedDate
+		return date.toISOString()
 	}
 
 	function deleteIntervention() {
@@ -113,7 +83,7 @@ export default function InterventionDetails({ intervention }) {
 			date:
 				formData.get('date') === ''
 					? intervention.date
-					: formatDateDefaultValue(formData.get('date')),
+					: formattedDate(formData.get('date')),
 			typology:
 				formData.get('typology') === ''
 					? intervention.typology
@@ -132,9 +102,12 @@ export default function InterventionDetails({ intervention }) {
 					: formData.get('observations')
 		}
 
+		console.log(jsonData)
 		axios
 			.patch(BASEURL + '/acat/intervention/' + intervention.id, jsonData)
-			.then(_ => {})
+			.then(_ => {
+				// window.location.reload()
+			})
 			.catch(error => {
 				console.error('Error al enviar los datos:', error)
 				alert(
@@ -204,7 +177,6 @@ export default function InterventionDetails({ intervention }) {
 						intervention={intervention}
 						errors={errors}
 						onSubmit={onSubmit}
-						formatDateDefaultValue={formatDateDefaultValue}
 					/>
 				) : (
 					<InterventionDetailsView intervention={intervention} />
