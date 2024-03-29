@@ -35,7 +35,7 @@ function RegisterInterventionModal({ onClickFunction }) {
 
 	async function handleAddIntervention(event) {
 		event.preventDefault()
-
+		formData.date = new Date(formData.date).toISOString()
 		axios
 			.post(`${BASEURL}/acat/intervention`, JSON.stringify(formData), {
 				headers: {
@@ -74,12 +74,16 @@ function RegisterInterventionModal({ onClickFunction }) {
 	}, [])
 
 	return (
-		<div className="fixed bg-gray-600 bg-opacity-50 h-full w-full flex font-Varela items-center justify-center z-50">
-			<div className="p-10 border h-fit shadow-lg rounded-xl bg-white max-h-full overflow-y-auto space-y-6">
+		<div
+			className="fixed top-0 left-0 bg-gray-600 bg-opacity-50 h-full w-full flex items-center justify-center z-50"
+			id="close"
+		>
+			{' '}
+			<div className="p-10 border h-fit shadow-lg rounded-xl bg-white font-Varela text-black">
 				<div className="flex justify-end">
 					<button
-						className="bg-red-500 text-white text-xl rounded-md shadow-lg w-[30px] h-[30px] mb-3"
 						onClick={onClickFunction}
+						className="bg-red-500 text-white text-xl rounded-md shadow-lg w-[30px] h-[30px] mb-3"
 					>
 						X
 					</button>
@@ -88,15 +92,28 @@ function RegisterInterventionModal({ onClickFunction }) {
 				<h1 className="text-center font-poppins text-2xl">
 					<strong>Registro de Intervenciones</strong>
 				</h1>
-				<form className="space-y-4">
-					<div>
-						<label className="block">
-							<strong>Nombre</strong>
+				<form className="flex flex-row flex-wrap justify-center max-w-[330px] gap-3 mt-2">
+					<fieldset className="flex flex-col w-full">
+						<label htmlFor="name" className="hidden md:block text-black">
+							<span>Nombre</span>
 						</label>
-						<div className="flex items-center border-2 rounded-md border-gray-200 bg-white">
-							<User height="18" width="18" />
+						<div className="relative flex items-center border-2 rounded-xl border-gray-200 bg-white">
+							<User className="ml-1" />
 							<Select
-								className="p-1 w-full"
+								className="border-0 w-full"
+								styles={{
+									control: provided => ({
+										...provided,
+										border: 'none',
+										borderRadius: '9999px',
+										boxShadow: 'none',
+										width: '100%'
+									}),
+									menu: provided => ({
+										...provided,
+										borderRadius: '0px'
+									})
+								}}
 								classNamePrefix="Selecciona un beneficiario"
 								defaultValue={{ label: 'Selecciona un beneficiario', value: 0 }}
 								isDisabled={false}
@@ -114,42 +131,42 @@ function RegisterInterventionModal({ onClickFunction }) {
 								}
 							/>
 						</div>
-					</div>
-					<div>
-						<label className="block">
-							<strong>Tipologia</strong>
+					</fieldset>
+					<fieldset className="flex flex-col w-full">
+						<label htmlFor="tipology" className="hidden md:block text-black">
+							<span>Tipologia</span>
 						</label>
-						<div className="flex items-center border-2 rounded-md border-gray-200 bg-white">
+						<div className="relative flex items-center border-2 rounded-xl border-gray-200 bg-white">
 							<Pen3 />
 							<input
 								type="text"
 								name="typology"
 								value={formData.tipology}
 								onChange={handleInputChange}
-								placeholder="tipologia"
-								className="p-1 w-full"
+								placeholder="Tipologia"
+								className="flex items-center rounded-xl p-1 pl-6 w-full"
 							/>
 						</div>
-					</div>
-					<div>
-						<label htmlFor="birthdate" className="block">
-							<strong>Fecha de atencion</strong>
+					</fieldset>
+					<fieldset className="flex flex-col w-full">
+						<label htmlFor="birthdate" className="hidden md:block text-black">
+							<span>Fecha de atencion</span>
 						</label>
-						<div className="flex items-center border-2 rounded-md border-gray-200 bg-white">
+						<div className="relative flex items-center border-2 rounded-xl border-gray-200 bg-white">
 							<input
-								type="date"
+								type="datetime-local"
 								name="date"
-								value={formData.date}
+								id="date"
 								onChange={handleInputChange}
-								className="p-1 w-full"
+								className="items-center rounded-xl p-1 w-full"
 							/>
 						</div>
-					</div>
-					<div>
-						<label htmlFor="technician" className="block">
-							<strong>Técnico</strong>
+					</fieldset>
+					<fieldset className="flex flex-col w-full">
+						<label htmlFor="technician" className="hidden md:block text-black">
+							<span>Técnico</span>
 						</label>
-						<div className="flex items-center border-2 rounded-md border-gray-200 bg-white">
+						<div className="relative flex items-center border-2 rounded-xl border-gray-200 bg-white">
 							<UserLaptop />
 							<input
 								type="text"
@@ -157,42 +174,48 @@ function RegisterInterventionModal({ onClickFunction }) {
 								value={formData.technician}
 								onChange={handleInputChange}
 								placeholder="Técnico que lo ha atendido"
-								className="p-1 w-full"
+								className="flex items-center rounded-xl p-1 pl-6 w-full"
 							/>
 						</div>
-					</div>
-					<div>
-						<label htmlFor="observations" className="block">
-							<strong>Motivo</strong>
+					</fieldset>
+					<fieldset className="flex flex-col w-full">
+						<label
+							htmlFor="observations"
+							className="hidden md:block text-black"
+						>
+							<span>Motivo</span>
 						</label>
-						<div className="flex items-center border-2 rounded-md border-gray-200 bg-white">
+						<div className="relative flex items-center border-2 rounded-xl border-gray-200 bg-white">
 							<Clipboard />
 							<input
 								type="text"
 								name="reason"
 								value={formData.reason}
 								onChange={handleInputChange}
-								placeholder="Observaciones sobre el beneficiario"
-								className="p-1 w-full"
+								placeholder="Razón de la intervención"
+								className="flex items-center rounded-xl p-1 pl-6 w-full"
 							/>
 						</div>
-					</div>
-					<div>
-						<label htmlFor="observations" className="block">
-							<strong>Observaciones</strong>
+					</fieldset>
+					<fieldset className="flex flex-col w-full">
+						<label
+							htmlFor="observations"
+							className="hidden md:block text-black"
+						>
+							<span>Observaciones</span>
 						</label>
-						<div className="flex items-center border-2 rounded-md border-gray-200 bg-white">
+						<div className="relative flex items-center border-2 rounded-xl border-gray-200 bg-white">
 							<Clipboard />
 							<input
 								type="text"
 								name="observations"
 								value={formData.observations}
 								onChange={handleInputChange}
-								placeholder="Motivo"
-								className="p-1 w-full"
+								placeholder="Observaciones sobre el beneficiario"
+								className="flex items-center rounded-xl p-1 pl-6 w-full"
 							/>
 						</div>
-					</div>
+					</fieldset>
 					<div className="flex justify-center w-full mt-6">
 						<input
 							type="submit"

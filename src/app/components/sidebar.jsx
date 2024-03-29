@@ -12,17 +12,17 @@ export default function Sidebar() {
 	const pathname = usePathname()
 	const { replace } = useRouter()
 
+	const isMobile = () => {
+		return typeof window !== 'undefined' ? window.innerWidth <= 768 : false
+	}
+
+	const initialState = isMobile() ? 'false' : 'true'
+
 	const links = [
 		{
-			link: '/beneficiaries',
+			link: `/beneficiaries?showSidebar=${initialState}`,
 			icon: '/family.svg',
 			text: 'Beneficiarios'
-		},
-		{
-			link: '',
-			icon: '/square-plus.svg',
-			text: 'Dar de alta',
-			subentry: true
 		},
 		{
 			link: '',
@@ -31,15 +31,9 @@ export default function Sidebar() {
 			subentry: true
 		},
 		{
-			link: '/interventions',
+			link: `/interventions?showSidebar=${initialState}`,
 			icon: '/calendar.svg',
 			text: 'Intervenciones'
-		},
-		{
-			link: '/',
-			icon: '/square-plus.svg',
-			text: 'Crear intervención',
-			subentry: true
 		},
 		{
 			link: '',
@@ -47,7 +41,7 @@ export default function Sidebar() {
 			text: 'Usuarios'
 		},
 		{
-			link: '/create-user',
+			link: `/create-user?showSidebar=${initialState}`,
 			icon: '/face-plus.svg',
 			text: 'Crear nuevo usuario',
 			subentry: true
