@@ -9,6 +9,12 @@ import BeneficiaryDetails from '../../app/beneficiaries/[beneficiaryId]/page.jsx
 import { fetchDataBeneficiary } from '../../app/beneficiaries/[beneficiaryId]/fetch.js'
 import userEvent from '@testing-library/user-event'
 
+function getCurrentDate() {
+	const date = new Date()
+	const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
+	return formattedDate
+}
+
 jest.mock('next/navigation', () => ({
 	useRouter: () => ({
 		push: jest.fn()
@@ -35,11 +41,11 @@ describe('BeneficiaryDetails', () => {
 		dossier_number: 'H',
 		is_rehabilitated: false,
 		first_technician: 'I',
-		registration_date: '2024-03-28',
+		registration_date: getCurrentDate(),
 		observation: 'J'
 	}
 
-	let createdBeneficiary = 'iniziado'
+	let createdBeneficiary = 'iniciado'
 	let axiosPostSpy
 
 	// eslint-disable-next-line
@@ -117,7 +123,14 @@ describe('BeneficiaryDetails', () => {
 		expect(screen.getByText(mockBeneficiary.nid)).toBeInTheDocument()
 		expect(
 			screen.getByText(
-				mockBeneficiary.birth_date + ' (' + mockBeneficiary.age + ' años)'
+				new Date('2023-03-28').toLocaleDateString('es-ES', {
+					year: 'numeric',
+					month: '2-digit',
+					day: '2-digit'
+				}) +
+					' (' +
+					mockBeneficiary.age +
+					' años)'
 			)
 		).toBeInTheDocument()
 		expect(screen.getByText(mockBeneficiary.gender)).toBeInTheDocument()
