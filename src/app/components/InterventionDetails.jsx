@@ -102,11 +102,10 @@ export default function InterventionDetails({ intervention }) {
 					: formData.get('observations')
 		}
 
-		console.log(jsonData)
 		axios
 			.patch(BASEURL + '/acat/intervention/' + intervention.id, jsonData)
 			.then(_ => {
-				// window.location.reload()
+				window.location.reload()
 			})
 			.catch(error => {
 				console.error('Error al enviar los datos:', error)
