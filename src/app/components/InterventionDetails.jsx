@@ -5,58 +5,140 @@ import React, { useState } from 'react'
 import Image from 'next/image'
 import ButtonIcon from './buttonIcon'
 import axios from 'axios'
+import { useRouter } from 'next/navigation'
+import InterventionDetailsView from './InterventionDetailsView'
+import InterventionDetailsUpdate from './InterventionDetailsUpdate'
 
 export default function InterventionDetails({ intervention }) {
-	const [toggleIntervention, setToggleIntervention] = useState(false)
-	const [date, setDate] = useState('')
+	const router = useRouter()
+	const [toggleEditView, setToggleEditView] = useState(false)
+	const [errors, setErrors] = useState({})
+	const [confirmationModal, setConfirmationModal] = useState(false)
 
-	function handleDateChange(newDate) {
-		setDate(newDate)
+	function formatDateDefaultValue(dateString) {
+		const date = new Date(dateString)
+		let formattedDate = ''
+		if (date.getFullYear() < 10) {
+			formattedDate += `000${date.getFullYear()}-`
+		} else if (date.getFullYear() < 100) {
+			formattedDate += `00${date.getFullYear()}-`
+		} else if (date.getFullYear() < 1000) {
+			formattedDate += `0${date.getFullYear()}-`
+		} else {
+			formattedDate += `${date.getFullYear()}-`
+		}
+		if (date.getMonth() < 10) {
+			formattedDate += `0${date.getMonth() + 1}-`
+		} else {
+			formattedDate += `${date.getMonth() + 1}-`
+		}
+		if (date.getDate() < 10) {
+			formattedDate += `0${date.getDate()}T`
+		} else {
+			formattedDate += `${date.getDate()}T`
+		}
+		if (date.getHours() < 10) {
+			formattedDate += `0${date.getHours()}:`
+		} else {
+			formattedDate += `${date.getHours()}:`
+		}
+		if (date.getMinutes() < 10) {
+			formattedDate += `0${date.getMinutes()}`
+		} else {
+			formattedDate += `${date.getMinutes()}`
+		}
+		return formattedDate
 	}
 
 	function deleteIntervention() {
 		const BASEURL = process.env.NEXT_PUBLIC_BASE_URL
 		try {
-			axios.get(`${BASEURL}/acat/intervention/${intervention.id}`)
+			axios.delete(`${BASEURL}/acat/intervention/${intervention.id}`)
+			router.push('/interventions')
 		} catch (error) {
 			return null
 		}
 	}
 
 	function editView() {
-		setToggleIntervention(!toggleIntervention)
-		setDate(intervention.date)
+		setConfirmationModal(false)
+		setToggleEditView(!toggleEditView)
 	}
 
-	async function onSubmit(event) {
+	function toggleConfirmationModal() {
+		setConfirmationModal(!confirmationModal)
+	}
+
+	const validateForm = formData => {
+		let valid = true
+		const newError = {}
+
+		if (formData.get('date').trim() === '') {
+			valid = false
+			newError.date = 'La fecha no puede estar vacía'
+		}
+
+		if (formData.get('typology').trim() === '') {
+			valid = false
+			newError.typology = 'La tipología no puede estar vacía'
+		}
+
+		if (formData.get('technician').trim() === '') {
+			valid = false
+			newError.technician = 'El técnico no puede estar vacío'
+		}
+
+		if (formData.get('reason').trim() === '') {
+			valid = false
+			newError.reason = 'El motivo no puede estar vacío'
+		}
+
+		setErrors(newError)
+		return valid
+	}
+
+	function onSubmit(event) {
+		const BASEURL = process.env.NEXT_PUBLIC_BASE_URL
 		event.preventDefault()
+
 		const formData = new FormData(event.target)
 
+		const valid = validateForm(formData)
+
+		if (!valid) {
+			return
+		}
+
 		const jsonData = {
-			username: formData.get('username').toString(),
-			password: formData.get('password').toString(),
-			email: formData.get('email').toString()
+			date:
+				formData.get('date') === ''
+					? intervention.date
+					: formatDateDefaultValue(formData.get('date')),
+			typology:
+				formData.get('typology') === ''
+					? intervention.typology
+					: formData.get('typology'),
+			technician:
+				formData.get('technician') === ''
+					? intervention.technician
+					: formData.get('technician'),
+			reason:
+				formData.get('reason') === ''
+					? intervention.reason
+					: formData.get('reason'),
+			observations:
+				formData.get('observations') === ''
+					? intervention.observations
+					: formData.get('observations')
 		}
 
 		axios
-			.post(
-				process.env.NEXT_PUBLIC_BASE_URL + '/shared/user/',
-				JSON.stringify(jsonData),
-				{
-					headers: {
-						'Content-Type': 'application/json'
-					}
-				}
-			)
-			.then(function (response) {
+			.patch(BASEURL + '/acat/intervention/' + intervention.id, jsonData)
+			.then(_ => {})
+			.catch(error => {
+				console.error('Error al enviar los datos:', error)
 				alert(
-					`El usuario ${response.data.username} con email ${response.data.email} ha sido creado correctamente`
-				)
-				editView()
-			})
-			.catch(function (error) {
-				alert(
-					`Ha habido un error al crear al nuevo usuario: ${error.response.data.detail}`
+					'Se produjo un error al enviar los datos. Por favor, inténtalo de nuevo.'
 				)
 			})
 	}
@@ -76,7 +158,7 @@ export default function InterventionDetails({ intervention }) {
 					iconWidth={20}
 					iconHeight={20}
 					color={'bg-red-500'}
-					handleClick={deleteIntervention}
+					handleClick={toggleConfirmationModal}
 				/>
 			</div>
 			<div className="flex gap-2 items-center justify-center w-full">
@@ -87,7 +169,9 @@ export default function InterventionDetails({ intervention }) {
 					alt="Icono de calendario"
 				/>
 				<h1 className="text-center font-poppins text-2xl">
-					{!toggleIntervention ? (
+					{confirmationModal ? (
+						<strong>Borrar Intervención</strong>
+					) : !toggleEditView ? (
 						<strong>Detalles de la intervención</strong>
 					) : (
 						<strong>Editar intervención</strong>
@@ -95,159 +179,39 @@ export default function InterventionDetails({ intervention }) {
 				</h1>
 			</div>
 			<hr></hr>
-			{intervention &&
-				(toggleIntervention ? (
-					<form onSubmit={onSubmit} className="flex flex-col gap-3 w-full">
-						<article className="flex items-center w-full">
-							<p className="font-Varela w-fit text-blue-500 font-bold mr-2">
-								Paciente:
-							</p>
-							<div className="flex items-center w-full border-gray-200">
-								<p className="p-1 w-full rounded-xl bg-gray-50">
-									{intervention.patient.alias}
-								</p>
-							</div>
-						</article>
-						<article className="flex items-center w-full">
-							<label
-								htmlFor="date"
-								className="font-Varela w-fit text-blue-500 font-bold mr-2"
-							>
-								Fecha de atención:
-							</label>
-							<div className="flex items-center w-full border-2 rounded-xl border-gray-200 bg-white">
-								<input
-									type="date"
-									id="date"
-									name="date"
-									placeholder={date === '' ? intervention.date : date}
-									className="p-1 w-full rounded-xl bg-white placeholder-black"
-									value={toggleIntervention ? date : ''}
-									onChange={e => handleDateChange(e.target.value)}
-								/>
-							</div>
-						</article>
-						<article className="flex items-center w-full">
-							<label
-								htmlFor="typology"
-								className="font-Varela w-fit text-blue-500 font-bold mr-2"
-							>
-								Tipología:
-							</label>
-							<div className="flex items-center w-full border-2 rounded-xl border-gray-200 bg-white">
-								<select
-									id="typology"
-									name="typology"
-									className="p-1 w-full rounded-xl bg-white placeholder-black"
-									defaultValue="Prevencion"
-								>
-									<option value="Prevencion">Prevencion</option>
-									<option value="Atencion">Atencion</option>
-									<option value="Incorporacion sociolaborar">
-										Incorporacion sociolaborar
-									</option>
-									<option value="otro">Otro</option>
-								</select>
-							</div>
-						</article>
-						<article className="flex items-center w-full">
-							<label
-								htmlFor="technician"
-								className="font-Varela w-fit text-blue-500 font-bold mr-2"
-							>
-								Técnico:
-							</label>
-							<div className="flex items-center w-full border-2 rounded-xl border-gray-200 bg-white">
-								<input
-									type="text"
-									id="technician"
-									name="technician"
-									placeholder={intervention.technician}
-									className="p-1 w-full rounded-xl bg-white placeholder-black"
-								/>
-							</div>
-						</article>
-						<article className="flex items-center w-full">
-							<label
-								htmlFor="technician"
-								className="font-Varela w-fit text-blue-500 font-bold mr-2"
-							>
-								Motivo:
-							</label>
-							<div className="flex items-center w-full border-2 rounded-xl border-gray-200 bg-white">
-								<input
-									type="text"
-									id="technician"
-									name="technician"
-									placeholder={intervention.reason}
-									value={intervention.reason}
-									className="p-1 w-full rounded-xl bg-white placeholder-black"
-								/>
-							</div>
-						</article>
-						<article className="flex flex-col">
-							<label
-								htmlFor="observations"
-								className="font-Varela text-blue-500 font-bold mr-2"
-							>
-								Observaciones:
-							</label>
-							<div className="flex items-center border-2 rounded-xl border-gray-200 bg-white">
-								<textarea
-									className="flex items-center rounded-xl p-1 w-full bg-white placeholder-black"
-									type="text"
-									placeholder={intervention.observations}
-									id="observations"
-									name="observations"
-								/>
-							</div>
-						</article>
-						<div className="flex items-center w-full justify-center gap-5 mt-5">
-							<input
-								type="submit"
-								value="Confirmar cambios"
-								className="bg-green-500 rounded-md drop-shadow-lg p-1 cursor-pointer text-white w-3/4"
-							/>
-						</div>
-					</form>
+			{confirmationModal ? (
+				<div>
+					<h1 className="text-red-500 text-2xl text-center">¿Estas seguro?</h1>
+					<div className="flex justify-between mt-4">
+						<button
+							data-testid="confirmButton"
+							className="bg-red-500 text-white px-4 py-2 rounded-lg shadow-lg mr-2"
+							onClick={deleteIntervention}
+						>
+							Sí
+						</button>
+						<button
+							className="border border-gray-300 text-black px-4 py-2 rounded-lg shadow-lg"
+							onClick={toggleConfirmationModal}
+						>
+							No
+						</button>
+					</div>
+				</div>
+			) : intervention ? (
+				toggleEditView ? (
+					<InterventionDetailsUpdate
+						intervention={intervention}
+						errors={errors}
+						onSubmit={onSubmit}
+						formatDateDefaultValue={formatDateDefaultValue}
+					/>
 				) : (
-					<section className="flex flex-col gap-3 w-full">
-						<article className="flex items-center w-full">
-							<p className="font-Varela w-fit text-blue-500 font-bold mr-2">
-								Paciente:
-							</p>
-							<p className="p-1 w-full">{intervention.patient.alias}</p>
-						</article>
-						<article className="flex items-center w-full">
-							<p className="font-Varela text-blue-500 font-bold mr-2">
-								Fecha de atención:
-							</p>
-							<p className="p-1">{intervention.date}</p>
-						</article>
-						<article className="flex items-center w-full">
-							<p className="font-Varela text-blue-500 font-bold mr-2">
-								Tipología:
-							</p>
-							<p className="p-1">{intervention.typology}</p>
-						</article>
-						<article className="flex items-center w-full">
-							<p className="font-Varela text-blue-500 font-bold mr-2">
-								Técnico:
-							</p>
-							<p className="p-1">{intervention.technician}</p>
-						</article>
-						<article className="flex items-center w-full">
-							<p className="font-Varela text-blue-500 font-bold mr-2">Motivo</p>
-							<p className="p-1">{intervention.reason}</p>
-						</article>
-						<article className="flex flex-col w-full">
-							<p className="font-Varela text-blue-500 font-bold mr-2">
-								Observaciones:
-							</p>
-							<p className="p-1">{intervention.observations}</p>
-						</article>
-					</section>
-				))}
+					<InterventionDetailsView intervention={intervention} />
+				)
+			) : (
+				<p>Cargando...</p>
+			)}
 		</div>
 	)
 }
