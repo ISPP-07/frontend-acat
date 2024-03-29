@@ -35,7 +35,7 @@ export default function UpdatePasswordForm({ onToggle, show = true }) {
 			)
 			.then(function (response) {
 				alert(`Se ha modificado la contraseña correctamente`)
-				router.push('/families')
+				router.push('/beneficiaries')
 			})
 			.catch(function (error) {
 				alert(`Hubo un error al modificar la contraseña: ${error.JSON}`)

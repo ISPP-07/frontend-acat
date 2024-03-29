@@ -167,6 +167,12 @@ function LoginForm({ onToggle }) {
 						</svg>
 					</Link>
 				</div>
+				<button
+					className="text-blue-500 mt-1 hover:text-blue-700 font-Varela py-2 px-4 rounded"
+					onClick={onToggle}
+				>
+					¿Has olvidado tu contraseña?
+				</button>
 			</form>
 		</div>
 	)
