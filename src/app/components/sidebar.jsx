@@ -36,6 +36,11 @@ export default function Sidebar() {
 			text: 'Intervenciones'
 		},
 		{
+			link: 'passwords',
+			icon: '/bell.svg',
+			text: 'Cambiar contraseña'
+		},
+		{
 			link: `/users?showSidebar=${initialState}`,
 			icon: '/face.svg',
 			text: 'Usuarios'
