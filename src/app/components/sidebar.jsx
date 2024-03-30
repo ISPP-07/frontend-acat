@@ -89,7 +89,8 @@ export default function Sidebar() {
 				width={300}
 				height={100}
 				className={`${state ? '' : 'hidden'}`}
-			></Image>
+				alt="Logo de ACAT"
+			/>
 			<div className="flex flex-col justify-between">
 				<div className={`${state ? '' : 'hidden'} flex flex-col my-3`}>
 					{links.map((link, index) => (
@@ -111,7 +112,7 @@ export default function Sidebar() {
 						href="/"
 						className="flex items-center justify-center text-sm font-normal font-Varela text-white rounded-xl bg-red-500 hover:bg-red-700 shadow-xl p-2 w-3/4 my-9 gap-2"
 					>
-						<Image src="/logout.svg" width={18} height={18}></Image>
+						<Image src="/logout.svg" width={18} height={18} alt="logout" />
 						<span>Cerrar Sesión</span>
 					</Link>
 				</div>

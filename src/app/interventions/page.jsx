@@ -70,7 +70,8 @@ export default function InterventionPage() {
 							className="ml-2"
 							width={15}
 							height={15}
-						></Image>
+							alt="excel"
+						/>
 					</button>
 					<label
 						htmlFor="file"

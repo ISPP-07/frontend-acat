@@ -23,12 +23,7 @@ export default function BeneficiaryDetailsView({
 		<div className="w-full h-full flex">
 			<div className="flex flex-col gap-4 h-screen w-[500px] bg-white border border-solid shadow-xl p-5 px-8">
 				<div className="flex items-center gap-4">
-					<Image
-						alt="imagen-familia"
-						src="/face.svg"
-						width={50}
-						height={50}
-					></Image>
+					<Image alt="imagen-familia" src="/face.svg" width={50} height={50} />
 					<div className="flex items-center justify-between w-full">
 						<span className="font-Varela text-black text-2xl font-bold">
 							{beneficiary.name}
@@ -86,7 +81,7 @@ export default function BeneficiaryDetailsView({
 						src="/phone.svg"
 						width={20}
 						height={20}
-					></Image>
+					/>
 					<span className="font-Varela text-gray-800 text-base">
 						{beneficiary.contact_phone}
 					</span>
@@ -97,7 +92,7 @@ export default function BeneficiaryDetailsView({
 						src="/address.svg"
 						width={20}
 						height={20}
-					></Image>
+					/>
 					<span className="font-Varela text-gray-800 text-base">
 						{beneficiary.address}
 					</span>

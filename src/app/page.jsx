@@ -14,6 +14,7 @@ export default function Home() {
 	return (
 		<main className="flex flex-col lg:flex-row items-center justify-around w-screen h-screen text-black">
 			<Image
+				alt="ACAT Background"
 				src="/acatbackground.png"
 				fill="true"
 				style={{
