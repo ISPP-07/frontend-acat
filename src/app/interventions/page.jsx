@@ -8,7 +8,7 @@ import Searchbar from '../components/searchbar'
 import Link from 'next/link'
 import { fetchDataInterventions } from './fetchIntervention'
 import Image from 'next/image'
-import exportData from '../exportData'
+import { exportData } from '../exportData'
 import axios from 'axios'
 import RegisterInterventionModal from './RegisterInterventionModal'
 
