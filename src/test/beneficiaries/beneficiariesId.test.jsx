@@ -53,7 +53,7 @@ describe('BeneficiaryDetails', () => {
 		const createBeneficiary = async beneficiary => {
 			try {
 				const response = await axios.post(
-					'http://localhost:8080/api/v1/acat/patient',
+					`${process.env.NEXT_PUBLIC_BASE_URL}/acat/patient`,
 					beneficiary,
 					{
 						headers: {
