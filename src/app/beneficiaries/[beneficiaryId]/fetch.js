@@ -1,10 +1,13 @@
 import axios from 'axios'
-export function fetchDataBeneficiary(beneficiaryId) {
-	const beneficiaries = axios.get(
-		'https://65dc59f1e7edadead7ebb34d.mockapi.io/api/v1/beneficiaries/' +
-			beneficiaryId
-	)
-	return beneficiaries.then(response => {
-		return response.data
-	})
+export async function fetchDataBeneficiary(
+	beneficiaryId,
+	url = process.env.NEXT_PUBLIC_BASE_URL
+) {
+	try {
+		const beneficiarie = await axios.get(`${url}/acat/patient/${beneficiaryId}`)
+		return beneficiarie.data
+	} catch (error) {
+		console.log(error)
+		return null
+	}
 }

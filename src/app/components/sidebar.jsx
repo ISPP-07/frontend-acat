@@ -1,131 +1,122 @@
 'use client'
 import Image from 'next/image'
 import Link from 'next/link'
-import './components.css'
 /* eslint-disable no-unused-vars */
 import React from 'react'
 /* eslint-enable no-unused-vars */
+import { useSearchParams, usePathname, useRouter } from 'next/navigation'
+import SidebarEntry from './sidebarEntry'
+
 export default function Sidebar() {
+	const searchParams = useSearchParams()
+	const pathname = usePathname()
+	const { replace } = useRouter()
+
+	const isMobile = () => {
+		return typeof window !== 'undefined' ? window.innerWidth <= 768 : false
+	}
+
+	const initialState = isMobile() ? 'false' : 'true'
+
+	const links = [
+		{
+			link: `/beneficiaries?showSidebar=${initialState}`,
+			icon: '/family.svg',
+			text: 'Beneficiarios'
+		},
+		{
+			link: `/beneficiaries/rehabilited?showSidebar=${initialState}`,
+			icon: '/bye.svg',
+			text: 'Finalizados',
+			subentry: true
+		},
+		{
+			link: `/interventions?showSidebar=${initialState}`,
+			icon: '/calendar.svg',
+			text: 'Intervenciones'
+		},
+		{
+			link: 'passwords',
+			icon: '/bell.svg',
+			text: 'Cambiar contraseña'
+		},
+		{
+			link: `/users?showSidebar=${initialState}`,
+			icon: '/face.svg',
+			text: 'Usuarios'
+		},
+		{
+			link: `/create-user?showSidebar=${initialState}`,
+			icon: '/face-plus.svg',
+			text: 'Crear nuevo usuario',
+			subentry: true
+		}
+	]
+
+	const state = searchParams?.get('showSidebar') === 'true'
+
+	const toggleShowSidebar = () => {
+		const params = new URLSearchParams(searchParams)
+		params.set('showSidebar', (!state).toString())
+		replace(`${pathname}?${params.toString()}`)
+	}
+
 	return (
-		<div className="absolute h-screen rounded-md border border-solid w-[300px] shadow-xl">
-			<div className="absolute h-32 bg-white rounded-none w-[299px] ">
-				<Image
-					src="/acat.jpg"
-					className="absolute rounded-none top-[21px] left-[27px]"
-					width={250}
-					height={80}
-				></Image>
-			</div>
-			<div className="absolute top-[138px] w-[300px] flex flex-col leading-6 opacity-100 gap-[12px]">
-				<div className="flex items-center text-gray-900 whitespace-no-wrap text-xl cursor-pointer justify-start w-[299px] sidebar-menu-item">
-					<Image
-						src="/family.svg"
-						width={18}
-						height={18}
-						className="relative left-[10px]"
-					></Image>
-					<Link
-						href="/beneficiaries"
-						className="ml-5 font-Varela text-171a1fcf text-base text3"
-					>
-						Beneficiarios
-					</Link>
-				</div>
-				<div className="flex items-center text-gray-900 whitespace-no-wrap text-xl cursor-pointer justify-start w-[299px] sidebar-menu-item">
-					<Image
-						src="/square-plus.svg"
-						width={18}
-						height={18}
-						className="relative left-[30px]"
-					></Image>
-					<Link
-						href=""
-						className="ml-10 font-Varela text-171a1fcf text-base text4"
-					>
-						Dar de alta
-					</Link>
-				</div>
-				<div className="flex items-center text-gray-900 whitespace-no-wrap text-xl cursor-pointer justify-start w-[299px] sidebar-menu-item">
-					<Image
-						src="/bye.svg"
-						width={18}
-						height={18}
-						className="relative left-[30px]"
-					></Image>
-					<Link
-						href=""
-						className="ml-10 font-Varela text-171a1fcf text-base text4"
-					>
-						Finalizados
-					</Link>
-				</div>
-				<div className="flex items-center text-gray-900 whitespace-no-wrap text-xl cursor-pointer justify-start w-[299px] sidebar-menu-item">
-					<Image
-						src="/calendar.svg"
-						width={18}
-						height={18}
-						className="relative left-[10px]"
-					></Image>
-					<Link
-						href="/interventions"
-						className="ml-5 font-Varela text-171a1fcf text-base text3"
-					>
-						Intervenciones
-					</Link>
-				</div>
-				<div className="flex items-center text-gray-900 whitespace-no-wrap text-xl cursor-pointer justify-start w-[299px] sidebar-menu-item">
-					<Image
-						src="/square-plus.svg"
-						width={18}
-						height={18}
-						className="relative left-[30px]"
-					></Image>
-					<Link
-						href=""
-						className="ml-10 font-Varela text-171a1fcf text-base text4"
-					>
-						Crear intervencion
-					</Link>
-				</div>
-				<div className="flex items-center text-gray-900 whitespace-no-wrap text-xl cursor-pointer justify-start w-[299px] sidebar-menu-item">
-					<Image
-						src="/face.svg"
-						width={18}
-						height={18}
-						className="relative left-[10px]"
-					></Image>
-					<Link
-						href=""
-						className="ml-5 font-Varela text-171a1fcf text-base text3"
-					>
-						Usuarios
-					</Link>
-				</div>
-				<div className="flex items-center text-gray-900 whitespace-no-wrap text-xl cursor-pointer justify-start w-[299px] sidebar-menu-item">
-					<Image
-						src="/face-plus.svg"
-						width={18}
-						height={18}
-						className="relative left-[30px]"
-					></Image>
-					<Link
-						href="/create-user"
-						className="ml-10 font-Varela text-171a1fcf text-base text4"
-					>
-						Crear nuevo ususario
-					</Link>
-				</div>
-			</div>
-			<hr className="w-3/4 h-8 bottom-14 left-10 absolute"></hr>
-			<button className="absolute w-48 h-8 flex bottom-5 left-12 items-center justify-center text-sm font-normal leading-5 font-Varela text-white rounded-3xl bg-red-500 shadow-xl">
-				<Image
-					src="/logout.svg"
-					width={18}
-					height={18}
-					className="mr-1"
-				></Image>
-				<span>Cerrar Sesión</span>
+		<div
+			className={`${state ? 'min-w-[300px] w-[300px] max-w-[300px] fixed sm:sticky' : 'max-w-0 min-w-0 w-0 sm:min-w-[30px] sm:w-[30px] sm:max-w-[30px] sticky'} top-0 left-0 border border-solid h-screen shadow-xl z-20 bg-white transition-all duration-50`}
+		>
+			<button
+				className={`${state ? 'left-[280px]' : 'left-[10px]'} absolute cursor-pointer border-2 rounded-full border-white w-[40px] h-[40px] top-5 bg-blue-400 hover:bg-blue-600 flex items-center justify-center transition-all duration-50`}
+				onClick={toggleShowSidebar}
+			>
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					fill="none"
+					viewBox="0 0 24 24"
+					strokeWidth="1.5"
+					stroke="currentColor"
+					className="w-3/4 h-3/4 text-white"
+				>
+					<path
+						strokeLinecap="round"
+						strokeLinejoin="round"
+						d={`${state ? 'M15.75 19.5 8.25 12l7.5-7.5' : 'm8.25 4.5 7.5 7.5-7.5 7.5'}`}
+					/>
+				</svg>
 			</button>
+			<Image
+				src="/acat.jpg"
+				width={300}
+				height={100}
+				className={`${state ? '' : 'hidden'}`}
+				alt="Logo de ACAT"
+			/>
+			<div className="flex flex-col justify-between">
+				<div className={`${state ? '' : 'hidden'} flex flex-col my-3`}>
+					{links.map((link, index) => (
+						<SidebarEntry
+							key={index}
+							link={link.link}
+							icon={link.icon}
+							text={link.text}
+							subentry={link.subentry}
+							pathname={pathname}
+						/>
+					))}
+				</div>
+				<div
+					className={`${state ? '' : 'hidden'} absolute bottom-0 w-[300px] left-[30px]`}
+				>
+					<hr className="w-4/5"></hr>
+					<Link
+						href="/"
+						className="flex items-center justify-center text-sm font-normal font-Varela text-white rounded-xl bg-red-500 hover:bg-red-700 shadow-xl p-2 w-3/4 my-9 gap-2"
+					>
+						<Image src="/logout.svg" width={18} height={18} alt="logout" />
+						<span>Cerrar Sesión</span>
+					</Link>
+				</div>
+			</div>
 		</div>
 	)
 }

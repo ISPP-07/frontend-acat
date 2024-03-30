@@ -1,109 +1,231 @@
+'use client'
 /* eslint-disable no-unused-vars */
-import React from 'react'
+import React, { Suspense, useState, useEffect } from 'react'
 /* eslint-enable no-unused-vars */
+import Sidebar from '../../components/sidebar'
 import { fetchDataBeneficiary } from './fetch'
-import User from '../../components/icons/user'
-import Phone from '../../components/icons/phone'
-import Location2 from '../../components/icons/location-2'
-import IconButton from './iconButton'
-import InboxArrowDown from '../../components/icons/inbox-arrow-down'
-import Pen3 from '../../components/icons/pen-3'
-import MockSwitch from './mockSwitch'
+import axios from 'axios'
+import { useRouter } from 'next/navigation'
+import ModalConfirmation from '../../components/modalConfirmation'
+import BeneficiaryDetailsView from '../../components/beneficiaryDetailsView'
+import BeneficiaryDetailsEdit from '../../components/beneficiaryDetailsEdit'
 
-export default async function BeneficiaryDetails({ params }) {
-	const beneficiary = await fetchDataBeneficiary(params.beneficiaryId)
+export default function BeneficiaryDetails({ params }) {
+	const [beneficiary, setBeneficiary] = useState(null)
+	const [toggleEditView, setToggleEditView] = useState(false)
+	const [toggleDeleteView, setToggleDeleteView] = useState(false)
+	const [errors, setErrors] = useState(null)
+	const router = useRouter()
+
+	const fetchData = async () => {
+		try {
+			const beneficiary = await fetchDataBeneficiary(
+				params.beneficiaryId,
+				params.url
+			)
+			setBeneficiary(beneficiary)
+		} catch (error) {
+			console.error('Error al cargar los datos:', error)
+			alert(
+				'Se produjo un error al cargar los datos. Por favor, inténtalo de nuevo.'
+			)
+		}
+	}
+
+	const handleToggle = event => {
+		const BASEURL = process.env.NEXT_PUBLIC_BASE_URL
+		const jsonData = {
+			is_rehabilitated: event.target.checked
+		}
+		const toggle = document.getElementById('toggle')
+
+		if (event.target.checked) {
+			toggle.classList.remove('bg-gray-300')
+			toggle.classList.add('bg-blue-600')
+		} else {
+			toggle.classList.remove('bg-blue-600')
+			toggle.classList.add('bg-gray-300')
+		}
+
+		axios
+			.patch(BASEURL + '/acat/patient/' + params.beneficiaryId, jsonData)
+			.then(_ => {
+				fetchData()
+			})
+			.catch(error => {
+				console.error('Error al enviar los datos:', error)
+				alert(
+					'Se produjo un error al enviar los datos. Por favor, inténtalo de nuevo.'
+				)
+			})
+	}
+
+	function editView() {
+		setToggleEditView(!toggleEditView)
+	}
+
+	function deleteView() {
+		setToggleDeleteView(!toggleDeleteView)
+	}
+
+	function deleteBeneficiary() {
+		let BASEURL = process.env.NEXT_PUBLIC_BASE_URL
+		if (BASEURL === undefined) {
+			BASEURL = 'http://localhost:8080/api/v1'
+		}
+		axios
+			.delete(BASEURL + '/acat/patient/' + params.beneficiaryId)
+			.then(_ => {
+				router.push('/beneficiaries')
+			})
+			.catch(error => {
+				console.error('Error al eliminar el beneficiario:', error)
+				alert(
+					'Se produjo un error al eliminar el beneficiario. Por favor, inténtalo de nuevo.'
+				)
+			})
+	}
+
+	const validateForm = formData => {
+		let valid = true
+		const newError = {}
+
+		const contactPhoneRegExp = /^\d{0,15}$/
+		const dniRegExp = /^\d{8}[A-Z]$/
+		const nieRegExp = /^[XYZ]\d{7}[A-Z]$/
+		const passportRegExp = /^[A-Z]{2}\d{7}$/
+
+		if (!contactPhoneRegExp.test(formData.get('contact_phone'))) {
+			valid = false
+			newError.contact_phone = 'El teléfono no es válido'
+		}
+
+		// This is a XOR operation, if one of the three conditions is true, the result is true
+		if (
+			!dniRegExp.test(formData.get('nid')) ^
+			!nieRegExp.test(formData.get('nid')) ^
+			!passportRegExp.test(formData.get('nid'))
+		) {
+			if (formData.get('nid') !== '') {
+				valid = false
+				newError.nid =
+					'El DNI/NIE/Pasaporte no coincide con el formato esperado'
+			}
+		}
+
+		const birthDate = new Date(formData.get('birth_date'))
+		const today = new Date()
+
+		if (formData.get('birth_date') === '' || birthDate > today) {
+			valid = false
+			newError.birth_date = 'La fecha de nacimiento debe ser pasada'
+		}
+
+		setErrors(newError)
+		return valid
+	}
+
+	function onSubmit(event) {
+		let BASEURL = process.env.NEXT_PUBLIC_BASE_URL
+		if (BASEURL === undefined) {
+			BASEURL = 'http://localhost:8080/api/v1'
+		}
+		event.preventDefault()
+
+		const formData = new FormData(event.target)
+
+		const valid = validateForm(formData)
+
+		if (!valid) {
+			return
+		}
+		console.log(formData.get('first_technician'))
+
+		const jsonData = {
+			name:
+				formData.get('name').trim() === ''
+					? beneficiary.name
+					: formData.get('name'),
+			contact_phone:
+				formData.get('contact_phone') === ''
+					? beneficiary.contact_phone
+					: formData.get('contact_phone'),
+			address:
+				formData.get('address').trim() === ''
+					? beneficiary.address
+					: formData.get('address'),
+			dossier_number:
+				formData.get('dossier_number').trim() === ''
+					? beneficiary.dossier_number
+					: formData.get('dossier_number'),
+			nid: formData.get('nid') === '' ? beneficiary.nid : formData.get('nid'),
+			birth_date:
+				formData.get('birth_date') === ''
+					? beneficiary.birth_date
+					: formData.get('birth_date'),
+			first_technician:
+				formData.get('first_technician').trim() === ''
+					? beneficiary.first_technician
+					: formData.get('first_technician'),
+			gender:
+				formData.get('gender') === ''
+					? beneficiary.gender
+					: formData.get('gender'),
+			observation:
+				formData.get('observation').trim() === ''
+					? beneficiary.observation
+					: formData.get('observation')
+		}
+
+		axios
+			.patch(BASEURL + '/acat/patient/' + params.beneficiaryId, jsonData)
+			.then(_ => {
+				setToggleEditView(!toggleEditView)
+				fetchData()
+			})
+			.catch(error => {
+				console.error('Error al enviar los datos:', error)
+				alert(
+					'Se produjo un error al enviar los datos. Por favor, inténtalo de nuevo.'
+				)
+			})
+	}
+
+	useEffect(() => {
+		fetchData()
+	}, [])
 
 	return (
-		<div className="font-Varela text-black relative top-12 text-lg">
-			<div className="text-2xl flex items-center justify-between">
-				<div className="flex justify-self-start">
-					<User height="34" width="34" />
-					<strong>{beneficiary.name}</strong>
-				</div>
-				<div className="flex justify-end  gap-2 mr-80">
-					<IconButton
-						icon={InboxArrowDown}
-						disabled={true}
-						color="bg-yellow-300 hover:bg-yellow-400 active:bg-yellow-500"
+		<main className="flex w-full">
+			<Suspense fallback={<div></div>}>
+				<Sidebar />
+			</Suspense>
+			{beneficiary &&
+				(toggleEditView ? (
+					<BeneficiaryDetailsEdit
+						beneficiary={beneficiary}
+						onSubmit={onSubmit}
+						deleteView={deleteView}
+						handleToggle={handleToggle}
+						setBeneficiary={setBeneficiary}
+						errors={errors}
 					/>
-					<IconButton
-						icon={Pen3}
-						disabled={true}
-						color=" bg-blue-300 hover:bg-blue-400 active:bg-blue-500"
+				) : (
+					<BeneficiaryDetailsView
+						beneficiary={beneficiary}
+						editView={editView}
+						deleteView={deleteView}
+						handleToggle={handleToggle}
 					/>
-				</div>
-			</div>
-			<div className="flex justify-between mt-4">
-				<div>
-					<button className="bg-green-700  p-2 h-10 text-white relative rounded-full font-Varela text-sm right">
-						+ Nueva intervención
-					</button>
-				</div>
-				<div className="mr-80 flex">
-					<div className="left mr-4">FINALIZADO</div>
-					<MockSwitch />
-				</div>
-			</div>
-			<hr className="border-t border-dotted my-8" />
-			<div className="flex mr">
-				<div className="mr-2">
-					<Phone />
-				</div>
-				<strong>{beneficiary.contact_phone}</strong>
-			</div>
-			<div className="flex">
-				<div className="mr-2">
-					<Location2 />
-				</div>
-				<strong>{beneficiary.address}</strong>
-			</div>
-			<hr className="border-t border-dotted my-8" />
-			<div>
-				<div className="mt-6">
-					<p>
-						<strong style={{ color: '#4B7BECFF' }}>Edad: </strong>{' '}
-						{beneficiary.age}
-					</p>
-				</div>
-				<div className="mt-6">
-					<p>
-						<strong style={{ color: '#4B7BECFF' }}>DNI: </strong>{' '}
-						{beneficiary.dni}
-					</p>
-				</div>
-				<div className="mt-6">
-					<p>
-						<strong style={{ color: '#4B7BECFF' }}>
-							Fecha de nacimiento:{' '}
-						</strong>{' '}
-						{beneficiary.birth_date}
-					</p>
-				</div>
-				<div className="mt-6">
-					<p>
-						<strong style={{ color: '#4B7BECFF' }}>Técnico: </strong>{' '}
-						{beneficiary.first_technician_name}
-					</p>
-				</div>
-				<div className="mt-6">
-					<p>
-						<strong style={{ color: '#4B7BECFF' }}>Sexo: </strong>{' '}
-						{beneficiary.sex}
-					</p>
-				</div>
-				<div className="mt-6">
-					<p>
-						<strong style={{ color: '#4B7BECFF' }}>Nº de expediente: </strong>{' '}
-						{beneficiary.dossier_number}
-					</p>
-				</div>
-				<div className="mt-6 w-96">
-					<p>
-						<strong style={{ color: '#4B7BECFF' }}>Observaciones:</strong>
-					</p>
-					<p>{beneficiary.observation_text}</p>
-				</div>
-			</div>
-		</div>
+				))}
+			{toggleDeleteView && (
+				<ModalConfirmation
+					title="¿Estás seguro?"
+					message="Si aceptas borrarás permanentemente el usuario."
+					handleCancel={deleteView}
+					handleConfirm={deleteBeneficiary}
+				/>
+			)}
+		</main>
 	)
 }

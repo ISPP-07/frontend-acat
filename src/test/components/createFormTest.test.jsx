@@ -1,0 +1,41 @@
+/* eslint-disable no-unused-vars */
+import React from 'react'
+/* eslint-enable no-unused-vars */
+import { render, fireEvent } from '@testing-library/react'
+import { test, expect, describe, jest } from '@jest/globals'
+import CreateUserForm from '../../app/components/CreateUserForm.jsx'
+
+jest.mock('next/navigation', () => ({
+	useRouter: () => ({
+		push: jest.fn()
+	})
+}))
+
+describe('CreateUserForm', () => {
+	test('Create form renders', () => {
+		const { getByText, getByLabelText, getByTestId } = render(
+			<CreateUserForm />
+		)
+		expect(getByText('Usuario')).toBeDefined()
+		expect(getByText('Contraseña')).toBeDefined()
+		expect(getByTestId('passwordConfirm-input')).toBeDefined()
+		expect(getByLabelText('Usuario')).toBeDefined()
+		expect(getByLabelText('Contraseña')).toBeDefined()
+		expect(getByTestId('passwordConfirm-input')).toBeDefined()
+	})
+	test('Password input is hidden by default', () => {
+		const { getByLabelText } = render(<CreateUserForm />)
+		const passwordInput = getByLabelText('Contraseña')
+		expect(passwordInput.type).toBe('password')
+	})
+	test('Toggle Password', () => {
+		const { getByTestId } = render(<CreateUserForm />)
+		const toggleButton = getByTestId('toggle-button')
+		const passwordInput = getByTestId('password-input')
+		expect(passwordInput.type).toBe('password')
+		fireEvent.click(toggleButton)
+		expect(passwordInput.type).toBe('text')
+		fireEvent.click(toggleButton)
+		expect(passwordInput.type).toBe('password')
+	})
+})
