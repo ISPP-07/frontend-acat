@@ -25,7 +25,7 @@ export default function Sidebar() {
 			text: 'Beneficiarios'
 		},
 		{
-			link: '',
+			link: `/beneficiaries/rehabilited?showSidebar=${initialState}`,
 			icon: '/bye.svg',
 			text: 'Finalizados',
 			subentry: true
@@ -36,7 +36,12 @@ export default function Sidebar() {
 			text: 'Intervenciones'
 		},
 		{
-			link: '',
+			link: 'passwords',
+			icon: '/bell.svg',
+			text: 'Cambiar contraseña'
+		},
+		{
+			link: `/users?showSidebar=${initialState}`,
 			icon: '/face.svg',
 			text: 'Usuarios'
 		},

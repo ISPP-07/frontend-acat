@@ -42,7 +42,7 @@ function CreateUserForm() {
 					alert(
 						`El usuario ${response.data.username} con email ${response.data.email} ha sido creado correctamente`
 					)
-					router.push('/beneficiaries')
+					router.push('/users')
 				})
 				.catch(function (error) {
 					alert(
@@ -83,6 +83,7 @@ function CreateUserForm() {
 							/>
 						</svg>
 						<input
+							data-testid="nombre"
 							type="text"
 							id="username"
 							name="username"
@@ -109,7 +110,8 @@ function CreateUserForm() {
 							/>
 						</svg>
 						<input
-							type="email"
+							data-testid="email"
+							type="text"
 							id="email"
 							name="email"
 							placeholder="Correo electrónico"
@@ -216,6 +218,7 @@ function CreateUserForm() {
 				)}
 				<div className="flex items-center justify-center gap-5 mt-5">
 					<input
+						data-testid="create"
 						type="submit"
 						value="Registrar"
 						className="bg-green-500 rounded-md drop-shadow-lg p-1 cursor-pointer text-white w-3/4"
