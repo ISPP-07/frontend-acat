@@ -35,7 +35,7 @@ function RegisterInterventionModal({ onClickFunction }) {
 
 	async function handleAddIntervention(event) {
 		event.preventDefault()
-		formData.date = new Date(formData.date).toISOString()
+		formData.date = formData.date ? new Date(formData.date).toISOString() : null
 		axios
 			.post(`${BASEURL}/acat/intervention`, JSON.stringify(formData), {
 				headers: {
