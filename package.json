@@ -50,6 +50,7 @@
 	},
 	"jest": {
 		"testEnvironment": "jsdom",
+		"globalSetup": "<rootDir>/jest.setup.js",
 		"collectCoverage": true,
 		"coverageReporters": [
 			"html"

@@ -60,7 +60,7 @@ export default function BeneficiariesList() {
 							className="ml-2"
 							width={15}
 							height={15}
-						></Image>
+						/>
 					</button>
 				</div>
 				<div className="container p-10 flex flex-wrap gap-5 justify-center items-center">

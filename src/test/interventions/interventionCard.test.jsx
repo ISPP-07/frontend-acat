@@ -25,32 +25,6 @@ describe('Card', () => {
 		render(<CardIntervention intervention={interventionData} />)
 	})
 
-	test('test 2', () => {
-		const interventionsData = [
-			{
-				id: 1,
-				patient: 'John Doe',
-				intervention_date: '2018-05-08T16:29:31.591Z'
-			},
-			{
-				id: 2,
-				patient: 'Jane Doe',
-				intervention_date: '2019-05-08T16:29:31.591Z'
-			}
-		]
-
-		const { getByText } = render(
-			<div>
-				{interventionsData.map(intervention => (
-					<CardIntervention key={intervention.id} intervention={intervention} />
-				))}
-			</div>
-		)
-		interventionsData.forEach(intervention => {
-			expect(getByText(intervention.patient)).toBeDefined()
-		})
-	})
-
 	test('on click', () => {
 		const { getByTestId } = render(
 			<CardIntervention

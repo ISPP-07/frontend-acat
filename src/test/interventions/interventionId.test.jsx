@@ -80,7 +80,7 @@ describe('InterventionDetails', () => {
 		const createIntervetion = async intervention => {
 			try {
 				const response = await axios.post(
-					'http://localhost:8080/api/v1/acat/intervention',
+					`${process.env.NEXT_PUBLIC_BASE_URL}/acat/intervention`,
 					intervention,
 					{
 						headers: {

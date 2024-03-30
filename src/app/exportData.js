@@ -1,6 +1,6 @@
 import exportFromJSON from 'export-from-json'
 
-export function exportData(datos, nombre, columnas) {
+export default function exportData(datos, nombre, columnas) {
 	try {
 		exportFromJSON({
 			data: datos,

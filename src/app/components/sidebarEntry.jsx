@@ -16,7 +16,7 @@ export default function SidebarEntry({
 			href={link}
 			className={`${subentry === true ? 'pl-10' : ''} flex items-center justify-start text-xl cursor-pointer sidebar-menu-item px-3 py-2 gap-3 hover:text-blue-500`}
 		>
-			<Image src={icon} width={18} height={18}></Image>
+			<Image src={icon} width={18} height={18} alt="icon" />
 			<span
 				className={`${pathname === link ? 'text-blue-500' : ''} font-Varela text-base`}
 			>
