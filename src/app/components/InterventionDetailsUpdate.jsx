@@ -43,7 +43,11 @@ export default function InterventionDetailsUpdate({
 	}
 
 	return (
-		<form onSubmit={onSubmit} className="flex flex-col gap-3 w-full">
+		<form
+			onSubmit={onSubmit}
+			className="flex flex-col gap-3 w-full"
+			data-testid="form"
+		>
 			<article className="flex items-center w-full">
 				<p className="font-Varela w-fit text-blue-500 font-bold mr-2">
 					Paciente:
@@ -69,6 +73,7 @@ export default function InterventionDetailsUpdate({
 						name="date"
 						className="p-1 w-full rounded-xl bg-white placeholder-black"
 						defaultValue={formatDateDefaultValue(intervention.date)}
+						data-testid="date"
 					/>
 				</div>
 			</article>
@@ -89,6 +94,7 @@ export default function InterventionDetailsUpdate({
 						name="typology"
 						defaultValue={intervention.typology}
 						className="p-1 w-full rounded-xl bg-white placeholder-black"
+						data-testid="typology"
 					/>
 				</div>
 			</article>
@@ -109,6 +115,7 @@ export default function InterventionDetailsUpdate({
 						name="technician"
 						defaultValue={intervention.technician}
 						className="p-1 w-full rounded-xl bg-white placeholder-black"
+						data-testid="technician"
 					/>
 				</div>
 			</article>
@@ -127,6 +134,7 @@ export default function InterventionDetailsUpdate({
 						name="reason"
 						defaultValue={intervention.reason}
 						className="p-1 w-full rounded-xl bg-white placeholder-black"
+						data-testid="reason"
 					/>
 				</div>
 			</article>
@@ -144,6 +152,7 @@ export default function InterventionDetailsUpdate({
 						defaultValue={intervention.observations}
 						id="observations"
 						name="observations"
+						data-testid="observations"
 					/>
 				</div>
 			</article>

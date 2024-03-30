@@ -124,6 +124,7 @@ export default function InterventionDetails({ intervention }) {
 					iconHeight={20}
 					color={'bg-blue-500'}
 					handleClick={editView}
+					datatestid="editButton"
 				/>
 				<ButtonIcon
 					iconpath="/trash.svg"
@@ -131,6 +132,7 @@ export default function InterventionDetails({ intervention }) {
 					iconHeight={20}
 					color={'bg-red-500'}
 					handleClick={toggleConfirmationModal}
+					datatestid="deleteButton"
 				/>
 			</div>
 			<div className="flex gap-2 items-center justify-center w-full">
@@ -152,7 +154,7 @@ export default function InterventionDetails({ intervention }) {
 			</div>
 			<hr></hr>
 			{confirmationModal ? (
-				<div>
+				<div data-testid="modalConfirmation">
 					<h1 className="text-red-500 text-2xl text-center">¿Estas seguro?</h1>
 					<div className="flex justify-between mt-4">
 						<button
