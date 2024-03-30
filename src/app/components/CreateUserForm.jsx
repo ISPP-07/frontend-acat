@@ -46,7 +46,7 @@ function CreateUserForm() {
 				})
 				.catch(function (error) {
 					alert(
-						`Ha habido un error al crear al nuevo usuario: ${error.response.data.detail}`
+						`Ha habido un error al crear al nuevo usuario: ${error.response?.data.detail}`
 					)
 				})
 		} else {
