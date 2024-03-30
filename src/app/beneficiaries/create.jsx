@@ -291,7 +291,7 @@ function CreateModal({ closeModal }) {
 						</div>
 					</fieldset>
 					<fieldset className="flex flex-col w-full md:w-5/12">
-						<label htmlFor="sex" className="hidden md:block text-black">
+						<label htmlFor="gender" className="hidden md:block text-black">
 							Sexo
 						</label>
 						<div className="relative flex items-center border-2 rounded-xl border-gray-200 bg-white">
@@ -314,8 +314,8 @@ function CreateModal({ closeModal }) {
 								className="flex items-center rounded-xl p-1 pl-6 w-full"
 								type="text"
 								placeholder="Sexo"
-								id="sex"
-								name="sex"
+								id="gender"
+								name="gender"
 							/>
 						</div>
 					</fieldset>
@@ -365,7 +365,10 @@ function CreateModal({ closeModal }) {
 						</div>
 					</fieldset>
 					<fieldset className="flex flex-col w-full md:w-5/12">
-						<label htmlFor="technician" className="hidden md:block text-black">
+						<label
+							htmlFor="first_technician"
+							className="hidden md:block text-black"
+						>
 							Técnico
 						</label>
 						<div className="relative flex items-center border-2 rounded-xl border-gray-200 bg-white">
@@ -388,16 +391,13 @@ function CreateModal({ closeModal }) {
 								className="flex items-center rounded-xl p-1 pl-6 w-full"
 								type="text"
 								placeholder="Técnico que lo ha atendido"
-								id="technician"
-								name="technician"
+								id="first_technician"
+								name="first_technician"
 							/>
 						</div>
 					</fieldset>
 					<fieldset className="flex flex-col w-full md:w-10/12">
-						<label
-							htmlFor="observation_text"
-							className="hidden md:block text-black"
-						>
+						<label htmlFor="observation" className="hidden md:block text-black">
 							Observaciones
 						</label>
 						<div className="relative flex items-start border-2 rounded-xl border-gray-200 bg-white">
@@ -421,7 +421,7 @@ function CreateModal({ closeModal }) {
 								type="text"
 								placeholder="Observaciones sobre el beneficiario"
 								id="observation_text"
-								name="observation_text"
+								name="observation"
 							/>
 						</div>
 					</fieldset>
