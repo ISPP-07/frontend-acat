@@ -36,7 +36,7 @@ export default function Sidebar() {
 			text: 'Intervenciones'
 		},
 		{
-			link: 'passwords',
+			link: '/passwords',
 			icon: '/bell.svg',
 			text: 'Cambiar contraseña'
 		},
