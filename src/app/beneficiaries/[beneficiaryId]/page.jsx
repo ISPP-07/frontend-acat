@@ -18,6 +18,9 @@ export default function BeneficiaryDetails({ params }) {
 	const [interventions, setInterventions] = useState(null)
 	const [toggleEditView, setToggleEditView] = useState(false)
 	const [toggleDeleteView, setToggleDeleteView] = useState(false)
+	const [startDate, setStartDate] = useState(null)
+	const [endDate, setEndDate] = useState(null)
+
 	const [errors, setErrors] = useState(null)
 	const router = useRouter()
 
@@ -203,7 +206,27 @@ export default function BeneficiaryDetails({ params }) {
 		const fetchInterventions = async () => {
 			try {
 				const data = await fetchInterventionsBeneficiaryId()
-				setInterventions(data)
+				let filteredInterventions = data
+				if (startDate && endDate) {
+					filteredInterventions = data.filter(intervention => {
+						const interventionDate = new Date(intervention.date)
+						return (
+							interventionDate >= new Date(startDate) &&
+							interventionDate <= new Date(endDate)
+						)
+					})
+				} else if (startDate && !endDate) {
+					filteredInterventions = data.filter(intervention => {
+						const interventionDate = new Date(intervention.date)
+						return interventionDate >= new Date(startDate)
+					})
+				} else if (!startDate && endDate) {
+					filteredInterventions = data.filter(intervention => {
+						const interventionDate = new Date(intervention.date)
+						return interventionDate <= new Date(endDate)
+					})
+				}
+				setInterventions(filteredInterventions)
 			} catch (error) {
 				console.error('Error al cargar los datos de intervenciones:', error)
 				alert(
@@ -211,8 +234,14 @@ export default function BeneficiaryDetails({ params }) {
 				)
 			}
 		}
+
 		fetchInterventions()
-	}, [])
+	}, [startDate, endDate])
+
+	const handleResetFilters = () => {
+		setStartDate('')
+		setEndDate('')
+	}
 
 	return (
 		<main className="flex w-full">
@@ -250,6 +279,37 @@ export default function BeneficiaryDetails({ params }) {
 					<span className="font-Varela text-black text-2xl font-bold">
 						Intervenciones
 					</span>
+					<div className="flex gap-4 items-center">
+						<div className="p-2">
+							<label htmlFor="startDate">Fecha de inicio:</label>
+							<input
+								className="ml-2 border border-blue-400 rounded-md p-1"
+								type="date"
+								id="startDate"
+								name="startDate"
+								value={startDate}
+								onChange={e => setStartDate(e.target.value)}
+							/>
+						</div>
+						<div className="p-2">
+							<label htmlFor="endDate">Fecha de fin:</label>
+							<input
+								className="ml-2 border border-blue-400 rounded-md p-1"
+								type="date"
+								id="endDate"
+								name="endDate"
+								value={endDate}
+								onChange={e => setEndDate(e.target.value)}
+								placeholder="Fecha fin"
+							/>
+						</div>
+						<button
+							className="bg-blue-500 text-white px-4 py-2 rounded-md"
+							onClick={handleResetFilters}
+						>
+							Resetear
+						</button>
+					</div>
 					<div className="container p-10 flex flex-wrap gap-5 justify-center items-center">
 						<Suspense fallback={<div>Cargando...</div>}>
 							{interventions &&
