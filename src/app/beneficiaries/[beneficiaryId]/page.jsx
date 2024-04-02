@@ -9,9 +9,13 @@ import { useRouter } from 'next/navigation'
 import ModalConfirmation from '../../components/modalConfirmation'
 import BeneficiaryDetailsView from '../../components/beneficiaryDetailsView'
 import BeneficiaryDetailsEdit from '../../components/beneficiaryDetailsEdit'
+import { fetchInterventionsBeneficiaryId } from './fetchInterventions'
+import Link from 'next/link'
+import CardIntervention from '../../components/cardIntervention'
 
 export default function BeneficiaryDetails({ params }) {
 	const [beneficiary, setBeneficiary] = useState(null)
+	const [interventions, setInterventions] = useState(null)
 	const [toggleEditView, setToggleEditView] = useState(false)
 	const [toggleDeleteView, setToggleDeleteView] = useState(false)
 	const [errors, setErrors] = useState(null)
@@ -195,6 +199,21 @@ export default function BeneficiaryDetails({ params }) {
 		fetchData()
 	}, [])
 
+	useEffect(() => {
+		const fetchInterventions = async () => {
+			try {
+				const data = await fetchInterventionsBeneficiaryId()
+				setInterventions(data)
+			} catch (error) {
+				console.error('Error al cargar los datos de intervenciones:', error)
+				alert(
+					'Se produjo un error al cargar los datos de intervenciones. Por favor, inténtalo de nuevo.'
+				)
+			}
+		}
+		fetchInterventions()
+	}, [])
+
 	return (
 		<main className="flex w-full">
 			<Suspense fallback={<div></div>}>
@@ -226,6 +245,29 @@ export default function BeneficiaryDetails({ params }) {
 					handleConfirm={deleteBeneficiary}
 				/>
 			)}
+			<div className="container p-10 flex flex-wrap gap-5 justify-center font-Varela overflow-y-auto">
+				<div className="w-full overflow-x-auto">
+					<span className="font-Varela text-black text-2xl font-bold">
+						Intervenciones
+					</span>
+					<div className="container p-10 flex flex-wrap gap-5 justify-center items-center">
+						<Suspense fallback={<div>Cargando...</div>}>
+							{interventions &&
+								interventions.map(intervention => (
+									<Link
+										href={`/interventions/${intervention.id}`}
+										key={intervention.id}
+									>
+										<CardIntervention
+											key={intervention.id}
+											intervention={intervention}
+										/>
+									</Link>
+								))}
+						</Suspense>
+					</div>
+				</div>
+			</div>
 		</main>
 	)
 }
