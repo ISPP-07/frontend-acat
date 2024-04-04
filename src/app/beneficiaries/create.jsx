@@ -60,10 +60,6 @@ function CreateModal({ closeModal }) {
         let valid = true
         const newError = {}
 
-        console.log(formData)
-
-        // Non-empty fields
-
         const contactPhoneRegExp = /^\d{0,15}$/
         const dniRegExp = /^\d{8}[A-Z]$/
         const nieRegExp = /^[XYZ]\d{7}[A-Z]$/
@@ -108,7 +104,6 @@ function CreateModal({ closeModal }) {
                 'La fecha de la primera atención no puede ser futura'
         }
 
-        console.log(newError)
         setErrors(newError)
         return valid
     }
