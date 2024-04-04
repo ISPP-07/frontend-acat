@@ -63,28 +63,6 @@ function CreateModal({ closeModal }) {
         console.log(formData)
 
         // Non-empty fields
-        const requiredFields = [
-            'name',
-            'first_surname',
-            'second_surname',
-            'alias',
-            'nid',
-            'dossier_number',
-            'birth_date',
-            'address',
-            'contact_phone',
-            'first_appointment_date',
-            'gender'
-        ]
-
-        requiredFields.forEach(field => {
-            if (formData.get(field) === '') {
-                valid = false
-                newError[field] = 'Este campo es obligatorio'
-            } else {
-                newError[field] = ''
-            }
-        })
 
         const contactPhoneRegExp = /^\d{0,15}$/
         const dniRegExp = /^\d{8}[A-Z]$/
@@ -112,11 +90,22 @@ function CreateModal({ closeModal }) {
         }
 
         const birthDate = new Date(formData.get('birth_date'))
+        const firstAppointmentDate = new Date(
+            formData.get('first_appointment_date')
+        )
         const today = new Date()
 
         if (formData.get('birth_date') === '' || birthDate > today) {
             valid = false
             newError.birth_date = 'La fecha de nacimiento debe ser pasada'
+        }
+        if (
+            !formData.get('first_appointment_date') === '' &&
+            firstAppointmentDate > today
+        ) {
+            valid = false
+            newError.first_appointment_date =
+                'La fecha de la primera atención no puede ser futura'
         }
 
         console.log(newError)
@@ -168,6 +157,7 @@ function CreateModal({ closeModal }) {
                                 placeholder='Nombre'
                                 id='name'
                                 name='name'
+                                required={true}
                             />
                         </div>
                         <span className='text-red-500'>{errors?.name}</span>
@@ -200,6 +190,7 @@ function CreateModal({ closeModal }) {
                                 placeholder='Primer apellido'
                                 id='first_surname'
                                 name='first_surname'
+                                required={true}
                             />
                         </div>
                         <span className='text-red-500'>{errors?.first_surname}</span>
@@ -209,7 +200,7 @@ function CreateModal({ closeModal }) {
                             htmlFor='second_surname'
                             className='hidden md:block text-black'
                         >
-                            Segundo apellido <span className='text-red-500'>*</span>
+                            Segundo apellido
                         </label>
                         <div className='relative flex items-center border-2 rounded-xl border-gray-200 bg-white'>
                             <svg
@@ -238,7 +229,7 @@ function CreateModal({ closeModal }) {
                     </fieldset>
                     <fieldset className='flex flex-col w-full md:w-5/12'>
                         <label htmlFor='alias' className='hidden md:block text-black'>
-                            Alias <span className='text-red-500'>*</span>
+                            Alias
                         </label>
                         <div className='relative flex items-center border-2 rounded-xl border-gray-200 bg-white'>
                             <svg
@@ -290,6 +281,7 @@ function CreateModal({ closeModal }) {
                                 placeholder='DNI'
                                 id='nid'
                                 name='nid'
+                                required={true}
                             />
                         </div>
                         <span className='text-red-500'>{errors?.nid}</span>
@@ -322,6 +314,7 @@ function CreateModal({ closeModal }) {
                                 placeholder='Numero de registro'
                                 id='dossier_number'
                                 name='dossier_number'
+                                required={true}
                             />
                         </div>
                         <span className='text-red-500'>{errors?.dossier_number}</span>
@@ -336,13 +329,14 @@ function CreateModal({ closeModal }) {
                                 type='date'
                                 id='birth-date'
                                 name='birth_date'
+                                required={true}
                             />
                         </div>
                         <span className='text-red-500'>{errors?.birth_date}</span>
                     </fieldset>
                     <fieldset className='flex flex-col w-full md:w-5/12'>
                         <label htmlFor='address' className='hidden md:block text-black'>
-                            Dirección <span className='text-red-500'>*</span>
+                            Dirección
                         </label>
                         <div className='relative flex items-center border-2 rounded-xl border-gray-200 bg-white'>
                             <svg
@@ -400,6 +394,7 @@ function CreateModal({ closeModal }) {
                                 placeholder='Sexo'
                                 id='gender'
                                 name='gender'
+                                required={true}
                             >
                                 <option value=''>Selecciona uno</option>
                                 <option value='Man'>Hombre</option>
@@ -413,7 +408,7 @@ function CreateModal({ closeModal }) {
                             htmlFor='contact_phone'
                             className='hidden md:block text-black'
                         >
-                            Teléfono de contácto <span className='text-red-500'>*</span>
+                            Teléfono de contácto
                         </label>
                         <div className='relative flex items-center border-2 rounded-xl border-gray-200 bg-white'>
                             <svg
@@ -443,7 +438,7 @@ function CreateModal({ closeModal }) {
                     </fieldset>
                     <fieldset className='flex flex-col w-full md:w-5/12'>
                         <label htmlFor='first_appointment_date' className='text-black'>
-                            Primera atención <span className='text-red-500'>*</span>
+                            Primera atención
                         </label>
                         <div className='relative flex items-center border-2 rounded-xl border-gray-200 bg-white'>
                             <input
