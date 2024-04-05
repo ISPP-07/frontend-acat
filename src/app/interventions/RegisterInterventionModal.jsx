@@ -1,144 +1,229 @@
-/* eslint-disable no-unused-vars */
 'use client'
+/* eslint-disable no-unused-vars */
+import React, { useState, useEffect } from 'react'
+/* eslint-enable no-unused-vars */
 import Pen3 from '../components/icons/pen-3'
 import User from '../components/icons/user'
 import UserLaptop from '../components/icons/user-laptop'
 import Clipboard from '../components/icons/clipboard'
-
-/* eslint-disable no-unused-vars */
-import React from 'react'
+import axios from 'axios'
+import Select from 'react-select'
+import { fetchDataBeneficiaries } from '../beneficiaries/fetch'
 import { useRouter } from 'next/navigation'
-import router from 'next/router'
-/* eslint-enable no-unused-vars */
 
-// const axios = require('axios').default
+function RegisterInterventionModal({ onClickFunction }) {
+	// if (!isVisible) return null
+	const router = useRouter()
 
-function RegisterInterventionModal({ isVisible, onClose }) {
-	if (!isVisible) return null
+	const [formData, setFormData] = useState({
+		date: '',
+		reason: '',
+		typology: '',
+		observations: '',
+		patient_id: '',
+		technician: ''
+	})
 
-	// const router = useRouter()
-	async function onSubmit(event) {
+	const [beneficiaryOptions, setBeneficiaryOptions] = useState([])
+
+	const handleInputChange = e => {
+		const { name, value } = e.target
+		setFormData({ ...formData, [name]: value })
+	}
+
+	const BASEURL = process.env.NEXT_PUBLIC_BASE_URL
+
+	async function handleAddIntervention(event) {
 		event.preventDefault()
-		// TODO: waiting for creation API implementation
-		// const formData = new FormData(event.target)
-		// axios
-		// 	.post(
-		// 		'https://65dc59f1e7edadead7ebb34d.mockapi.io/api/v1/interventions',
-		// 		formData
-		// 	)
-		// 	.then(function (response) {
-		// 		// Navigate to the newly created beneficiary
-		// 		router.push('/interventions/' + response.data.id.toString())
-		// 	})
-		// 	.catch(function (error) {
-		// 		// TODO: handle error
-		// 		console.log(error)
-		// 	})
+		formData.date = formData.date ? new Date(formData.date).toISOString() : null
+		axios
+			.post(`${BASEURL}/acat/intervention`, JSON.stringify(formData), {
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			})
+			.then(function (response) {
+				// Navigate to the newly created beneficiary
+				router.push('/interventions/' + response.data.id.toString())
+			})
+			.catch(function (error) {
+				alert(
+					`Ha habido un error al crear al nuevo beneficiario: ${error.response.data.detail}`
+				)
+			})
 	}
-	const closedModal = () => {
-		window.location.href = '/interventions'
-	}
+
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const data = await fetchDataBeneficiaries()
+				setBeneficiaryOptions(
+					data.map(beneficiary => ({
+						value: beneficiary.id,
+						label: beneficiary.name
+					}))
+				)
+			} catch (error) {
+				console.error('Error al cargar los datos:', error)
+				alert(
+					'Se produjo un error al cargar los datos. Por favor, inténtalo de nuevo.'
+				)
+			}
+		}
+		fetchData()
+	}, [])
 
 	return (
 		<div
-			className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex justify-center items-center z-30"
+			className="fixed top-0 left-0 bg-gray-600 bg-opacity-50 h-full w-full flex items-center justify-center z-50"
 			id="close"
-			onClick={closedModal}
 		>
-			<div className="w-96 p-8 bg-white rounded-xl space-y-6">
-				<button className="text-gray-500 text-xl l" onClick={onClose}>
-					X
-				</button>
+			{' '}
+			<div className="p-10 border h-fit shadow-lg rounded-xl bg-white font-Varela text-black">
+				<div className="flex justify-end">
+					<button
+						onClick={onClickFunction}
+						className="bg-red-500 text-white text-xl rounded-md shadow-lg w-[30px] h-[30px] mb-3"
+					>
+						X
+					</button>
+				</div>
 
 				<h1 className="text-center font-poppins text-2xl">
 					<strong>Registro de Intervenciones</strong>
 				</h1>
-				<form onSubmit={onSubmit} className="space-y-4">
-					<div>
-						<label htmlFor="name" className="block">
-							<strong>Nombre</strong>
+				<form className="flex flex-row flex-wrap justify-center max-w-[330px] gap-3 mt-2">
+					<fieldset className="flex flex-col w-full">
+						<label htmlFor="name" className="hidden md:block text-black">
+							<span>Nombre</span>
 						</label>
-						<div className="flex items-center border-2 rounded-md border-gray-200 bg-white">
-							<User height="18" width="18" />
-							<input
-								type="text"
-								name="name"
-								placeholder="Usuario"
-								className="p-1 w-full"
+						<div className="relative flex items-center border-2 rounded-xl border-gray-200 bg-white">
+							<User className="ml-1" />
+							<Select
+								className="border-0 w-full"
+								styles={{
+									control: provided => ({
+										...provided,
+										border: 'none',
+										borderRadius: '9999px',
+										boxShadow: 'none',
+										width: '100%'
+									}),
+									menu: provided => ({
+										...provided,
+										borderRadius: '0px'
+									})
+								}}
+								classNamePrefix="Selecciona un beneficiario"
+								defaultValue={{ label: 'Selecciona un beneficiario', value: 0 }}
+								isDisabled={false}
+								isLoading={false}
+								isClearable={true}
+								isRtl={false}
+								isSearchable={true}
+								name="patient_id"
+								options={beneficiaryOptions}
+								onChange={opt =>
+									setFormData({
+										...formData,
+										patient_id: opt?.value ? opt.value : null
+									})
+								}
 							/>
 						</div>
-					</div>
-					<div>
-						<label htmlFor="tipologia" className="block">
-							<strong>Tipologia</strong>
+					</fieldset>
+					<fieldset className="flex flex-col w-full">
+						<label htmlFor="tipology" className="hidden md:block text-black">
+							<span>Tipologia</span>
 						</label>
-						<div className="flex items-center border-2 rounded-md border-gray-200 bg-white">
+						<div className="relative flex items-center border-2 rounded-xl border-gray-200 bg-white">
 							<Pen3 />
 							<input
 								type="text"
-								name="Tipologia"
-								placeholder="tipologia"
-								className="p-1 w-full"
+								name="typology"
+								value={formData.tipology}
+								onChange={handleInputChange}
+								placeholder="Tipologia"
+								className="flex items-center rounded-xl p-1 pl-6 w-full"
 							/>
 						</div>
-					</div>
-					<div>
-						<label htmlFor="birthdate" className="block">
-							<strong>Fecha de atencion</strong>
+					</fieldset>
+					<fieldset className="flex flex-col w-full">
+						<label htmlFor="birthdate" className="hidden md:block text-black">
+							<span>Fecha de atencion</span>
 						</label>
-						<div className="flex items-center border-2 rounded-md border-gray-200 bg-white">
-							<input type="date" name="birthdate" className="p-1 w-full" />
+						<div className="relative flex items-center border-2 rounded-xl border-gray-200 bg-white">
+							<input
+								type="datetime-local"
+								name="date"
+								id="date"
+								onChange={handleInputChange}
+								className="items-center rounded-xl p-1 w-full"
+							/>
 						</div>
-					</div>
-					<div>
-						<label htmlFor="technician" className="block">
-							<strong>Técnico</strong>
+					</fieldset>
+					<fieldset className="flex flex-col w-full">
+						<label htmlFor="technician" className="hidden md:block text-black">
+							<span>Técnico</span>
 						</label>
-						<div className="flex items-center border-2 rounded-md border-gray-200 bg-white">
+						<div className="relative flex items-center border-2 rounded-xl border-gray-200 bg-white">
 							<UserLaptop />
 							<input
 								type="text"
 								name="technician"
+								value={formData.technician}
+								onChange={handleInputChange}
 								placeholder="Técnico que lo ha atendido"
-								className="p-1 w-full"
+								className="flex items-center rounded-xl p-1 pl-6 w-full"
 							/>
 						</div>
-					</div>
-					<div>
-						<label htmlFor="observations" className="block">
-							<strong>Motivo</strong>
+					</fieldset>
+					<fieldset className="flex flex-col w-full">
+						<label
+							htmlFor="observations"
+							className="hidden md:block text-black"
+						>
+							<span>Motivo</span>
 						</label>
-						<div className="flex items-center border-2 rounded-md border-gray-200 bg-white">
+						<div className="relative flex items-center border-2 rounded-xl border-gray-200 bg-white">
+							<Clipboard />
+							<input
+								type="text"
+								name="reason"
+								value={formData.reason}
+								onChange={handleInputChange}
+								placeholder="Razón de la intervención"
+								className="flex items-center rounded-xl p-1 pl-6 w-full"
+							/>
+						</div>
+					</fieldset>
+					<fieldset className="flex flex-col w-full">
+						<label
+							htmlFor="observations"
+							className="hidden md:block text-black"
+						>
+							<span>Observaciones</span>
+						</label>
+						<div className="relative flex items-center border-2 rounded-xl border-gray-200 bg-white">
 							<Clipboard />
 							<input
 								type="text"
 								name="observations"
+								value={formData.observations}
+								onChange={handleInputChange}
 								placeholder="Observaciones sobre el beneficiario"
-								className="p-1 w-full"
+								className="flex items-center rounded-xl p-1 pl-6 w-full"
 							/>
 						</div>
+					</fieldset>
+					<div className="flex justify-center w-full mt-6">
+						<input
+							type="submit"
+							className="bg-green-500 rounded-md drop-shadow-lg p-2 cursor-pointer text-white w-full"
+							onClick={handleAddIntervention}
+							value="Registrar"
+						/>
 					</div>
-					<div>
-						<label htmlFor="observations" className="block">
-							<strong>Observaciones</strong>
-						</label>
-						<div className="flex items-center border-2 rounded-md border-gray-200 bg-white">
-							<Clipboard />
-							<input
-								type="text"
-								name="observations"
-								placeholder="Motivo"
-								className="p-1 w-full"
-							/>
-						</div>
-					</div>
-					<button
-						type="submit"
-						className="bg-blue-600 rounded-md drop-shadow-lg p-2 cursor-pointer text-white w-full"
-						onClick={closedModal}
-					>
-						Registrar
-					</button>
 				</form>
 			</div>
 		</div>

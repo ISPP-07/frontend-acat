@@ -42,11 +42,11 @@ function CreateUserForm() {
 					alert(
 						`El usuario ${response.data.username} con email ${response.data.email} ha sido creado correctamente`
 					)
-					router.push('/beneficiaries')
+					router.push('/users')
 				})
 				.catch(function (error) {
 					alert(
-						`Ha habido un error al crear al nuevo usuario: ${error.response.data.detail}`
+						`Ha habido un error al crear al nuevo usuario: ${error.response?.data.detail}`
 					)
 				})
 		} else {
@@ -83,6 +83,7 @@ function CreateUserForm() {
 							/>
 						</svg>
 						<input
+							data-testid="nombre"
 							type="text"
 							id="username"
 							name="username"
@@ -109,6 +110,7 @@ function CreateUserForm() {
 							/>
 						</svg>
 						<input
+							data-testid="email"
 							type="text"
 							id="email"
 							name="email"
@@ -203,11 +205,11 @@ function CreateUserForm() {
 						</svg>
 						<input
 							type="password"
-							id="confirm-password"
-							name="confirm-password"
+							id="confirmPassword"
+							name="confirmPassword"
 							placeholder="Contraseña"
 							className="p-1 pl-7 w-full rounded-xl"
-							data-testid="password-input"
+							data-testid="passwordConfirm-input"
 						/>
 					</div>
 				</article>
@@ -216,6 +218,7 @@ function CreateUserForm() {
 				)}
 				<div className="flex items-center justify-center gap-5 mt-5">
 					<input
+						data-testid="create"
 						type="submit"
 						value="Registrar"
 						className="bg-green-500 rounded-md drop-shadow-lg p-1 cursor-pointer text-white w-3/4"

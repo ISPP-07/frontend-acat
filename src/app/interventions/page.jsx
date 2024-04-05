@@ -8,8 +8,9 @@ import Searchbar from '../components/searchbar'
 import Link from 'next/link'
 import { fetchDataInterventions } from './fetchIntervention'
 import Image from 'next/image'
-import exportData from '../exportData'
+import { exportData } from '../exportData'
 import axios from 'axios'
+import RegisterInterventionModal from './RegisterInterventionModal'
 
 export default function InterventionPage({ searchParams }) {
 	const [data, setData] = useState(null)
@@ -48,7 +49,7 @@ export default function InterventionPage({ searchParams }) {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const data = await fetchDataInterventions(perPage, page)
+				const data = await fetchDataInterventions()
 				setData(data)
 			} catch (error) {
 				console.error('Error al cargar los datos:', error)
@@ -70,7 +71,7 @@ export default function InterventionPage({ searchParams }) {
 				<div className="flex flex-row">
 					<button
 						className=" bg-green-400 h-8 w-8 rounded-full shadow-2xl mt-3 mr-2"
-						onClick={() => exportData(data, 'Intervenciones')}
+						onClick={() => exportData(data, 'Intervenciones', { id: 'ID' })}
 						data-testid="export-button"
 					>
 						<Image
@@ -78,11 +79,12 @@ export default function InterventionPage({ searchParams }) {
 							className="ml-2"
 							width={15}
 							height={15}
-						></Image>
+							alt="excel"
+						/>
 					</button>
 					<label
 						htmlFor="file"
-						className="bg-green-400 h-6 mt-4 rounded-full font-Varela text-white cursor-pointer text-center text-sm"
+						className="bg-green-400 w-32 h-6 mt-4 rounded-full font-Varela text-white cursor-pointer text-center text-sm"
 					>
 						Importar datos
 					</label>
@@ -92,6 +94,7 @@ export default function InterventionPage({ searchParams }) {
 						onChange={handleFileChange}
 						style={{ display: 'none' }}
 						accept=".xls"
+						data-testid="file"
 					/>
 				</div>
 				<div className="container p-10 flex flex-wrap gap-5 justify-center items-center">
@@ -105,7 +108,6 @@ export default function InterventionPage({ searchParams }) {
 									<CardIntervention
 										key={intervention.id}
 										intervention={intervention}
-										handleClick={toggleModal}
 									/>
 								</Link>
 							))}
@@ -148,6 +150,9 @@ export default function InterventionPage({ searchParams }) {
 					)}
 				</div>
 			</div>
+			{showModal ? (
+				<RegisterInterventionModal onClickFunction={toggleModal} />
+			) : null}
 		</main>
 	)
 }

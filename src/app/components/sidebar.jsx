@@ -12,42 +12,41 @@ export default function Sidebar() {
 	const pathname = usePathname()
 	const { replace } = useRouter()
 
+	const isMobile = () => {
+		return typeof window !== 'undefined' ? window.innerWidth <= 768 : false
+	}
+
+	const initialState = isMobile() ? 'false' : 'true'
+
 	const links = [
 		{
-			link: '/beneficiaries',
+			link: `/beneficiaries?showSidebar=${initialState}`,
 			icon: '/family.svg',
 			text: 'Beneficiarios'
 		},
 		{
-			link: '',
-			icon: '/square-plus.svg',
-			text: 'Dar de alta',
-			subentry: true
-		},
-		{
-			link: '',
+			link: `/beneficiaries/rehabilited?showSidebar=${initialState}`,
 			icon: '/bye.svg',
 			text: 'Finalizados',
 			subentry: true
 		},
 		{
-			link: '/interventions',
+			link: `/interventions?showSidebar=${initialState}`,
 			icon: '/calendar.svg',
 			text: 'Intervenciones'
 		},
 		{
-			link: '/',
-			icon: '/square-plus.svg',
-			text: 'Crear intervención',
-			subentry: true
+			link: '/passwords',
+			icon: '/bell.svg',
+			text: 'Cambiar contraseña'
 		},
 		{
-			link: '',
+			link: `/users?showSidebar=${initialState}`,
 			icon: '/face.svg',
 			text: 'Usuarios'
 		},
 		{
-			link: '/create-user',
+			link: `/create-user?showSidebar=${initialState}`,
 			icon: '/face-plus.svg',
 			text: 'Crear nuevo usuario',
 			subentry: true
@@ -90,7 +89,8 @@ export default function Sidebar() {
 				width={300}
 				height={100}
 				className={`${state ? '' : 'hidden'}`}
-			></Image>
+				alt="Logo de ACAT"
+			/>
 			<div className="flex flex-col justify-between">
 				<div className={`${state ? '' : 'hidden'} flex flex-col my-3`}>
 					{links.map((link, index) => (
@@ -112,7 +112,7 @@ export default function Sidebar() {
 						href="/"
 						className="flex items-center justify-center text-sm font-normal font-Varela text-white rounded-xl bg-red-500 hover:bg-red-700 shadow-xl p-2 w-3/4 my-9 gap-2"
 					>
-						<Image src="/logout.svg" width={18} height={18}></Image>
+						<Image src="/logout.svg" width={18} height={18} alt="logout" />
 						<span>Cerrar Sesión</span>
 					</Link>
 				</div>

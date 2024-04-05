@@ -8,7 +8,7 @@ import Sidebar from '../components/sidebar.jsx'
 import Searchbar from '../components/searchbar.jsx'
 import { fetchDataBeneficiaries } from './fetch.js'
 import Image from 'next/image'
-import exportData from '../exportData.js'
+import { exportData } from '../exportData.js'
 import axios from 'axios'
 import CreateModal from './create.jsx'
 
@@ -28,6 +28,11 @@ export default function BeneficiariesList({ searchParams }) {
 	const toggleModal = () => {
 		setShowModal(!showModal)
 	}
+
+	const isMobile = () => {
+		return typeof window !== 'undefined' ? window.innerWidth <= 768 : false
+	}
+	const mobile = isMobile() ? 'false' : 'true'
 
 	const handleFileChange = async event => {
 		const selectedFile = event.target.files[0]
@@ -49,7 +54,7 @@ export default function BeneficiariesList({ searchParams }) {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const data = await fetchDataBeneficiaries(perPage, page)
+				const data = await fetchDataBeneficiaries()
 				setData(data)
 			} catch (error) {
 				console.error('Error al cargar los datos:', error)
@@ -72,21 +77,22 @@ export default function BeneficiariesList({ searchParams }) {
 					<button
 						className=" bg-green-400 h-8 w-8 rounded-full shadow-2xl mt-3 mr-2"
 						onClick={() =>
-							exportData(data, 'Beneficiados', [
-								'id',
-								'alias',
-								'birthday',
-								'isFinished'
-							])
+							exportData(data, 'Beneficiados', {
+								id: 'id',
+								alias: 'alias',
+								birthday: 'birthday',
+								isFinished: 'isFinished'
+							})
 						}
 						data-testid="export-button"
 					>
 						<Image
+							alt="Exportar a excel"
 							src="/excel.svg"
 							className="ml-2"
 							width={15}
 							height={15}
-						></Image>
+						/>
 					</button>
 					<label
 						htmlFor="file"
@@ -100,6 +106,7 @@ export default function BeneficiariesList({ searchParams }) {
 						onChange={handleFileChange}
 						style={{ display: 'none' }}
 						accept=".xls"
+						data-testid="file"
 					/>
 				</div>
 				<div className="container p-10 flex flex-wrap gap-5 justify-center items-center">
@@ -107,7 +114,7 @@ export default function BeneficiariesList({ searchParams }) {
 						{data &&
 							data.map(beneficiary => (
 								<Link
-									href={`/beneficiaries/${beneficiary.id}`}
+									href={`/beneficiaries/${beneficiary.id}?showSidebar=${mobile}`}
 									key={beneficiary.id}
 								>
 									<CardBeneficiary

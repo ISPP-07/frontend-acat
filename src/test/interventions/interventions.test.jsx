@@ -3,10 +3,21 @@ import React from 'react'
 /* eslint-enable no-unused-vars */
 import { render, waitFor, screen } from '@testing-library/react'
 import { test, expect, describe, jest } from '@jest/globals'
-import InterventionList from '../../app/interventions/InterventionList.jsx'
-import { fetchDataInterventions } from '../../app/interventions/fetch.jsx'
+import InterventionPage from '../../app/interventions/page'
+import { fetchDataInterventions } from '../../app/interventions/fetchIntervention.js'
 
-jest.mock('../../app/interventions/fetch.jsx')
+jest.mock('../../app/interventions/fetchIntervention.js')
+jest.mock('next/navigation', () => ({
+	useRouter: () => ({
+		push: jest.fn()
+	}),
+	useSearchParams: () => ({
+		get: jest.fn()
+	}),
+	usePathname: () => ({
+		get: jest.fn()
+	})
+}))
 
 describe('InterventionList', () => {
 	test('Renderizar', async () => {
@@ -29,8 +40,8 @@ describe('InterventionList', () => {
 
 		expect(data).toEqual(datos)
 
-		waitFor(() => {
-			render(<InterventionList />)
+		waitFor(async () => {
+			render(<InterventionPage />)
 			expect(screen.getByText('John Doe')).toBeInTheDocument()
 			expect(screen.getByText('Jane Doe')).toBeInTheDocument()
 		})

@@ -6,13 +6,18 @@ import Link from 'next/link'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
 
-function LoginForm() {
+function LoginForm({ onToggle }) {
 	const [showPassword, setShowPassword] = useState(false)
 
 	const togglePassword = () => {
 		setShowPassword(!showPassword)
 	}
+
 	const router = useRouter()
+
+	const isMobile = () => {
+		return typeof window !== 'undefined' ? window.innerWidth <= 768 : false
+	}
 
 	async function onSubmit(event) {
 		event.preventDefault()
@@ -21,12 +26,19 @@ function LoginForm() {
 		axios
 			.post(process.env.NEXT_PUBLIC_BASE_URL + '/shared/auth/login', formData)
 			.then(function (response) {
-				document.cookie = `access_token=${response.data.access_token}; Secure; HttpOnly; SameSite=Strict`
-				document.cookie = `refresh_token=${response.data.refresh_token}; Secure; HttpOnly; SameSite=Strict`
-				router.push('/beneficiaries')
+				localStorage.setItem('jwt', response.data.access_token)
+				localStorage.setItem('refresh', response.data.refresh_token)
+				const stateSidebar = isMobile() ? 'false' : 'true'
+				router.push(`/beneficiaries?showSidebar=${stateSidebar}`)
 			})
 			.catch(function (error) {
-				alert('Error al iniciar sesión: ' + error.response.data.detail)
+				if (error.response) {
+					if (error.response.status === 401) {
+						alert('Usuario o contraseña incorrectos')
+					}
+				} else {
+					alert('Error con el servidor')
+				}
 			})
 	}
 	return (
@@ -155,6 +167,12 @@ function LoginForm() {
 						</svg>
 					</Link>
 				</div>
+				<button
+					className="text-blue-500 mt-1 hover:text-blue-700 font-Varela py-2 px-4 rounded"
+					onClick={onToggle}
+				>
+					¿Has olvidado tu contraseña?
+				</button>
 			</form>
 		</div>
 	)

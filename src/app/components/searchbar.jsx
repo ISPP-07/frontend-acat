@@ -17,7 +17,12 @@ const Searchbar = ({
 			<div className="flex justify-around items-center md:w-full w-5/6 p-3 gap-1">
 				<div className="flex w-10/12 border-solid border-[1px] border-gray-400 rounded-full p-1 focus-within:border-black">
 					<button className="outline-none focus:outline-none pl-1">
-						<Image src="/magnifier.svg" width={18} height={18} />
+						<Image
+							alt="magnifier"
+							src="/magnifier.svg"
+							width={18}
+							height={18}
+						/>
 					</button>
 					<input
 						type="search"
@@ -27,7 +32,11 @@ const Searchbar = ({
 				</div>
 				<ButtonIcon color={'bg-blue-500'} iconpath={'/filter.svg'} />
 				<div className="lg:hidden block">
-					<ButtonIcon color={'bg-[#75AF73]'} iconpath={'/plus.svg'} />
+					<ButtonIcon
+						color={'bg-[#75AF73]'}
+						iconpath={'/plus.svg'}
+						handleClick={handleClick}
+					/>
 				</div>
 				<div className="lg:block hidden">
 					<ButtonText

@@ -5,17 +5,17 @@ import React from 'react'
 import { useRouter } from 'next/navigation'
 import axios from 'axios'
 
-export default function CreateModal({ closeModal }) {
+export function getCurrentDate() {
+	const currentDate = new Date()
+	const year = currentDate.getFullYear()
+	const month = String(currentDate.getMonth() + 1).padStart(2, '0') // Months are zero-based
+	const day = String(currentDate.getDate()).padStart(2, '0')
+
+	return `${year}-${month}-${day}`
+}
+
+function CreateModal({ closeModal }) {
 	const router = useRouter()
-
-	function getCurrentDate() {
-		const currentDate = new Date()
-		const year = currentDate.getFullYear()
-		const month = String(currentDate.getMonth() + 1).padStart(2, '0') // Months are zero-based
-		const day = String(currentDate.getDate()).padStart(2, '0')
-
-		return `${year}-${month}-${day}`
-	}
 
 	const formattedDate = getCurrentDate()
 
@@ -64,6 +64,7 @@ export default function CreateModal({ closeModal }) {
 				<form
 					onSubmit={onSubmit}
 					className="flex flex-row flex-wrap justify-center max-w-[600px] gap-3 mt-2"
+					data-testid="form"
 				>
 					<fieldset className="flex flex-col w-full md:w-5/12">
 						<label htmlFor="name" className="hidden md:block text-black">
@@ -184,7 +185,7 @@ export default function CreateModal({ closeModal }) {
 						</div>
 					</fieldset>
 					<fieldset className="flex flex-col w-full md:w-5/12">
-						<label htmlFor="dni" className="hidden md:block text-black">
+						<label htmlFor="nid" className="hidden md:block text-black">
 							DNI
 						</label>
 						<div className="relative flex items-center border-2 rounded-xl border-gray-200 bg-white">
@@ -206,8 +207,8 @@ export default function CreateModal({ closeModal }) {
 								className="flex items-center rounded-xl p-1 pl-6 w-full"
 								type="text"
 								placeholder="DNI"
-								id="dni"
-								name="dni"
+								id="nid"
+								name="nid"
 							/>
 						</div>
 					</fieldset>
@@ -250,7 +251,7 @@ export default function CreateModal({ closeModal }) {
 							<input
 								className="flex items-center rounded-xl p-1 w-full"
 								type="date"
-								id="birth_date"
+								id="birth-date"
 								name="birth_date"
 							/>
 						</div>
@@ -290,7 +291,7 @@ export default function CreateModal({ closeModal }) {
 						</div>
 					</fieldset>
 					<fieldset className="flex flex-col w-full md:w-5/12">
-						<label htmlFor="sex" className="hidden md:block text-black">
+						<label htmlFor="gender" className="hidden md:block text-black">
 							Sexo
 						</label>
 						<div className="relative flex items-center border-2 rounded-xl border-gray-200 bg-white">
@@ -313,8 +314,8 @@ export default function CreateModal({ closeModal }) {
 								className="flex items-center rounded-xl p-1 pl-6 w-full"
 								type="text"
 								placeholder="Sexo"
-								id="sex"
-								name="sex"
+								id="gender"
+								name="gender"
 							/>
 						</div>
 					</fieldset>
@@ -364,7 +365,10 @@ export default function CreateModal({ closeModal }) {
 						</div>
 					</fieldset>
 					<fieldset className="flex flex-col w-full md:w-5/12">
-						<label htmlFor="technician" className="hidden md:block text-black">
+						<label
+							htmlFor="first_technician"
+							className="hidden md:block text-black"
+						>
 							Técnico
 						</label>
 						<div className="relative flex items-center border-2 rounded-xl border-gray-200 bg-white">
@@ -387,16 +391,13 @@ export default function CreateModal({ closeModal }) {
 								className="flex items-center rounded-xl p-1 pl-6 w-full"
 								type="text"
 								placeholder="Técnico que lo ha atendido"
-								id="technician"
-								name="technician"
+								id="first_technician"
+								name="first_technician"
 							/>
 						</div>
 					</fieldset>
 					<fieldset className="flex flex-col w-full md:w-10/12">
-						<label
-							htmlFor="observation_text"
-							className="hidden md:block text-black"
-						>
+						<label htmlFor="observation" className="hidden md:block text-black">
 							Observaciones
 						</label>
 						<div className="relative flex items-start border-2 rounded-xl border-gray-200 bg-white">
@@ -420,12 +421,13 @@ export default function CreateModal({ closeModal }) {
 								type="text"
 								placeholder="Observaciones sobre el beneficiario"
 								id="observation_text"
-								name="observation_text"
+								name="observation"
 							/>
 						</div>
 					</fieldset>
 					<div className="flex justify-center w-full mt-6">
 						<input
+							data-testid="submit"
 							type="submit"
 							value="Dar de alta"
 							className="bg-green-500 hover:bg-green-700 rounded-md drop-shadow-lg p-1 cursor-pointer text-white w-3/4 md:w-2/4 text-center"
@@ -436,3 +438,4 @@ export default function CreateModal({ closeModal }) {
 		</div>
 	)
 }
+export default CreateModal

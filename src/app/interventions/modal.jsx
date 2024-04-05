@@ -54,7 +54,7 @@ export default function Modal({ isVisible, onClose, selectedIntervention }) {
 								height={66}
 								className="ml-6"
 								alt="Icono de calendario"
-							></Image>
+							/>
 						</div>
 					</div>
 					<div className="mb-1 flex">
