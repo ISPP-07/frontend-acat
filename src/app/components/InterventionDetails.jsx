@@ -46,21 +46,9 @@ export default function InterventionDetails({ intervention }) {
 		if (formData.get('date').trim() === '') {
 			valid = false
 			newError.date = 'La fecha no puede estar vacía'
-		}
-
-		if (formData.get('typology').trim() === '') {
+		} else if (new Date(formData.get('date')) > new Date()) {
 			valid = false
-			newError.typology = 'La tipología no puede estar vacía'
-		}
-
-		if (formData.get('technician').trim() === '') {
-			valid = false
-			newError.technician = 'El técnico no puede estar vacío'
-		}
-
-		if (formData.get('reason').trim() === '') {
-			valid = false
-			newError.reason = 'El motivo no puede estar vacío'
+			newError.date = 'La fecha no puede ser futura'
 		}
 
 		setErrors(newError)
@@ -116,33 +104,33 @@ export default function InterventionDetails({ intervention }) {
 	}
 
 	return (
-		<div className="flex flex-col gap-5 bg-gray-50 rounded-xl p-10 drop-shadow-lg border border-gray-300 w-[45	0px]">
-			<div className="flex gap-3 justify-end items-center w-full">
+		<div className='flex flex-col gap-5 bg-gray-50 rounded-xl p-10 drop-shadow-lg border border-gray-300 w-[45	0px]'>
+			<div className='flex gap-3 justify-end items-center w-full'>
 				<ButtonIcon
-					iconpath="/edit.svg"
+					iconpath='/edit.svg'
 					iconWidth={20}
 					iconHeight={20}
 					color={'bg-blue-500'}
 					handleClick={editView}
-					datatestid="editButton"
+					datatestid='editButton'
 				/>
 				<ButtonIcon
-					iconpath="/trash.svg"
+					iconpath='/trash.svg'
 					iconWidth={20}
 					iconHeight={20}
 					color={'bg-red-500'}
 					handleClick={toggleConfirmationModal}
-					datatestid="deleteButton"
+					datatestid='deleteButton'
 				/>
 			</div>
-			<div className="flex gap-2 items-center justify-center w-full">
+			<div className='flex gap-2 items-center justify-center w-full'>
 				<Image
-					src="/calendar.svg"
+					src='/calendar.svg'
 					width={40}
 					height={40}
-					alt="Icono de calendario"
+					alt='Icono de calendario'
 				/>
-				<h1 className="text-center font-poppins text-2xl">
+				<h1 className='text-center font-poppins text-2xl'>
 					{confirmationModal ? (
 						<strong>Borrar Intervención</strong>
 					) : !toggleEditView ? (
@@ -154,18 +142,18 @@ export default function InterventionDetails({ intervention }) {
 			</div>
 			<hr></hr>
 			{confirmationModal ? (
-				<div data-testid="modalConfirmation">
-					<h1 className="text-red-500 text-2xl text-center">¿Estas seguro?</h1>
-					<div className="flex justify-between mt-4">
+				<div data-testid='modalConfirmation'>
+					<h1 className='text-red-500 text-2xl text-center'>¿Estas seguro?</h1>
+					<div className='flex justify-between mt-4'>
 						<button
-							data-testid="confirmButton"
-							className="bg-red-500 text-white px-4 py-2 rounded-lg shadow-lg mr-2"
+							data-testid='confirmButton'
+							className='bg-red-500 text-white px-4 py-2 rounded-lg shadow-lg mr-2'
 							onClick={deleteIntervention}
 						>
 							Sí
 						</button>
 						<button
-							className="border border-gray-300 text-black px-4 py-2 rounded-lg shadow-lg"
+							className='border border-gray-300 text-black px-4 py-2 rounded-lg shadow-lg'
 							onClick={toggleConfirmationModal}
 						>
 							No
