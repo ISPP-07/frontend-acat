@@ -1,6 +1,6 @@
 'use client'
 /* eslint-disable no-unused-vars */
-import React, { Suspense, useState, useEffect } from 'react'
+import React, { useState } from 'react'
 /* eslint-enable no-unused-vars */
 import { useRouter } from 'next/navigation'
 import axios from 'axios'
@@ -51,7 +51,7 @@ function CreateModal({ closeModal }) {
             })
             .catch(function (error) {
                 alert(
-                    `Ha habido un error al crear al nuevo beneficiario: ${error.response.data.detail}`
+                    `Ha habido un error al crear al nuevo beneficiario: ${error.response.data.detail[0].msg}`
                 )
             })
     }
