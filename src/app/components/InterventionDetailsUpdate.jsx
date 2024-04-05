@@ -9,37 +9,36 @@ export default function InterventionDetailsUpdate({
 }) {
 	function formatDateDefaultValue(dateString) {
 		const date = new Date(dateString)
-		// let formattedDate = ''
-		// if (date.getFullYear() < 10) {
-		// 	formattedDate += `000${date.getFullYear()}-`
-		// } else if (date.getFullYear() < 100) {
-		// 	formattedDate += `00${date.getFullYear()}-`
-		// } else if (date.getFullYear() < 1000) {
-		// 	formattedDate += `0${date.getFullYear()}-`
-		// } else {
-		// 	formattedDate += `${date.getFullYear()}-`
-		// }
-		// if (date.getMonth() < 10) {
-		// 	formattedDate += `0${date.getMonth() + 1}-`
-		// } else {
-		// 	formattedDate += `${date.getMonth() + 1}-`
-		// }
-		// if (date.getDate() < 10) {
-		// 	formattedDate += `0${date.getDate()}T`
-		// } else {
-		// 	formattedDate += `${date.getDate()}T`
-		// }
-		// if (date.getHours() < 10) {
-		// 	formattedDate += `0${date.getHours()}:`
-		// } else {
-		// 	formattedDate += `${date.getHours()}:`
-		// }
-		// if (date.getMinutes() < 10) {
-		// 	formattedDate += `0${date.getMinutes()}`
-		// } else {
-		// 	formattedDate += `${date.getMinutes()}`
-		// }
-		const formattedDate = date.toISOString().slice(0, 16)
+		let formattedDate = ''
+		if (date.getFullYear() < 10) {
+			formattedDate += `000${date.getFullYear()}-`
+		} else if (date.getFullYear() < 100) {
+			formattedDate += `00${date.getFullYear()}-`
+		} else if (date.getFullYear() < 1000) {
+			formattedDate += `0${date.getFullYear()}-`
+		} else {
+			formattedDate += `${date.getFullYear()}-`
+		}
+		if (date.getMonth() < 10) {
+			formattedDate += `0${date.getMonth() + 1}-`
+		} else {
+			formattedDate += `${date.getMonth() + 1}-`
+		}
+		if (date.getDate() < 10) {
+			formattedDate += `0${date.getDate()}T`
+		} else {
+			formattedDate += `${date.getDate()}T`
+		}
+		if (date.getHours() < 10) {
+			formattedDate += `0${date.getHours()}:`
+		} else {
+			formattedDate += `${date.getHours()}:`
+		}
+		if (date.getMinutes() < 10) {
+			formattedDate += `0${date.getMinutes()}`
+		} else {
+			formattedDate += `${date.getMinutes()}`
+		}
 		return formattedDate
 	}
 
