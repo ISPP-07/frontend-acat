@@ -140,7 +140,6 @@ function RegisterInterventionModal({ onClickFunction }) {
 									})
 								}}
 								classNamePrefix='Selecciona un beneficiario'
-								defaultValue={{ label: 'Selecciona un beneficiario', value: 0 }}
 								isDisabled={false}
 								isLoading={false}
 								isClearable={true}
