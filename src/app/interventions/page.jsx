@@ -18,12 +18,12 @@ export default function InterventionPage() {
 	const [data, setData] = useState(null)
 	const [showModal, setShowModal] = useState(false)
 	const [page, setPage] = useState(1)
-	const [perPage, setPerPage] = useState(25)
+	const [perPage, setPerPage] = useState(20)
 
 	const selectOpts = [
-		{ label: '25', value: 25 },
-		{ label: '50', value: 50 },
-		{ label: '100', value: 100 }
+		{ label: '20', value: 20 },
+		{ label: '40', value: 40 },
+		{ label: '80', value: 80 }
 	]
 	// change when backend retrieval is updated
 	const totalPages = Math.ceil(data?.total_elements / perPage)
@@ -134,7 +134,7 @@ export default function InterventionPage() {
 						<p>Número de elementos:</p>
 						<Select
 							options={selectOpts}
-							defaultValue={{ label: '25', value: 25 }}
+							defaultValue={{ label: '20', value: 20 }}
 							isSearchable={false}
 							isClearable={false}
 							onChange={handleSelect}
