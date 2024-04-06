@@ -7,8 +7,8 @@ import { useRouter } from 'next/navigation'
 
 function CreateUserForm() {
 	const [showPassword, setShowPassword] = useState(false)
-	const [passwordMatchError, setPasswordMatchError] = useState(false)
 	const [userNameOrEmailError, setUserNameOrEmailError] = useState(false)
+	const [errors, setErrors] = useState({})
 
 	const togglePassword = () => {
 		setShowPassword(!showPassword)
@@ -16,11 +16,32 @@ function CreateUserForm() {
 
 	const router = useRouter()
 
+	function validateForm(formData) {
+		let isValid = true
+		const errors = {}
+
+		if (!validatePasswords(formData)) {
+			isValid = false
+			errors.password_conf = 'Las contraseñas no coinciden'
+		}
+
+		const email = formData.get('email').toString()
+		const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/
+
+		if (!emailRegex.test(email)) {
+			isValid = false
+			errors.email = 'Correo electrónico inválido'
+		}
+
+		setErrors(errors)
+		return isValid
+	}
+
 	async function onSubmit(event) {
 		event.preventDefault()
 		const formData = new FormData(event.target)
 
-		if (validatePasswords(formData)) {
+		if (validateForm(formData)) {
 			formData.delete('confirmPassword')
 
 			const jsonData = {
@@ -48,8 +69,6 @@ function CreateUserForm() {
 				.catch(function () {
 					setUserNameOrEmailError(true)
 				})
-		} else {
-			setPasswordMatchError(true)
 		}
 	}
 
@@ -126,6 +145,7 @@ function CreateUserForm() {
 							className='p-1 w-full'
 						/>
 					</div>
+					{errors.email && <span className='text-red-500'>{errors.email}</span>}
 				</article>
 				<article className='flex flex-col'>
 					<label htmlFor='password'>
@@ -227,8 +247,8 @@ function CreateUserForm() {
 						/>
 					</div>
 				</article>
-				{passwordMatchError && (
-					<p className='text-red-500'>Las contraseña no coincide</p>
+				{errors.password_conf && (
+					<span className='text-red-500'>{errors.password_conf}</span>
 				)}
 				<div className='flex items-center justify-center gap-5 mt-5'>
 					<input
