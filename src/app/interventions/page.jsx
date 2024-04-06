@@ -11,20 +11,23 @@ import Image from 'next/image'
 import { exportData } from '../exportData'
 import axios from 'axios'
 import RegisterInterventionModal from './RegisterInterventionModal'
+import Pagination from '@mui/material/Pagination'
+import Select from 'react-select'
 
-export default function InterventionPage({ searchParams }) {
+export default function InterventionPage() {
 	const [data, setData] = useState(null)
 	const [showModal, setShowModal] = useState(false)
+	const [page, setPage] = useState(1)
+	const [perPage, setPerPage] = useState(25)
 
-	let page = parseInt(searchParams.page, 10)
-	const perPage = 3
-	// change
-	const totalPages = Math.ceil(10 / perPage)
+	const selectOpts = [
+		{ label: '25', value: 25 },
+		{ label: '50', value: 50 },
+		{ label: '100', value: 100 }
+	]
+	// change when backend retrieval is updated
+	const totalPages = Math.ceil(data?.total_elements / perPage)
 
-	page = !page || page < 1 ? 1 : page
-
-	const prevPage = page - 1 > 0 ? page - 1 : 1
-	const nextPage = page + 1 <= totalPages ? page + 1 : totalPages
 	const toggleModal = () => {
 		setShowModal(!showModal)
 	}
@@ -49,7 +52,7 @@ export default function InterventionPage({ searchParams }) {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const data = await fetchDataInterventions()
+				const data = await fetchDataInterventions(perPage, (page - 1) * perPage)
 				setData(data)
 			} catch (error) {
 				console.error('Error al cargar los datos:', error)
@@ -59,7 +62,14 @@ export default function InterventionPage({ searchParams }) {
 			}
 		}
 		fetchData()
-	}, [])
+	}, [page, perPage])
+
+	const handlePageChange = (event, value) => {
+		setPage(value)
+	}
+	const handleSelect = opt => {
+		setPerPage(opt?.value)
+	}
 
 	return (
 		<main className="flex w-full">
@@ -100,7 +110,7 @@ export default function InterventionPage({ searchParams }) {
 				<div className="container p-10 flex flex-wrap gap-5 justify-center items-center">
 					<Suspense fallback={<div>Cargando...</div>}>
 						{data &&
-							data.map(intervention => (
+							data.elements.map(intervention => (
 								<Link
 									href={`/interventions/${intervention.id}`}
 									key={intervention.id}
@@ -113,41 +123,23 @@ export default function InterventionPage({ searchParams }) {
 							))}
 					</Suspense>
 				</div>
-				<div className="flex justify-center items-center">
-					{page === 1 ? (
-						<div
-							className="opacity-60 bg-green-400 w-20 h-6 mt-4 mr-2 rounded-full font-Varela text-white cursor-pointer text-center text-sm"
-							aria-disabled="true"
-						>
-							Anterior
-						</div>
-					) : (
-						<Link
-							href={`?page=${prevPage}`}
-							className=" bg-green-400 w-20 h-6 mt-4 mr-2 rounded-full font-Varela text-white cursor-pointer text-center text-sm"
-						>
-							Anterior
-						</Link>
-					)}
-					<div className=" bg-blue-400 w-6 h-6 mt-4 rounded-full font-Varela text-white cursor-pointer text-center text-sm">
-						{page}
+				<div className=" justify-center items-center">
+					<Pagination
+						count={totalPages}
+						initialpage={1}
+						onChange={handlePageChange}
+					/>
+					<div className="flex justify-center items-center m-2">
+						<p>Número de elementos:</p>
+						<Select
+							options={selectOpts}
+							defaultValue={{ label: '25', value: 25 }}
+							isSearchable={false}
+							isClearable={false}
+							onChange={handleSelect}
+							className="m-2"
+						/>
 					</div>
-
-					{page === totalPages ? (
-						<div
-							className="opacity-60 bg-green-400 w-20 h-6 mt-4 ml-2 rounded-full font-Varela text-white cursor-pointer text-center text-sm"
-							aria-disabled="true"
-						>
-							Siguiente
-						</div>
-					) : (
-						<Link
-							href={`?page=${nextPage}`}
-							className=" bg-green-400 w-20 h-6 mt-4  ml-2 rounded-full font-Varela text-white cursor-pointer text-center text-sm"
-						>
-							Siguiente
-						</Link>
-					)}
 				</div>
 			</div>
 			{showModal ? (
