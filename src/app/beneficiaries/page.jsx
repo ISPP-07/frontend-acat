@@ -135,11 +135,12 @@ export default function BeneficiariesList() {
 							))}
 					</Suspense>
 				</div>
-				<div className=" justify-center items-center">
+				<div>
 					<Pagination
 						count={totalPages}
 						initialpage={1}
 						onChange={handlePageChange}
+						className="flex flex-wrap justify-center items-center"
 					/>
 					<div className="flex justify-center items-center m-2">
 						<p>Número de elementos:</p>
