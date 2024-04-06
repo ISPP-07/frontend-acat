@@ -9,13 +9,15 @@ jest.mock('axios')
 
 describe('fetchDataBeneficiariesRehabilited', () => {
 	test('fetches successfully data from an API', async () => {
-		const data = [{ id: 1, name: 'John Doe', is_rehabilitated: true }]
+		const data = {
+			elements: [{ id: 1, name: 'John Doe', is_rehabilitated: true }]
+		}
 
 		axios.get.mockResolvedValue({ data })
 
 		const beneficiaries = await Rehabilited()
 
-		expect(beneficiaries).toEqual(data)
+		expect(beneficiaries).toEqual(data.elements)
 	})
 
 	test('fetches erroneously data from an API', async () => {
