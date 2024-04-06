@@ -56,7 +56,7 @@ function RegisterInterventionModal({ onClickFunction }) {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const data = await fetchDataBeneficiaries(1000, 0)
+				const data = await fetchDataBeneficiaries(null, 0)
 				setBeneficiaryOptions(
 					data.elements.map(beneficiary => ({
 						value: beneficiary.id,
