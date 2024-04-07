@@ -106,21 +106,18 @@ export default function BeneficiaryDetails({ params }) {
 			!nieRegExp.test(formData.get('nid')) ^
 			!passportRegExp.test(formData.get('nid'))
 		) {
-			if (formData.get('nid') !== '') {
+			valid = false
+			newError.nid = 'El DNI/NIE/Pasaporte no coincide con el formato esperado'
+		} else if (dniRegExp.test(formData.get('nid'))) {
+			// Validate the letter of the DNI
+			const dni = formData.get('nid')
+			const letter = dni.charAt(dni.length - 1)
+			const number = dni.slice(0, -1)
+			const letters = 'TRWAGMYFPDXBNJZSQVHLCKE'
+			const letterCorrect = letters.charAt(number % 23)
+			if (letter !== letterCorrect) {
 				valid = false
-				newError.nid =
-					'El DNI/NIE/Pasaporte no coincide con el formato esperado'
-			} else if (dniRegExp.test(formData.get('nid'))) {
-				// Validate the letter of the DNI
-				const dni = formData.get('nid')
-				const letter = dni.charAt(dni.length - 1)
-				const number = dni.slice(0, -1)
-				const letters = 'TRWAGMYFPDXBNJZSQVHLCKE'
-				const letterCorrect = letters.charAt(number % 23)
-				if (letter !== letterCorrect) {
-					valid = false
-					newError.nid = 'La letra del DNI no es correcta'
-				}
+				newError.nid = 'La letra del DNI no es correcta'
 			}
 		}
 

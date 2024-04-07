@@ -79,9 +79,6 @@ export default function BeneficiaryDetailsEdit({
 					</div>
 				</div>
 				<hr />
-				{errors?.contact_phone && (
-					<span className='text-red-500'>{errors.contact_phone}</span>
-				)}
 				<fieldset className='flex items-center gap-3'>
 					<label htmlFor='contact_phone'>
 						<Image
@@ -101,6 +98,9 @@ export default function BeneficiaryDetailsEdit({
 						data-testid='contact_phone'
 					/>
 				</fieldset>
+				{errors?.contact_phone && (
+					<span className='text-red-500'>{errors.contact_phone}</span>
+				)}
 				<fieldset className='flex items-center gap-3'>
 					<label htmlFor='address'>
 						<Image
@@ -139,7 +139,6 @@ export default function BeneficiaryDetailsEdit({
 							data-testid='dossier_number'
 						/>
 					</fieldset>
-					{errors?.nid && <span className='text-red-500'>{errors.nid}</span>}
 					<fieldset className='font-Varela text-gray-800 flex items-center'>
 						<label
 							htmlFor='nid'
@@ -157,9 +156,7 @@ export default function BeneficiaryDetailsEdit({
 							data-testid='nid'
 						/>
 					</fieldset>
-					{errors?.birth_date && (
-						<span className='text-red-500'>{errors.birth_date}</span>
-					)}
+					{errors?.nid && <span className='text-red-500'>{errors.nid}</span>}
 					<fieldset className='font-Varela text-gray-800 flex items-center'>
 						<label
 							htmlFor='birth_date'
@@ -184,6 +181,9 @@ export default function BeneficiaryDetailsEdit({
 							data-testid='birth_date'
 						/>
 					</fieldset>
+					{errors?.birth_date && (
+						<span className='text-red-500'>{errors.birth_date}</span>
+					)}
 					<fieldset className='font-Varela text-gray-800 flex items-center'>
 						<label
 							htmlFor='first_technician'
