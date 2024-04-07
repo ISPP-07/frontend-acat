@@ -11,10 +11,22 @@ import Image from 'next/image'
 import { exportData } from '../exportData.js'
 import axios from 'axios'
 import CreateModal from './create.jsx'
+import Pagination from '@mui/material/Pagination'
+import Select from 'react-select'
 
 export default function BeneficiariesList() {
 	const [data, setData] = useState(null)
 	const [showModal, setShowModal] = useState(false)
+	const [page, setPage] = useState(1)
+	const [perPage, setPerPage] = useState(20)
+
+	const selectOpts = [
+		{ label: '20', value: 20 },
+		{ label: '40', value: 40 },
+		{ label: '80', value: 80 }
+	]
+	// change when backend retrieval is updated
+	const totalPages = Math.ceil(data?.total_elements / perPage)
 
 	const toggleModal = () => {
 		setShowModal(!showModal)
@@ -45,7 +57,7 @@ export default function BeneficiariesList() {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const data = await fetchDataBeneficiaries()
+				const data = await fetchDataBeneficiaries(perPage, (page - 1) * perPage)
 				setData(data)
 			} catch (error) {
 				console.error('Error al cargar los datos:', error)
@@ -55,7 +67,14 @@ export default function BeneficiariesList() {
 			}
 		}
 		fetchData()
-	}, [])
+	}, [page, perPage])
+
+	const handlePageChange = (event, value) => {
+		setPage(value)
+	}
+	const handleSelect = opt => {
+		setPerPage(opt?.value)
+	}
 
 	return (
 		<main className="flex w-full">
@@ -103,7 +122,7 @@ export default function BeneficiariesList() {
 				<div className="container p-10 flex flex-wrap gap-5 justify-center items-center">
 					<Suspense fallback={<div>Cargando...</div>}>
 						{data &&
-							data.map(beneficiary => (
+							data.elements.map(beneficiary => (
 								<Link
 									href={`/beneficiaries/${beneficiary.id}?showSidebar=${mobile}`}
 									key={beneficiary.id}
@@ -115,6 +134,25 @@ export default function BeneficiariesList() {
 								</Link>
 							))}
 					</Suspense>
+				</div>
+				<div>
+					<Pagination
+						count={totalPages}
+						initialpage={1}
+						onChange={handlePageChange}
+						className="flex flex-wrap justify-center items-center"
+					/>
+					<div className="flex justify-center items-center m-2">
+						<p>Número de elementos:</p>
+						<Select
+							options={selectOpts}
+							defaultValue={{ label: '20', value: 20 }}
+							isSearchable={false}
+							isClearable={false}
+							onChange={handleSelect}
+							className="m-2"
+						/>
+					</div>
 				</div>
 			</div>
 			{showModal ? <CreateModal closeModal={toggleModal} /> : null}
