@@ -100,12 +100,12 @@ function CreateModal({ closeModal }) {
 		)
 		const today = new Date()
 
-		if (formData.get('birth_date') === '' || birthDate > today) {
+		if (formData.get('birth_date') !== '' || birthDate > today) {
 			valid = false
 			newError.birth_date = 'La fecha de nacimiento debe ser pasada'
 		}
 		if (
-			!formData.get('first_appointment_date') === '' &&
+			formData.get('first_appointment_date') !== '' &&
 			firstAppointmentDate > today
 		) {
 			valid = false
