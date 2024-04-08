@@ -51,7 +51,7 @@ function CreateModal({ closeModal }) {
 			})
 			.catch(function (error) {
 				alert(
-					`Ha habido un error al crear al nuevo beneficiario: ${error.response.data.detail[0].msg}`
+					`Ha habido un error al crear al nuevo beneficiario: ${error.response.data.detail}`
 				)
 			})
 	}
