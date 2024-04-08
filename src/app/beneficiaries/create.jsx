@@ -97,7 +97,7 @@ function CreateModal({ closeModal }) {
 		)
 		const today = new Date()
 
-		if (formData.get('birth_date') !== '' || birthDate > today) {
+		if (birthDate > today) {
 			valid = false
 			newError.birth_date = 'La fecha de nacimiento debe ser pasada'
 		}

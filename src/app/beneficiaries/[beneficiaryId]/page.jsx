@@ -124,7 +124,7 @@ export default function BeneficiaryDetails({ params }) {
 		const birthDate = new Date(formData.get('birth_date'))
 		const today = new Date()
 
-		if (formData.get('birth_date') === '' || birthDate > today) {
+		if (birthDate > today) {
 			valid = false
 			newError.birth_date = 'La fecha de nacimiento debe ser pasada'
 		}
