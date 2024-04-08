@@ -75,8 +75,8 @@ export default function InterventionDetailsUpdate({
 						data-testid='date'
 					/>
 				</div>
-				{errors?.date && <span className='text-red-500'>{errors.date}</span>}
 			</article>
+			{errors?.date && <span className='text-red-500'>{errors.date}</span>}
 			<article className='flex items-center w-full'>
 				<label
 					htmlFor='typology'
@@ -100,10 +100,10 @@ export default function InterventionDetailsUpdate({
 						</option>
 					</select>
 				</div>
-				{errors?.typology && (
-					<span className='text-red-500'>{errors.typology}</span>
-				)}
 			</article>
+			{errors?.typology && (
+				<span className='text-red-500'>{errors.typology}</span>
+			)}
 			<article className='flex items-center w-full'>
 				<label
 					htmlFor='technician'
@@ -121,10 +121,10 @@ export default function InterventionDetailsUpdate({
 						data-testid='technician'
 					/>
 				</div>
-				{errors?.technician && (
-					<span className='text-red-500'>{errors.technician}</span>
-				)}
 			</article>
+			{errors?.technician && (
+				<span className='text-red-500'>{errors.technician}</span>
+			)}
 			<article className='flex items-center w-full'>
 				<label
 					htmlFor='reason'
@@ -142,10 +142,8 @@ export default function InterventionDetailsUpdate({
 						data-testid='reason'
 					/>
 				</div>
-				{errors?.reason && (
-					<span className='text-red-500'>{errors.reason}</span>
-				)}
 			</article>
+			{errors?.reason && <span className='text-red-500'>{errors.reason}</span>}
 			<article className='flex flex-col'>
 				<label
 					htmlFor='observations'
