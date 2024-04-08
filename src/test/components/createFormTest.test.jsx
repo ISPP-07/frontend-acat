@@ -19,13 +19,13 @@ describe('CreateUserForm', () => {
 		expect(getByText('Usuario')).toBeDefined()
 		expect(getByText('Contraseña')).toBeDefined()
 		expect(getByTestId('passwordConfirm-input')).toBeDefined()
-		expect(getByLabelText('Usuario')).toBeDefined()
-		expect(getByLabelText('Contraseña')).toBeDefined()
+		expect(getByLabelText('Usuario *')).toBeDefined()
+		expect(getByLabelText('Contraseña *')).toBeDefined()
 		expect(getByTestId('passwordConfirm-input')).toBeDefined()
 	})
 	test('Password input is hidden by default', () => {
 		const { getByLabelText } = render(<CreateUserForm />)
-		const passwordInput = getByLabelText('Contraseña')
+		const passwordInput = getByLabelText('Contraseña *')
 		expect(passwordInput.type).toBe('password')
 	})
 	test('Toggle Password', () => {

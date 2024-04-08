@@ -51,7 +51,7 @@ describe('InterventionDetailsUpdate', () => {
 	test('renders the typology input with default value', () => {
 		const typologyInput = screen.getByTestId('typology')
 		expect(typologyInput).toBeDefined()
-		expect(typologyInput.value).toBe('Type A')
+		expect(typologyInput.value).toBe('Otro')
 	})
 
 	test('renders the technician input with default value', () => {

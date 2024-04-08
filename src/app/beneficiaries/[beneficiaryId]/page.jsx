@@ -106,17 +106,25 @@ export default function BeneficiaryDetails({ params }) {
 			!nieRegExp.test(formData.get('nid')) ^
 			!passportRegExp.test(formData.get('nid'))
 		) {
-			if (formData.get('nid') !== '') {
+			valid = false
+			newError.nid = 'El DNI/NIE/Pasaporte no coincide con el formato esperado'
+		} else if (dniRegExp.test(formData.get('nid'))) {
+			// Validate the letter of the DNI
+			const dni = formData.get('nid')
+			const letter = dni.charAt(dni.length - 1)
+			const number = dni.slice(0, -1)
+			const letters = 'TRWAGMYFPDXBNJZSQVHLCKE'
+			const letterCorrect = letters.charAt(number % 23)
+			if (letter !== letterCorrect) {
 				valid = false
-				newError.nid =
-					'El DNI/NIE/Pasaporte no coincide con el formato esperado'
+				newError.nid = 'La letra del DNI no es correcta'
 			}
 		}
 
 		const birthDate = new Date(formData.get('birth_date'))
 		const today = new Date()
 
-		if (formData.get('birth_date') === '' || birthDate > today) {
+		if (birthDate > today) {
 			valid = false
 			newError.birth_date = 'La fecha de nacimiento debe ser pasada'
 		}
@@ -196,7 +204,7 @@ export default function BeneficiaryDetails({ params }) {
 	}, [])
 
 	return (
-		<main className="flex w-full">
+		<main className='flex w-full'>
 			<Suspense fallback={<div></div>}>
 				<Sidebar />
 			</Suspense>
@@ -220,8 +228,8 @@ export default function BeneficiaryDetails({ params }) {
 				))}
 			{toggleDeleteView && (
 				<ModalConfirmation
-					title="¿Estás seguro?"
-					message="Si aceptas borrarás permanentemente el usuario."
+					title='¿Estás seguro?'
+					message='Si aceptas borrarás permanentemente el usuario.'
 					handleCancel={deleteView}
 					handleConfirm={deleteBeneficiary}
 				/>
