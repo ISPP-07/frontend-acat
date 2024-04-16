@@ -45,122 +45,128 @@ export default function InterventionDetailsUpdate({
 	return (
 		<form
 			onSubmit={onSubmit}
-			className="flex flex-col gap-3 w-full"
-			data-testid="form"
+			className='flex flex-col gap-3 w-full'
+			data-testid='form'
 		>
-			<article className="flex items-center w-full">
-				<p className="font-Varela w-fit text-blue-500 font-bold mr-2">
+			<article className='flex items-center w-full'>
+				<p className='font-Varela w-fit text-blue-500 font-bold mr-2'>
 					Paciente:
 				</p>
-				<div className="flex items-center w-full border-gray-200">
-					<p className="p-1 w-full rounded-xl bg-gray-50">
+				<div className='flex items-center w-full border-gray-200'>
+					<p className='p-1 w-full rounded-xl bg-gray-50'>
 						{intervention.patient.alias}
 					</p>
 				</div>
 			</article>
-			{errors?.date && <span className="text-red-500">{errors.date}</span>}
-			<article className="flex items-center w-full">
+			<article className='flex items-center w-full'>
 				<label
-					htmlFor="date"
-					className="font-Varela w-fit text-blue-500 font-bold mr-2"
+					htmlFor='date'
+					className='font-Varela w-fit text-blue-500 font-bold mr-2'
 				>
 					Fecha de atención:
 				</label>
-				<div className="flex items-center w-full border-2 rounded-xl border-gray-200 bg-white">
+				<div className='flex items-center w-full border-2 rounded-xl border-gray-200 bg-white'>
 					<input
-						type="datetime-local"
-						id="date"
-						name="date"
-						className="p-1 w-full rounded-xl bg-white placeholder-black"
+						type='datetime-local'
+						id='date'
+						name='date'
+						className='p-1 w-full rounded-xl bg-white placeholder-black'
 						defaultValue={formatDateDefaultValue(intervention.date)}
-						data-testid="date"
+						data-testid='date'
 					/>
 				</div>
 			</article>
-			{errors?.typology && (
-				<span className="text-red-500">{errors.typology}</span>
-			)}
-			<article className="flex items-center w-full">
+			{errors?.date && <span className='text-red-500'>{errors.date}</span>}
+			<article className='flex items-center w-full'>
 				<label
-					htmlFor="typology"
-					className="font-Varela w-fit text-blue-500 font-bold mr-2"
+					htmlFor='typology'
+					className='font-Varela w-fit text-blue-500 font-bold mr-2'
 				>
 					Tipología:
 				</label>
-				<div className="flex items-center w-full border-2 rounded-xl border-gray-200 bg-white">
-					<input
-						type="text"
-						id="typology"
-						name="typology"
+				<div className='flex items-center w-full border-2 rounded-xl border-gray-200 bg-white'>
+					<select
+						name='typology'
+						id='typology'
+						className='flex items-center rounded-xl p-1 pl-6 w-full bg-white'
 						defaultValue={intervention.typology}
-						className="p-1 w-full rounded-xl bg-white placeholder-black"
-						data-testid="typology"
+						data-testid='typology'
+					>
+						<option value='Otro'>Otro</option>
+						<option value='Prevención'>Prevención</option>
+						<option value='Atención'>Atención</option>
+						<option value='Incorporación sociolaboral'>
+							Incorporación sociolaboral
+						</option>
+					</select>
+				</div>
+			</article>
+			{errors?.typology && (
+				<span className='text-red-500'>{errors.typology}</span>
+			)}
+			<article className='flex items-center w-full'>
+				<label
+					htmlFor='technician'
+					className='font-Varela w-fit text-blue-500 font-bold mr-2'
+				>
+					Técnico:
+				</label>
+				<div className='flex items-center w-full border-2 rounded-xl border-gray-200 bg-white'>
+					<input
+						type='text'
+						id='technician'
+						name='technician'
+						defaultValue={intervention.technician}
+						className='p-1 w-full rounded-xl bg-white placeholder-black'
+						data-testid='technician'
 					/>
 				</div>
 			</article>
 			{errors?.technician && (
-				<span className="text-red-500">{errors.technician}</span>
+				<span className='text-red-500'>{errors.technician}</span>
 			)}
-			<article className="flex items-center w-full">
+			<article className='flex items-center w-full'>
 				<label
-					htmlFor="technician"
-					className="font-Varela w-fit text-blue-500 font-bold mr-2"
-				>
-					Técnico:
-				</label>
-				<div className="flex items-center w-full border-2 rounded-xl border-gray-200 bg-white">
-					<input
-						type="text"
-						id="technician"
-						name="technician"
-						defaultValue={intervention.technician}
-						className="p-1 w-full rounded-xl bg-white placeholder-black"
-						data-testid="technician"
-					/>
-				</div>
-			</article>
-			{errors?.reason && <span className="text-red-500">{errors.reason}</span>}
-			<article className="flex items-center w-full">
-				<label
-					htmlFor="reason"
-					className="font-Varela w-fit text-blue-500 font-bold mr-2"
+					htmlFor='reason'
+					className='font-Varela w-fit text-blue-500 font-bold mr-2'
 				>
 					Motivo:
 				</label>
-				<div className="flex items-center w-full border-2 rounded-xl border-gray-200 bg-white">
+				<div className='flex items-center w-full border-2 rounded-xl border-gray-200 bg-white'>
 					<input
-						type="text"
-						id="reason"
-						name="reason"
+						type='text'
+						id='reason'
+						name='reason'
 						defaultValue={intervention.reason}
-						className="p-1 w-full rounded-xl bg-white placeholder-black"
-						data-testid="reason"
+						className='p-1 w-full rounded-xl bg-white placeholder-black'
+						data-testid='reason'
 					/>
 				</div>
 			</article>
-			<article className="flex flex-col">
+			{errors?.reason && <span className='text-red-500'>{errors.reason}</span>}
+			<article className='flex flex-col'>
 				<label
-					htmlFor="observations"
-					className="font-Varela text-blue-500 font-bold mr-2"
+					htmlFor='observations'
+					className='font-Varela text-blue-500 font-bold mr-2'
 				>
 					Observaciones:
 				</label>
-				<div className="flex items-center border-2 rounded-xl border-gray-200 bg-white">
+				<div className='flex items-center border-2 rounded-xl border-gray-200 bg-white'>
 					<textarea
-						className="flex items-center rounded-xl p-1 w-full bg-white placeholder-black"
-						type="text"
+						className='flex items-center rounded-xl p-1 w-full bg-white placeholder-black'
+						type='text'
 						defaultValue={intervention.observations}
-						id="observations"
-						name="observations"
-						data-testid="observations"
+						id='observations'
+						name='observations'
+						data-testid='observations'
 					/>
 				</div>
 			</article>
-			<div className="flex items-center w-full justify-center gap-5 mt-5">
+			<div className='flex items-center w-full justify-center gap-5 mt-5'>
 				<input
-					type="submit"
-					value="Confirmar cambios"
-					className="bg-green-500 rounded-md drop-shadow-lg p-1 cursor-pointer text-white w-3/4"
+					type='submit'
+					value='Confirmar cambios'
+					className='bg-green-500 rounded-md drop-shadow-lg p-1 cursor-pointer text-white w-3/4'
 				/>
 			</div>
 		</form>

@@ -113,17 +113,25 @@ export default function BeneficiaryDetails({ params }) {
 			!nieRegExp.test(formData.get('nid')) ^
 			!passportRegExp.test(formData.get('nid'))
 		) {
-			if (formData.get('nid') !== '') {
+			valid = false
+			newError.nid = 'El DNI/NIE/Pasaporte no coincide con el formato esperado'
+		} else if (dniRegExp.test(formData.get('nid'))) {
+			// Validate the letter of the DNI
+			const dni = formData.get('nid')
+			const letter = dni.charAt(dni.length - 1)
+			const number = dni.slice(0, -1)
+			const letters = 'TRWAGMYFPDXBNJZSQVHLCKE'
+			const letterCorrect = letters.charAt(number % 23)
+			if (letter !== letterCorrect) {
 				valid = false
-				newError.nid =
-					'El DNI/NIE/Pasaporte no coincide con el formato esperado'
+				newError.nid = 'La letra del DNI no es correcta'
 			}
 		}
 
 		const birthDate = new Date(formData.get('birth_date'))
 		const today = new Date()
 
-		if (formData.get('birth_date') === '' || birthDate > today) {
+		if (birthDate > today) {
 			valid = false
 			newError.birth_date = 'La fecha de nacimiento debe ser pasada'
 		}
@@ -244,7 +252,7 @@ export default function BeneficiaryDetails({ params }) {
 	}
 
 	return (
-		<main className="flex w-full">
+		<main className='flex w-full'>
 			<Suspense fallback={<div></div>}>
 				<Sidebar />
 			</Suspense>
@@ -268,49 +276,49 @@ export default function BeneficiaryDetails({ params }) {
 				))}
 			{toggleDeleteView && (
 				<ModalConfirmation
-					title="¿Estás seguro?"
-					message="Si aceptas borrarás permanentemente el usuario."
+					title='¿Estás seguro?'
+					message='Si aceptas borrarás permanentemente el usuario.'
 					handleCancel={deleteView}
 					handleConfirm={deleteBeneficiary}
 				/>
 			)}
-			<div className="container p-10 flex flex-wrap gap-5 justify-center font-Varela overflow-y-auto">
-				<div className="w-full overflow-x-auto">
-					<span className="font-Varela text-black text-2xl font-bold">
+			<div className='container p-10 flex flex-wrap gap-5 justify-center font-Varela overflow-y-auto'>
+				<div className='w-full overflow-x-auto'>
+					<span className='font-Varela text-black text-2xl font-bold'>
 						Intervenciones
 					</span>
-					<div className="flex gap-4 items-center">
-						<div className="p-2">
-							<label htmlFor="startDate">Fecha de inicio:</label>
+					<div className='flex gap-4 items-center'>
+						<div className='p-2'>
+							<label htmlFor='startDate'>Fecha de inicio:</label>
 							<input
-								className="ml-2 border border-blue-400 rounded-md p-1"
-								type="date"
-								id="startDate"
-								name="startDate"
+								className='ml-2 border border-blue-400 rounded-md p-1'
+								type='date'
+								id='startDate'
+								name='startDate'
 								value={startDate}
 								onChange={e => setStartDate(e.target.value)}
 							/>
 						</div>
-						<div className="p-2">
-							<label htmlFor="endDate">Fecha de fin:</label>
+						<div className='p-2'>
+							<label htmlFor='endDate'>Fecha de fin:</label>
 							<input
-								className="ml-2 border border-blue-400 rounded-md p-1"
-								type="date"
-								id="endDate"
-								name="endDate"
+								className='ml-2 border border-blue-400 rounded-md p-1'
+								type='date'
+								id='endDate'
+								name='endDate'
 								value={endDate}
 								onChange={e => setEndDate(e.target.value)}
-								placeholder="Fecha fin"
+								placeholder='Fecha fin'
 							/>
 						</div>
 						<button
-							className="bg-blue-500 text-white px-4 py-2 rounded-md"
+							className='bg-blue-500 text-white px-4 py-2 rounded-md'
 							onClick={handleResetFilters}
 						>
 							Resetear
 						</button>
 					</div>
-					<div className="container p-10 flex flex-wrap gap-5 justify-center items-center">
+					<div className='container p-10 flex flex-wrap gap-5 justify-center items-center'>
 						<Suspense fallback={<div>Cargando...</div>}>
 							{interventions &&
 								interventions.map(intervention => (
