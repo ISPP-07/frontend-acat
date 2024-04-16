@@ -252,87 +252,91 @@ export default function BeneficiaryDetails({ params }) {
 	}
 
 	return (
-		<main className='flex w-full'>
+		<main className='flex flex-auto w-full'>
 			<Suspense fallback={<div></div>}>
 				<Sidebar />
 			</Suspense>
-			{beneficiary &&
-				(toggleEditView ? (
-					<BeneficiaryDetailsEdit
-						beneficiary={beneficiary}
-						onSubmit={onSubmit}
-						deleteView={deleteView}
-						handleToggle={handleToggle}
-						setBeneficiary={setBeneficiary}
-						errors={errors}
-					/>
-				) : (
-					<BeneficiaryDetailsView
-						beneficiary={beneficiary}
-						editView={editView}
-						deleteView={deleteView}
-						handleToggle={handleToggle}
-					/>
-				))}
-			{toggleDeleteView && (
-				<ModalConfirmation
-					title='¿Estás seguro?'
-					message='Si aceptas borrarás permanentemente el usuario.'
-					handleCancel={deleteView}
-					handleConfirm={deleteBeneficiary}
-				/>
-			)}
-			<div className='container p-10 flex flex-wrap gap-5 justify-center font-Varela overflow-y-auto'>
-				<div className='w-full overflow-x-auto'>
-					<span className='font-Varela text-black text-2xl font-bold'>
-						Intervenciones
-					</span>
-					<div className='flex gap-4 items-center'>
-						<div className='p-2'>
-							<label htmlFor='startDate'>Fecha de inicio:</label>
-							<input
-								className='ml-2 border border-blue-400 rounded-md p-1'
-								type='date'
-								id='startDate'
-								name='startDate'
-								value={startDate}
-								onChange={e => setStartDate(e.target.value)}
+			<div className='flex flex-wrap'>
+				<div>
+					{beneficiary &&
+						(toggleEditView ? (
+							<BeneficiaryDetailsEdit
+								beneficiary={beneficiary}
+								onSubmit={onSubmit}
+								deleteView={deleteView}
+								handleToggle={handleToggle}
+								setBeneficiary={setBeneficiary}
+								errors={errors}
 							/>
-						</div>
-						<div className='p-2'>
-							<label htmlFor='endDate'>Fecha de fin:</label>
-							<input
-								className='ml-2 border border-blue-400 rounded-md p-1'
-								type='date'
-								id='endDate'
-								name='endDate'
-								value={endDate}
-								onChange={e => setEndDate(e.target.value)}
-								placeholder='Fecha fin'
+						) : (
+							<BeneficiaryDetailsView
+								beneficiary={beneficiary}
+								editView={editView}
+								deleteView={deleteView}
+								handleToggle={handleToggle}
 							/>
+						))}
+					{toggleDeleteView && (
+						<ModalConfirmation
+							title='¿Estás seguro?'
+							message='Si aceptas borrarás permanentemente el usuario.'
+							handleCancel={deleteView}
+							handleConfirm={deleteBeneficiary}
+						/>
+					)}
+				</div>
+				<div className='p-10 flex-1 flex flex-wrap gap-5 justify-center font-Varela overflow-y-auto min-w-[400px]'>
+					<div className='w-full overflow-x-auto'>
+						<span className='font-Varela text-black text-2xl font-bold'>
+							Intervenciones
+						</span>
+						<div className='flex flex-wrap gap-4 items-center'>
+							<div className='p-2'>
+								<label htmlFor='startDate'>Fecha de inicio:</label>
+								<input
+									className='ml-2 border border-blue-400 rounded-md p-1'
+									type='date'
+									id='startDate'
+									name='startDate'
+									value={startDate}
+									onChange={e => setStartDate(e.target.value)}
+								/>
+							</div>
+							<div className='p-2'>
+								<label htmlFor='endDate'>Fecha de fin:</label>
+								<input
+									className='ml-2 border border-blue-400 rounded-md p-1'
+									type='date'
+									id='endDate'
+									name='endDate'
+									value={endDate}
+									onChange={e => setEndDate(e.target.value)}
+									placeholder='Fecha fin'
+								/>
+							</div>
+							<button
+								className='bg-blue-500 text-white px-4 py-2 rounded-md'
+								onClick={handleResetFilters}
+							>
+								Resetear
+							</button>
 						</div>
-						<button
-							className='bg-blue-500 text-white px-4 py-2 rounded-md'
-							onClick={handleResetFilters}
-						>
-							Resetear
-						</button>
-					</div>
-					<div className='container p-10 flex flex-wrap gap-5 justify-center items-center'>
-						<Suspense fallback={<div>Cargando...</div>}>
-							{interventions &&
-								interventions.map(intervention => (
-									<Link
-										href={`/interventions/${intervention.id}`}
-										key={intervention.id}
-									>
-										<CardIntervention
+						<div className='p-10 flex flex-wrap gap-5 justify-center items-center overflow-y-scroll h-screen'>
+							<Suspense fallback={<div>Cargando...</div>}>
+								{interventions &&
+									interventions.map(intervention => (
+										<Link
+											href={`/interventions/${intervention.id}`}
 											key={intervention.id}
-											intervention={intervention}
-										/>
-									</Link>
-								))}
-						</Suspense>
+										>
+											<CardIntervention
+												key={intervention.id}
+												intervention={intervention}
+											/>
+										</Link>
+									))}
+							</Suspense>
+						</div>
 					</div>
 				</div>
 			</div>
