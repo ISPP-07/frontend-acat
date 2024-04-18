@@ -1,6 +1,6 @@
 'use client'
 /* eslint-disable no-unused-vars */
-import React, { useState, Suspense } from 'react'
+import React, { useState, useEffect, Suspense } from 'react'
 /* eslint-enable no-unused-vars */
 import qrImage from 'qr-image'
 import axios from 'axios'
@@ -10,13 +10,17 @@ import { createAxiosInterceptors } from '../axiosConfig.js'
 
 export default function ChangePassword() {
 	const [qrText, setQrText] = useState('')
+	const [jwt, setJwt] = useState('')
 
-	createAxiosInterceptors()
+	useEffect(() => {
+		createAxiosInterceptors()
 
-	const jwt = localStorage.getItem('jwt')
-	if (!jwt) {
-		window.location.href = '/'
-	}
+		const jwt = localStorage.getItem('jwt')
+		if (!jwt) {
+			window.location.href = '/'
+		}
+		setJwt(jwt)
+	}, [])
 
 	const getLocalAccessToken = () => {
 		return jwt
