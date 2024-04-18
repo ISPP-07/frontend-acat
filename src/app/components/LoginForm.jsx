@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 /* eslint-enable no-unused-vars */
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
+import { createAxiosInterceptors } from '../axiosConfig.js'
 
 function LoginForm({ onToggle }) {
 	const [showPassword, setShowPassword] = useState(false)
@@ -47,6 +48,9 @@ function LoginForm({ onToggle }) {
 			.then(function (response) {
 				localStorage.setItem('jwt', response.data.access_token)
 				localStorage.setItem('refresh', response.data.refresh_token)
+
+				createAxiosInterceptors()
+
 				const stateSidebar = isMobile() ? 'false' : 'true'
 				router.push(`/beneficiaries?showSidebar=${stateSidebar}`)
 			})

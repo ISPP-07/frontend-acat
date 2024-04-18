@@ -5,11 +5,13 @@ import React, { Suspense, useEffect, useState } from 'react'
 import InterventionDetails from '../../components/InterventionDetails'
 import Sidebar from '../../components/sidebar'
 import { fetchDataIntervention } from './fetch'
+import { createAxiosInterceptors } from '../../axiosConfig'
 
 export default function Page({ params }) {
 	const [intervention, setIntervention] = useState(null)
 
 	useEffect(() => {
+		createAxiosInterceptors()
 		const fetchData = async () => {
 			try {
 				const intervention = await fetchDataIntervention(params.interventionId)
@@ -24,11 +26,11 @@ export default function Page({ params }) {
 		fetchData()
 	}, [])
 	return (
-		<main className="flex bg-white wallpaper w-screen h-screen text-black">
+		<main className='flex bg-white wallpaper w-screen h-screen text-black'>
 			<Suspense fallback={<div></div>}>
-				<Sidebar className="relative" />
+				<Sidebar className='relative' />
 			</Suspense>
-			<div className="w-full h-full flex items-center justify-center">
+			<div className='w-full h-full flex items-center justify-center'>
 				<InterventionDetails intervention={intervention} />
 			</div>
 		</main>

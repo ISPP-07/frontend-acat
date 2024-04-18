@@ -10,6 +10,7 @@ import { Rehabilited } from './fetch.js'
 import Image from 'next/image'
 import { exportData } from '../../exportData.js'
 import CreateModal from '../create.jsx'
+import { createAxiosInterceptors } from '../../axiosConfig'
 
 export default function BeneficiariesList() {
 	const [data, setData] = useState(null)
@@ -20,6 +21,7 @@ export default function BeneficiariesList() {
 	}
 
 	useEffect(() => {
+		createAxiosInterceptors()
 		const fetchData = async () => {
 			try {
 				const data = await Rehabilited()
@@ -35,15 +37,15 @@ export default function BeneficiariesList() {
 	}, [])
 
 	return (
-		<main className="flex w-full">
+		<main className='flex w-full'>
 			<Suspense fallback={<div></div>}>
 				<Sidebar />
 			</Suspense>
-			<div className="w-full h-full flex flex-col items-center">
-				<Searchbar handleClick={toggleModal} stext="Dar de alta" />
-				<div className="flex flex-row">
+			<div className='w-full h-full flex flex-col items-center'>
+				<Searchbar handleClick={toggleModal} stext='Dar de alta' />
+				<div className='flex flex-row'>
 					<button
-						className=" bg-green-400 h-8 w-8 rounded-full shadow-2xl mt-3 mr-2"
+						className=' bg-green-400 h-8 w-8 rounded-full shadow-2xl mt-3 mr-2'
 						onClick={() =>
 							exportData(data, 'Beneficiados', {
 								id: 'id',
@@ -52,18 +54,18 @@ export default function BeneficiariesList() {
 								isFinished: 'isFinished'
 							})
 						}
-						data-testid="export-button"
+						data-testid='export-button'
 					>
 						<Image
-							alt="Exportar a excel"
-							src="/excel.svg"
-							className="ml-2"
+							alt='Exportar a excel'
+							src='/excel.svg'
+							className='ml-2'
 							width={15}
 							height={15}
 						/>
 					</button>
 				</div>
-				<div className="container p-10 flex flex-wrap gap-5 justify-center items-center">
+				<div className='container p-10 flex flex-wrap gap-5 justify-center items-center'>
 					<Suspense fallback={<div>Cargando...</div>}>
 						{data &&
 							data.map(beneficiary => (
