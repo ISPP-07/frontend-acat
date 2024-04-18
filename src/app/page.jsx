@@ -11,6 +11,12 @@ export default function Home() {
 	const toggleForgotPassword = () => {
 		setForgotPassword(!forgotPassword)
 	}
+
+	const handleDonationClick = () => {
+		const URL = process.env.NEXT_PUBLIC_STRIPE_BASE_URL
+		window.location.href = URL
+	}
+
 	return (
 		<main className="flex flex-col lg:flex-row items-center justify-around w-screen h-screen text-black">
 			<Image
@@ -33,6 +39,12 @@ export default function Home() {
 				) : (
 					<LoginForm onToggle={() => toggleForgotPassword(true)} />
 				)}
+				<button
+					onClick={handleDonationClick}
+					className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex flex-col items-center"
+				>
+					Donar €
+				</button>
 			</div>
 		</main>
 	)
