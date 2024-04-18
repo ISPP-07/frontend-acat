@@ -16,7 +16,10 @@ import Select from 'react-select'
 
 export default function InterventionPage() {
 	const [data, setData] = useState(null)
+	const [filteredData, setFilteredData] = useState(null)
 	const [showModal, setShowModal] = useState(false)
+	const [startDate, setStartDate] = useState(null)
+	const [endDate, setEndDate] = useState(null)
 	const [page, setPage] = useState(1)
 	const [perPage, setPerPage] = useState(20)
 
@@ -52,8 +55,31 @@ export default function InterventionPage() {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const data = await fetchDataInterventions(perPage, (page - 1) * perPage)
-				setData(data)
+				const data1 = await fetchDataInterventions(
+					perPage,
+					(page - 1) * perPage
+				)
+				setData(data1.elements)
+				let filteredIntervention = data1.elements
+				if (startDate && endDate) {
+					filteredIntervention = data.filter(intervention => {
+						const expDate = new Date(intervention.date)
+						return (
+							expDate >= new Date(startDate) && expDate <= new Date(endDate)
+						)
+					})
+				} else if (startDate && !endDate) {
+					filteredIntervention = data.filter(intervention => {
+						const expDate = new Date(intervention.date)
+						return expDate >= new Date(startDate)
+					})
+				} else if (!startDate && endDate) {
+					filteredIntervention = data.filter(intervention => {
+						const expDate = new Date(intervention.date)
+						return expDate <= new Date(endDate)
+					})
+				}
+				setFilteredData(filteredIntervention)
 			} catch (error) {
 				console.error('Error al cargar los datos:', error)
 				alert(
@@ -62,7 +88,24 @@ export default function InterventionPage() {
 			}
 		}
 		fetchData()
-	}, [page, perPage])
+	}, [page, perPage, startDate, endDate])
+
+	const handleSearch = searchTerm => {
+		if (!searchTerm) {
+			setData(data)
+			setFilteredData(data)
+		} else {
+			const filtered = data.filter(
+				intervention =>
+					intervention.patient.name
+						.toLowerCase()
+						.includes(searchTerm.toLowerCase()) ||
+					intervention.typology.toString().includes(searchTerm.toLowerCase()) ||
+					intervention.reason.toLowerCase().includes(searchTerm.toLowerCase())
+			)
+			setFilteredData(filtered)
+		}
+	}
 
 	const handlePageChange = (event, value) => {
 		setPage(value)
@@ -77,7 +120,16 @@ export default function InterventionPage() {
 				<Sidebar />
 			</Suspense>
 			<div className="w-full h-full flex flex-col items-center">
-				<Searchbar handleClick={toggleModal} text="Registrar intervención" />
+				<Searchbar
+					handleClick={toggleModal}
+					handleSearch={handleSearch}
+					text="Registrar intervención"
+					page="interventions"
+					startDate={startDate}
+					endDate={endDate}
+					handleStartDateChange={e => setStartDate(e.target.value)}
+					handleEndDateChange={e => setEndDate(e.target.value)}
+				/>
 				<div className="flex flex-row">
 					<button
 						className=" bg-green-400 h-8 w-8 rounded-full shadow-2xl mt-3 mr-2"
@@ -109,8 +161,8 @@ export default function InterventionPage() {
 				</div>
 				<div className="container p-10 flex flex-wrap gap-5 justify-center items-center">
 					<Suspense fallback={<div>Cargando...</div>}>
-						{data &&
-							data.elements.map(intervention => (
+						{filteredData &&
+							filteredData.map(intervention => (
 								<Link
 									href={`/interventions/${intervention.id}`}
 									key={intervention.id}
