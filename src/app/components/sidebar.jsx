@@ -5,15 +5,12 @@ import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 /* eslint-enable no-unused-vars */
 import { useSearchParams, usePathname, useRouter } from 'next/navigation'
-import axios from 'axios'
 import SidebarEntry from './sidebarEntry'
-import { createAxiosInterceptors } from '../axiosConfig'
 
 export default function Sidebar() {
 	const searchParams = useSearchParams()
 	const pathname = usePathname()
 	const { replace } = useRouter()
-	const [isMaster, setIsMaster] = useState(false)
 
 	// Check if user is MASTER
 	useEffect(() => {
@@ -21,22 +18,6 @@ export default function Sidebar() {
 		if (!jwt) {
 			window.location.href = '/'
 		}
-		createAxiosInterceptors()
-		const getIsMaster = async response => {
-			await axios
-				.get(process.env.NEXT_PUBLIC_BASE_URL + '/shared/auth/master', {
-					headers: {
-						Authorization: `Bearer ${jwt}`
-					}
-				})
-				.then(res => {
-					setIsMaster(res.data.is_master)
-				})
-				.catch(_ => {
-					setIsMaster(false)
-				})
-		}
-		getIsMaster()
 	}, [])
 
 	const isMobile = () => {
@@ -66,23 +47,19 @@ export default function Sidebar() {
 			link: '/passwords',
 			icon: '/bell.svg',
 			text: 'Cambiar contraseña'
+		},
+		{
+			link: `/users?showSidebar=${initialState}`,
+			icon: '/face.svg',
+			text: 'Usuarios'
+		},
+		{
+			link: `/create-user?showSidebar=${initialState}`,
+			icon: '/face-plus.svg',
+			text: 'Crear nuevo usuario',
+			subentry: true
 		}
 	]
-	if (isMaster) {
-		links.push(
-			{
-				link: `/users?showSidebar=${initialState}`,
-				icon: '/face.svg',
-				text: 'Usuarios'
-			},
-			{
-				link: `/create-user?showSidebar=${initialState}`,
-				icon: '/face-plus.svg',
-				text: 'Crear nuevo usuario',
-				subentry: true
-			}
-		)
-	}
 
 	const state = searchParams?.get('showSidebar') === 'true'
 
