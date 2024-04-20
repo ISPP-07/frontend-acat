@@ -30,21 +30,27 @@ export default function Home() {
 				}}
 				quality={100}
 			/>
+			<div className="flex flex-col items-center p-4 bg-white shadow-lg rounded-lg">
+				<Image src="/acatlogo.png" alt="ACAT Logo" width={600} height={800} />
 
-			<Image src="/acatlogo.png" alt="ACAT Logo" width={600} height={800} />
-
+				<div className="mt-4 text-center">
+					<p className="text-lg text-gray-700 font-semibold mb-2">
+						Donar a ACAT para ayudar a reinsertarse en la sociedad.
+					</p>
+					<button
+						onClick={handleDonationClick}
+						className="bg-green-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:-translate-y-1"
+					>
+						Donar €
+					</button>
+				</div>
+			</div>
 			<div className="flex flex-col items-center">
 				{forgotPassword ? (
 					<UpdatePasswordForm onToggle={() => toggleForgotPassword(false)} />
 				) : (
 					<LoginForm onToggle={() => toggleForgotPassword(true)} />
 				)}
-				<button
-					onClick={handleDonationClick}
-					className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex flex-col items-center"
-				>
-					Donar €
-				</button>
 			</div>
 		</main>
 	)
