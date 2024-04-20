@@ -120,6 +120,7 @@ export default function BeneficiariesList() {
 					page="beneficiaries"
 					datosSelect={genders}
 					handleSelectChange={handleSelectChange}
+					searchText="Buscar beneficiario por nombre o alias"
 				/>
 				<div className="flex flex-row">
 					<button

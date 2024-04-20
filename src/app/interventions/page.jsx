@@ -129,6 +129,7 @@ export default function InterventionPage() {
 					endDate={endDate}
 					handleStartDateChange={e => setStartDate(e.target.value)}
 					handleEndDateChange={e => setEndDate(e.target.value)}
+					searchText="Buscar intervención por nombre, tipo o motivo"
 				/>
 				<div className="flex flex-row">
 					<button
