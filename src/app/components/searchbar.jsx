@@ -101,6 +101,23 @@ const Searchbar = ({
 								onChange={handleEndDateChange}
 							/>
 						</div>
+						{page === 'interventions' && (
+							<div className="p-2">
+								<label htmlFor="deliveryState">Typologia:</label>
+								<select
+									id="deliveryState"
+									className="w-full border border-gray-300 rounded-md p-1 mt-1"
+									onChange={handleSelectChange}
+								>
+									<option value="">Seleccione...</option>
+									{datosSelect.map(state => (
+										<option key={state.id} value={state.value}>
+											{state.label}
+										</option>
+									))}
+								</select>
+							</div>
+						)}
 					</>
 				)}
 				<div className="lg:hidden block">

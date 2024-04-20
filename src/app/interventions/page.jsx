@@ -28,6 +28,28 @@ export default function InterventionPage() {
 		{ label: '40', value: 40 },
 		{ label: '80', value: 80 }
 	]
+
+	const typologyOpts = [
+		{ label: 'Prevención', value: 'Prevención' },
+		{ label: 'Atención', value: 'Atención' },
+		{
+			label: 'Incorporación sociolaboral',
+			value: 'Incorporación sociolaboral'
+		},
+		{ label: 'Otro', value: 'Otro' }
+	]
+
+	const handleTypologyChange = event => {
+		const opt = event.target.value
+		if (opt === '') {
+			setFilteredData(data)
+		} else {
+			const filtered = data.filter(
+				intervention => intervention.typology === opt
+			)
+			setFilteredData(filtered)
+		}
+	}
 	// change when backend retrieval is updated
 	const totalPages = Math.ceil(data?.total_elements / perPage)
 
@@ -130,6 +152,8 @@ export default function InterventionPage() {
 					handleStartDateChange={e => setStartDate(e.target.value)}
 					handleEndDateChange={e => setEndDate(e.target.value)}
 					searchText="Buscar intervención por nombre, tipo o motivo"
+					datosSelect={typologyOpts}
+					handleSelectChange={handleTypologyChange}
 				/>
 				<div className="flex flex-row">
 					<button
