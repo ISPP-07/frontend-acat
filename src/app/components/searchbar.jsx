@@ -16,7 +16,9 @@ const Searchbar = ({
 	startDate,
 	endDate,
 	handleStartDateChange,
-	handleEndDateChange
+	handleEndDateChange,
+	datosSelect,
+	handleSelectChange
 }) => {
 	const [searchTerm, setSearchTerm] = useState('')
 	const [expandedRow, setExpandedRow] = useState(false)
@@ -56,6 +58,23 @@ const Searchbar = ({
 						iconpath={'/filter.svg'}
 						handleClick={handleFilter}
 					/>
+				)}
+				{page === 'beneficiaries' && (
+					<div className="p-2">
+						<label htmlFor="deliveryState">Género:</label>
+						<select
+							id="deliveryState"
+							className="w-full border border-gray-300 rounded-md p-1 mt-1"
+							onChange={handleSelectChange}
+						>
+							<option value="">Seleccione...</option>
+							{datosSelect.map(state => (
+								<option key={state.id} value={state.value}>
+									{state.label}
+								</option>
+							))}
+						</select>
+					</div>
 				)}
 				{expandedRow && (
 					<>

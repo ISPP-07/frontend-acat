@@ -26,6 +26,21 @@ export default function BeneficiariesList() {
 		{ label: '40', value: 40 },
 		{ label: '80', value: 80 }
 	]
+
+	const genders = [
+		{ label: 'Hombre', value: 'Man' },
+		{ label: 'Mujer', value: 'Woman' }
+	]
+
+	const handleSelectChange = event => {
+		const genero = event.target.value
+		if (genero === '') setFilteredData(data)
+		else {
+			const filtered = data.filter(beneficiary => beneficiary.gender === genero)
+			setFilteredData(filtered)
+		}
+	}
+
 	// change when backend retrieval is updated
 	const totalPages = Math.ceil(data?.total_elements / perPage)
 
@@ -103,6 +118,8 @@ export default function BeneficiariesList() {
 					handleSearch={handleSearch}
 					stext="Dar de alta"
 					page="beneficiaries"
+					datosSelect={genders}
+					handleSelectChange={handleSelectChange}
 				/>
 				<div className="flex flex-row">
 					<button
