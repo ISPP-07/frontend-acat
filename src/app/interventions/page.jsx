@@ -10,7 +10,7 @@ import { fetchDataInterventions } from './fetchIntervention'
 import Image from 'next/image'
 import { exportData } from '../exportData'
 import axios from 'axios'
-import RegisterInterventionModal from './RegisterInterventionModal'
+import RegisterInterventionModal from '../components/RegisterInterventionModal'
 import Pagination from '@mui/material/Pagination'
 import Select from 'react-select'
 
@@ -137,54 +137,54 @@ export default function InterventionPage() {
 	}
 
 	return (
-		<main className="flex w-full">
+		<main className='flex w-full'>
 			<Suspense fallback={<div></div>}>
 				<Sidebar />
 			</Suspense>
-			<div className="w-full h-full flex flex-col items-center">
+			<div className='w-full h-full flex flex-col items-center'>
 				<Searchbar
 					handleClick={toggleModal}
 					handleSearch={handleSearch}
-					text="Registrar intervención"
-					page="interventions"
+					text='Registrar intervención'
+					page='interventions'
 					startDate={startDate}
 					endDate={endDate}
 					handleStartDateChange={e => setStartDate(e.target.value)}
 					handleEndDateChange={e => setEndDate(e.target.value)}
-					searchText="Buscar intervención por nombre, tipo o motivo"
+					searchText='Buscar intervención por nombre, tipo o motivo'
 					datosSelect={typologyOpts}
 					handleSelectChange={handleTypologyChange}
 				/>
-				<div className="flex flex-row">
+				<div className='flex flex-row'>
 					<button
-						className=" bg-green-400 h-8 w-8 rounded-full shadow-2xl mt-3 mr-2"
+						className=' bg-green-400 h-8 w-8 rounded-full shadow-2xl mt-3 mr-2'
 						onClick={() => exportData(data, 'Intervenciones', { id: 'ID' })}
-						data-testid="export-button"
+						data-testid='export-button'
 					>
 						<Image
-							src="/excel.svg"
-							className="ml-2"
+							src='/excel.svg'
+							className='ml-2'
 							width={15}
 							height={15}
-							alt="excel"
+							alt='excel'
 						/>
 					</button>
 					<label
-						htmlFor="file"
-						className="bg-green-400 w-32 h-6 mt-4 rounded-full font-Varela text-white cursor-pointer text-center text-sm"
+						htmlFor='file'
+						className='bg-green-400 w-32 h-6 mt-4 rounded-full font-Varela text-white cursor-pointer text-center text-sm'
 					>
 						Importar datos
 					</label>
 					<input
-						type="file"
-						id="file"
+						type='file'
+						id='file'
 						onChange={handleFileChange}
 						style={{ display: 'none' }}
-						accept=".xls"
-						data-testid="file"
+						accept='.xls'
+						data-testid='file'
 					/>
 				</div>
-				<div className="container p-10 flex flex-wrap gap-5 justify-center items-center">
+				<div className='container p-10 flex flex-wrap gap-5 justify-center items-center'>
 					<Suspense fallback={<div>Cargando...</div>}>
 						{filteredData &&
 							filteredData.map(intervention => (
@@ -205,9 +205,9 @@ export default function InterventionPage() {
 						count={totalPages}
 						initialpage={1}
 						onChange={handlePageChange}
-						className="flex flex-wrap justify-center items-center"
+						className='flex flex-wrap justify-center items-center'
 					/>
-					<div className="flex justify-center items-center m-2">
+					<div className='flex justify-center items-center m-2'>
 						<p>Número de elementos:</p>
 						<Select
 							options={selectOpts}
@@ -215,7 +215,7 @@ export default function InterventionPage() {
 							isSearchable={false}
 							isClearable={false}
 							onChange={handleSelect}
-							className="m-2"
+							className='m-2'
 						/>
 					</div>
 				</div>
