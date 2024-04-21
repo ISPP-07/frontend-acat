@@ -216,43 +216,44 @@ export default function BeneficiaryDetails({ params }) {
 			})
 	}
 
+	const fetchInterventions = async () => {
+		try {
+			const data = await fetchInterventionsBeneficiaryId(params.beneficiaryId)
+			let filteredInterventions = data
+			if (startDate && endDate) {
+				filteredInterventions = data.filter(intervention => {
+					const interventionDate = new Date(intervention.date)
+					return (
+						interventionDate >= new Date(startDate) &&
+						interventionDate <= new Date(endDate)
+					)
+				})
+			} else if (startDate && !endDate) {
+				filteredInterventions = data.filter(intervention => {
+					const interventionDate = new Date(intervention.date)
+					return interventionDate >= new Date(startDate)
+				})
+			} else if (!startDate && endDate) {
+				filteredInterventions = data.filter(intervention => {
+					const interventionDate = new Date(intervention.date)
+					return interventionDate <= new Date(endDate)
+				})
+			}
+			setInterventions(filteredInterventions)
+		} catch (error) {
+			console.error('Error al cargar los datos de intervenciones:', error)
+			alert(
+				'Se produjo un error al cargar los datos de intervenciones. Por favor, inténtalo de nuevo.'
+			)
+		}
+	}
+
 	useEffect(() => {
 		fetchData()
+		fetchInterventions()
 	}, [])
 
 	useEffect(() => {
-		const fetchInterventions = async () => {
-			try {
-				const data = await fetchInterventionsBeneficiaryId()
-				let filteredInterventions = data
-				if (startDate && endDate) {
-					filteredInterventions = data.filter(intervention => {
-						const interventionDate = new Date(intervention.date)
-						return (
-							interventionDate >= new Date(startDate) &&
-							interventionDate <= new Date(endDate)
-						)
-					})
-				} else if (startDate && !endDate) {
-					filteredInterventions = data.filter(intervention => {
-						const interventionDate = new Date(intervention.date)
-						return interventionDate >= new Date(startDate)
-					})
-				} else if (!startDate && endDate) {
-					filteredInterventions = data.filter(intervention => {
-						const interventionDate = new Date(intervention.date)
-						return interventionDate <= new Date(endDate)
-					})
-				}
-				setInterventions(filteredInterventions)
-			} catch (error) {
-				console.error('Error al cargar los datos de intervenciones:', error)
-				alert(
-					'Se produjo un error al cargar los datos de intervenciones. Por favor, inténtalo de nuevo.'
-				)
-			}
-		}
-
 		fetchInterventions()
 	}, [startDate, endDate])
 
@@ -333,7 +334,7 @@ export default function BeneficiaryDetails({ params }) {
 						</div>
 						<div className='p-10 flex flex-wrap gap-5 justify-center items-center overflow-y-scroll h-screen'>
 							<Suspense fallback={<div>Cargando...</div>}>
-								{interventions &&
+								{interventions && interventions.length !== 0 ? (
 									interventions.map(intervention => (
 										<Link
 											href={`/interventions/${intervention.id}`}
@@ -344,7 +345,14 @@ export default function BeneficiaryDetails({ params }) {
 												intervention={intervention}
 											/>
 										</Link>
-									))}
+									))
+								) : (
+									<div className='align-self-start w-full'>
+										<span className='text-xl'>
+											No hay intervenciones para este beneficiario
+										</span>
+									</div>
+								)}
 							</Suspense>
 						</div>
 					</div>
