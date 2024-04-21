@@ -20,6 +20,7 @@ export default function BeneficiariesList() {
 	const [filteredData, setFilteredData] = useState(null)
 	const [showModal, setShowModal] = useState(false)
 	const [page, setPage] = useState(1)
+	const [totalPages, setTotalPages] = useState(0)
 	const [perPage, setPerPage] = useState(20)
 
 	useEffect(() => {
@@ -45,9 +46,6 @@ export default function BeneficiariesList() {
 			setFilteredData(filtered)
 		}
 	}
-
-	// change when backend retrieval is updated
-	const totalPages = Math.ceil(data?.total_elements / perPage)
 
 	const toggleModal = () => {
 		setShowModal(!showModal)
@@ -79,6 +77,7 @@ export default function BeneficiariesList() {
 		const fetchData = async () => {
 			try {
 				const data = await fetchDataBeneficiaries(perPage, (page - 1) * perPage)
+				setTotalPages(Math.ceil(data.total_elements / perPage))
 				setData(data.elements)
 				setFilteredData(data.elements)
 			} catch (error) {
@@ -117,17 +116,17 @@ export default function BeneficiariesList() {
 			<Suspense fallback={<div></div>}>
 				<Sidebar />
 			</Suspense>
-			<div className="w-full h-full flex flex-col items-center">
+			<div className='w-full h-full flex flex-col items-center'>
 				<Searchbar
 					handleClick={toggleModal}
 					handleSearch={handleSearch}
-					stext="Dar de alta"
-					page="beneficiaries"
+					stext='Dar de alta'
+					page='beneficiaries'
 					datosSelect={genders}
 					handleSelectChange={handleSelectChange}
-					searchText="Buscar beneficiario por nombre o alias"
+					searchText='Buscar beneficiario por nombre o alias'
 				/>
-				<div className="flex flex-row">
+				<div className='flex flex-row'>
 					<button
 						className=' bg-green-400 h-8 w-8 rounded-full shadow-2xl mt-3 mr-2'
 						onClick={() =>
