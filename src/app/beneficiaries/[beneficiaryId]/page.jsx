@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation'
 import ModalConfirmation from '../../components/modalConfirmation'
 import BeneficiaryDetailsView from '../../components/beneficiaryDetailsView'
 import BeneficiaryDetailsEdit from '../../components/beneficiaryDetailsEdit'
+import { createAxiosInterceptors } from '../../axiosConfig'
 
 export default function BeneficiaryDetails({ params }) {
 	const [beneficiary, setBeneficiary] = useState(null)
@@ -16,6 +17,10 @@ export default function BeneficiaryDetails({ params }) {
 	const [toggleDeleteView, setToggleDeleteView] = useState(false)
 	const [errors, setErrors] = useState(null)
 	const router = useRouter()
+
+	useEffect(() => {
+		createAxiosInterceptors()
+	}, [])
 
 	const fetchData = async () => {
 		try {

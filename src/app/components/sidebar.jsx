@@ -1,8 +1,7 @@
 'use client'
 import Image from 'next/image'
-import Link from 'next/link'
 /* eslint-disable no-unused-vars */
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 /* eslint-enable no-unused-vars */
 import { useSearchParams, usePathname, useRouter } from 'next/navigation'
 import SidebarEntry from './sidebarEntry'
@@ -11,6 +10,14 @@ export default function Sidebar() {
 	const searchParams = useSearchParams()
 	const pathname = usePathname()
 	const { replace } = useRouter()
+
+	// Check if user is MASTER
+	useEffect(() => {
+		const jwt = localStorage.getItem('jwt')
+		if (!jwt) {
+			window.location.href = '/'
+		}
+	}, [])
 
 	const isMobile = () => {
 		return typeof window !== 'undefined' ? window.innerWidth <= 768 : false
@@ -108,13 +115,17 @@ export default function Sidebar() {
 					className={`${state ? '' : 'hidden'} absolute bottom-0 w-[300px] left-[30px]`}
 				>
 					<hr className='w-4/5'></hr>
-					<Link
-						href='/'
-						className='flex items-center justify-center text-sm font-normal font-Varela text-white rounded-xl bg-red-500 hover:bg-red-700 shadow-xl p-2 w-3/4 my-9 gap-2'
+					<div
+						onClick={() => {
+							localStorage.removeItem('jwt')
+							localStorage.removeItem('refresh')
+							window.location.href = '/'
+						}}
+						className='flex items-center justify-center text-sm font-normal font-Varela text-white rounded-xl bg-red-500 hover:bg-red-700 shadow-xl p-2 w-3/4 my-9 gap-2 cursor-pointer'
 					>
-						<Image src='/logout.svg' width={18} height={18} alt='logout' />
+						<Image src='/logout.svg' width={18} height={18}></Image>
 						<span>Cerrar Sesión</span>
-					</Link>
+					</div>
 				</div>
 			</div>
 		</div>

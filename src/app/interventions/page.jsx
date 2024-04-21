@@ -13,6 +13,7 @@ import axios from 'axios'
 import RegisterInterventionModal from '../components/RegisterInterventionModal'
 import Pagination from '@mui/material/Pagination'
 import Select from 'react-select'
+import { createAxiosInterceptors } from '../axiosConfig'
 
 export default function InterventionPage() {
 	const [data, setData] = useState(null)
@@ -22,6 +23,10 @@ export default function InterventionPage() {
 	const [endDate, setEndDate] = useState(null)
 	const [page, setPage] = useState(1)
 	const [perPage, setPerPage] = useState(20)
+
+	useEffect(() => {
+		createAxiosInterceptors()
+	}, [])
 
 	const selectOpts = [
 		{ label: '20', value: 20 },
