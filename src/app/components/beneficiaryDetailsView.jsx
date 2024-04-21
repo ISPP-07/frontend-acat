@@ -138,7 +138,8 @@ export default function BeneficiaryDetailsView({
 						<span className='font-Varela text-blue-500 font-bold mr-2'>
 							Sexo:
 						</span>
-						{beneficiary.gender}
+						{/* Hombre if Man, else Woman */}
+						{beneficiary.gender === 'Man' ? 'Hombre' : 'Mujer'}
 					</article>
 					<article className='font-Varela text-gray-800'>
 						<span className='font-Varela text-blue-500 font-bold'>
