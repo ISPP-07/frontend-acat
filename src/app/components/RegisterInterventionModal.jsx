@@ -11,17 +11,18 @@ import Select from 'react-select'
 import { fetchDataBeneficiaries } from '../beneficiaries/fetch'
 import { useRouter } from 'next/navigation'
 
-function RegisterInterventionModal({ onClickFunction }) {
+function RegisterInterventionModal({ onClickFunction, beneficiaryId }) {
 	const [errors, setErrors] = useState(null)
 	// if (!isVisible) return null
 	const router = useRouter()
+	console.log('beneficiaryId', beneficiaryId)
 
 	const [formData, setFormData] = useState({
 		date: '',
 		reason: '',
 		typology: '',
 		observations: '',
-		patient_id: '',
+		patient_id: beneficiaryId || '',
 		technician: ''
 	})
 
@@ -118,45 +119,47 @@ function RegisterInterventionModal({ onClickFunction }) {
 					className='flex flex-row flex-wrap justify-center max-w-[330px] gap-3 mt-2'
 					onSubmit={handleAddIntervention}
 				>
-					<fieldset className='flex flex-col w-full'>
-						<label htmlFor='name' className='hidden md:block text-black'>
-							<span>Nombre</span> <span className='text-red-500'>*</span>
-						</label>
-						<div className='relative flex items-center border-2 rounded-xl border-gray-200 bg-white'>
-							<User className='ml-1' />
-							<Select
-								className='border-0 w-full'
-								styles={{
-									control: provided => ({
-										...provided,
-										border: 'none',
-										borderRadius: '9999px',
-										boxShadow: 'none',
-										width: '100%'
-									}),
-									menu: provided => ({
-										...provided,
-										borderRadius: '0px'
-									})
-								}}
-								classNamePrefix='Selecciona un beneficiario'
-								isDisabled={false}
-								isLoading={false}
-								isClearable={true}
-								isRtl={false}
-								isSearchable={true}
-								name='patient_id'
-								options={beneficiaryOptions}
-								onChange={opt =>
-									setFormData({
-										...formData,
-										patient_id: opt?.value ? opt.value : null
-									})
-								}
-								required={true}
-							/>
-						</div>
-					</fieldset>
+					{!beneficiaryId && (
+						<fieldset className='flex flex-col w-full'>
+							<label htmlFor='name' className='hidden md:block text-black'>
+								<span>Nombre</span> <span className='text-red-500'>*</span>
+							</label>
+							<div className='relative flex items-center border-2 rounded-xl border-gray-200 bg-white'>
+								<User className='ml-1' />
+								<Select
+									className='border-0 w-full'
+									styles={{
+										control: provided => ({
+											...provided,
+											border: 'none',
+											borderRadius: '9999px',
+											boxShadow: 'none',
+											width: '100%'
+										}),
+										menu: provided => ({
+											...provided,
+											borderRadius: '0px'
+										})
+									}}
+									classNamePrefix='Selecciona un beneficiario'
+									isDisabled={false}
+									isLoading={false}
+									isClearable={true}
+									isRtl={false}
+									isSearchable={true}
+									name='patient_id'
+									options={beneficiaryOptions}
+									onChange={opt =>
+										setFormData({
+											...formData,
+											patient_id: opt?.value ? opt.value : null
+										})
+									}
+									required={true}
+								/>
+							</div>
+						</fieldset>
+					)}
 					<fieldset className='flex flex-col w-full'>
 						<label htmlFor='tipology' className='hidden md:block text-black'>
 							<span>Tipologia</span>
