@@ -22,6 +22,7 @@ export default function InterventionPage() {
 	const [startDate, setStartDate] = useState(null)
 	const [endDate, setEndDate] = useState(null)
 	const [page, setPage] = useState(1)
+	const [totalPages, setTotalPages] = useState(0)
 	const [perPage, setPerPage] = useState(20)
 
 	useEffect(() => {
@@ -55,8 +56,6 @@ export default function InterventionPage() {
 			setFilteredData(filtered)
 		}
 	}
-	// change when backend retrieval is updated
-	const totalPages = Math.ceil(data?.total_elements / perPage)
 
 	const toggleModal = () => {
 		setShowModal(!showModal)
@@ -86,6 +85,7 @@ export default function InterventionPage() {
 					perPage,
 					(page - 1) * perPage
 				)
+				setTotalPages(Math.ceil(data1.total_elements / perPage))
 				setData(data1.elements)
 				let filteredIntervention = data1.elements
 				if (startDate && endDate) {

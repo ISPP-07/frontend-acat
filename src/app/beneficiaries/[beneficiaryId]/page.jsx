@@ -9,12 +9,19 @@ import { useRouter } from 'next/navigation'
 import ModalConfirmation from '../../components/modalConfirmation'
 import BeneficiaryDetailsView from '../../components/beneficiaryDetailsView'
 import BeneficiaryDetailsEdit from '../../components/beneficiaryDetailsEdit'
+import { fetchInterventionsBeneficiaryId } from './fetchInterventions'
+import Link from 'next/link'
+import CardIntervention from '../../components/cardIntervention'
 import { createAxiosInterceptors } from '../../axiosConfig'
 
 export default function BeneficiaryDetails({ params }) {
 	const [beneficiary, setBeneficiary] = useState(null)
+	const [interventions, setInterventions] = useState(null)
 	const [toggleEditView, setToggleEditView] = useState(false)
 	const [toggleDeleteView, setToggleDeleteView] = useState(false)
+	const [startDate, setStartDate] = useState(null)
+	const [endDate, setEndDate] = useState(null)
+
 	const [errors, setErrors] = useState(null)
 	const router = useRouter()
 
@@ -209,41 +216,148 @@ export default function BeneficiaryDetails({ params }) {
 			})
 	}
 
+	const fetchInterventions = async () => {
+		try {
+			const data = await fetchInterventionsBeneficiaryId(params.beneficiaryId)
+			let filteredInterventions = data
+			if (startDate && endDate) {
+				filteredInterventions = data.filter(intervention => {
+					const interventionDate = new Date(intervention.date)
+					return (
+						interventionDate >= new Date(startDate) &&
+						interventionDate <= new Date(endDate)
+					)
+				})
+			} else if (startDate && !endDate) {
+				filteredInterventions = data.filter(intervention => {
+					const interventionDate = new Date(intervention.date)
+					return interventionDate >= new Date(startDate)
+				})
+			} else if (!startDate && endDate) {
+				filteredInterventions = data.filter(intervention => {
+					const interventionDate = new Date(intervention.date)
+					return interventionDate <= new Date(endDate)
+				})
+			}
+			setInterventions(filteredInterventions)
+		} catch (error) {
+			console.error('Error al cargar los datos de intervenciones:', error)
+			alert(
+				'Se produjo un error al cargar los datos de intervenciones. Por favor, inténtalo de nuevo.'
+			)
+		}
+	}
+
 	useEffect(() => {
 		fetchData()
+		fetchInterventions()
 	}, [])
 
+	useEffect(() => {
+		fetchInterventions()
+	}, [startDate, endDate])
+
+	const handleResetFilters = () => {
+		setStartDate('')
+		setEndDate('')
+	}
+
 	return (
-		<main className='flex w-full'>
+		<main className='flex flex-auto w-full'>
 			<Suspense fallback={<div></div>}>
 				<Sidebar />
 			</Suspense>
-			{beneficiary &&
-				(toggleEditView ? (
-					<BeneficiaryDetailsEdit
-						beneficiary={beneficiary}
-						onSubmit={onSubmit}
-						deleteView={deleteView}
-						handleToggle={handleToggle}
-						setBeneficiary={setBeneficiary}
-						errors={errors}
-					/>
-				) : (
-					<BeneficiaryDetailsView
-						beneficiary={beneficiary}
-						editView={editView}
-						deleteView={deleteView}
-						handleToggle={handleToggle}
-					/>
-				))}
-			{toggleDeleteView && (
-				<ModalConfirmation
-					title='¿Estás seguro?'
-					message='Si aceptas borrarás permanentemente el usuario.'
-					handleCancel={deleteView}
-					handleConfirm={deleteBeneficiary}
-				/>
-			)}
+			<div className='flex flex-wrap'>
+				<div>
+					{beneficiary &&
+						(toggleEditView ? (
+							<BeneficiaryDetailsEdit
+								beneficiary={beneficiary}
+								onSubmit={onSubmit}
+								deleteView={deleteView}
+								handleToggle={handleToggle}
+								setBeneficiary={setBeneficiary}
+								errors={errors}
+							/>
+						) : (
+							<BeneficiaryDetailsView
+								beneficiary={beneficiary}
+								editView={editView}
+								deleteView={deleteView}
+								handleToggle={handleToggle}
+							/>
+						))}
+					{toggleDeleteView && (
+						<ModalConfirmation
+							title='¿Estás seguro?'
+							message='Si aceptas borrarás permanentemente el usuario.'
+							handleCancel={deleteView}
+							handleConfirm={deleteBeneficiary}
+						/>
+					)}
+				</div>
+				<div className='p-10 flex-1 flex flex-wrap gap-5 justify-center font-Varela overflow-y-auto min-w-[400px]'>
+					<div className='w-full overflow-x-auto'>
+						<span className='font-Varela text-black text-2xl font-bold'>
+							Intervenciones
+						</span>
+						<div className='flex flex-wrap gap-4 items-center'>
+							<div className='p-2'>
+								<label htmlFor='startDate'>Fecha de inicio:</label>
+								<input
+									className='ml-2 border border-blue-400 rounded-md p-1'
+									type='date'
+									id='startDate'
+									name='startDate'
+									value={startDate}
+									onChange={e => setStartDate(e.target.value)}
+								/>
+							</div>
+							<div className='p-2'>
+								<label htmlFor='endDate'>Fecha de fin:</label>
+								<input
+									className='ml-2 border border-blue-400 rounded-md p-1'
+									type='date'
+									id='endDate'
+									name='endDate'
+									value={endDate}
+									onChange={e => setEndDate(e.target.value)}
+									placeholder='Fecha fin'
+								/>
+							</div>
+							<button
+								className='bg-blue-500 text-white px-4 py-2 rounded-md'
+								onClick={handleResetFilters}
+							>
+								Resetear
+							</button>
+						</div>
+						<div className='p-10 flex flex-wrap gap-5 justify-center items-center overflow-y-scroll h-screen'>
+							<Suspense fallback={<div>Cargando...</div>}>
+								{interventions && interventions.length !== 0 ? (
+									interventions.map(intervention => (
+										<Link
+											href={`/interventions/${intervention.id}`}
+											key={intervention.id}
+										>
+											<CardIntervention
+												key={intervention.id}
+												intervention={intervention}
+											/>
+										</Link>
+									))
+								) : (
+									<div className='align-self-start w-full'>
+										<span className='text-xl'>
+											No hay intervenciones para este beneficiario
+										</span>
+									</div>
+								)}
+							</Suspense>
+						</div>
+					</div>
+				</div>
+			</div>
 		</main>
 	)
 }
