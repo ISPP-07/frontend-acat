@@ -12,6 +12,7 @@ import BeneficiaryDetailsEdit from '../../components/beneficiaryDetailsEdit'
 import { fetchInterventionsBeneficiaryId } from './fetchInterventions'
 import Link from 'next/link'
 import CardIntervention from '../../components/cardIntervention'
+import { createAxiosInterceptors } from '../../axiosConfig'
 
 export default function BeneficiaryDetails({ params }) {
 	const [beneficiary, setBeneficiary] = useState(null)
@@ -23,6 +24,10 @@ export default function BeneficiaryDetails({ params }) {
 
 	const [errors, setErrors] = useState(null)
 	const router = useRouter()
+
+	useEffect(() => {
+		createAxiosInterceptors()
+	}, [])
 
 	const fetchData = async () => {
 		try {
@@ -103,6 +108,7 @@ export default function BeneficiaryDetails({ params }) {
 		const passportRegExp = /^[A-Z]{2}\d{7}$/
 
 		if (!contactPhoneRegExp.test(formData.get('contact_phone'))) {
+			console.log(formData.get('contact_phone'))
 			valid = false
 			newError.contact_phone = 'El teléfono no es válido'
 		}
@@ -161,6 +167,10 @@ export default function BeneficiaryDetails({ params }) {
 				formData.get('name').trim() === ''
 					? beneficiary.name
 					: formData.get('name'),
+			alias:
+				formData.get('alias').trim() === ''
+					? beneficiary.alias
+					: formData.get('alias'),
 			contact_phone:
 				formData.get('contact_phone') === ''
 					? beneficiary.contact_phone

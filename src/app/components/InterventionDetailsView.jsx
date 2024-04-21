@@ -47,13 +47,13 @@ export default function InterventionDetailsView({ intervention }) {
 			</article>
 			<article className='flex items-center w-full'>
 				<p className='font-Varela text-blue-500 font-bold mr-2'>Motivo</p>
-				<p className='p-1'>{intervention.reason}</p>
+				<p className='p-1'>{intervention.reason || '--'}</p>
 			</article>
 			<article className='flex flex-col w-full'>
 				<p className='font-Varela text-blue-500 font-bold mr-2'>
 					Observaciones:
 				</p>
-				<p className='p-1'>{intervention.observations}</p>
+				<p className='p-1'>{intervention.observations || '--'}</p>
 			</article>
 		</section>
 	)

@@ -1,16 +1,20 @@
 'use client'
 /* eslint-disable no-unused-vars */
-import React from 'react'
+import React, { useState } from 'react'
 /* eslint-enable no-unused-vars */
 import Image from 'next/image'
 import ButtonIcon from './buttonIcon'
 import ButtonText from './buttonText'
+import RegisterInterventionModal from './RegisterInterventionModal'
+
 export default function BeneficiaryDetailsView({
 	beneficiary,
 	editView,
 	deleteView,
 	handleToggle
 }) {
+	const [showModal, setShowModal] = useState(false)
+
 	const birthDate = new Date(beneficiary.birth_date).toLocaleDateString(
 		'es-ES',
 		{
@@ -20,7 +24,7 @@ export default function BeneficiaryDetailsView({
 		}
 	)
 	return (
-		<div className=' h-full flex'>
+		<div className='w-full h-full flex'>
 			<div className='flex flex-col gap-4 h-screen w-[500px] bg-white border border-solid shadow-xl p-5 px-8'>
 				<div className='flex items-center gap-4'>
 					<Image alt='imagen-familia' src='/face.svg' width={50} height={50} />
@@ -55,6 +59,7 @@ export default function BeneficiaryDetailsView({
 						isRounded='true'
 						px='3'
 						className='shadow-2xl font-Varela text-sm text-white'
+						handleClick={() => setShowModal(!showModal)}
 					/>
 					<div className='flex justfiy-center items-center gap-2'>
 						<span>FINALIZADO</span>
@@ -76,6 +81,12 @@ export default function BeneficiaryDetailsView({
 				</div>
 				<hr />
 				<div className='flex items-center gap-3'>
+					<Image alt='imagen-alias' src='/user.svg' width={20} height={20} />
+					<span className='font-Varela text-gray-800 text-base'>
+						{beneficiary.alias}
+					</span>
+				</div>
+				<div className='flex items-center gap-3'>
 					<Image
 						alt='imagen-telefono'
 						src='/phone.svg'
@@ -83,7 +94,7 @@ export default function BeneficiaryDetailsView({
 						height={20}
 					/>
 					<span className='font-Varela text-gray-800 text-base'>
-						{beneficiary.contact_phone}
+						{beneficiary.contact_phone || 'Sin teléfono'}
 					</span>
 				</div>
 				<div className='flex items-center gap-3'>
@@ -94,7 +105,7 @@ export default function BeneficiaryDetailsView({
 						height={20}
 					/>
 					<span className='font-Varela text-gray-800 text-base'>
-						{beneficiary.address}
+						{beneficiary.address || 'Sin dirección'}
 					</span>
 				</div>
 				<hr />
@@ -121,24 +132,31 @@ export default function BeneficiaryDetailsView({
 						<span className='font-Varela text-blue-500 font-bold mr-2'>
 							Técnico:
 						</span>
-						{beneficiary.first_technician}
+						{beneficiary.first_technician || '--'}
 					</article>
 					<article className='font-Varela text-gray-800'>
 						<span className='font-Varela text-blue-500 font-bold mr-2'>
 							Sexo:
 						</span>
-						{beneficiary.gender}
+						{/* Hombre if Man, else Woman */}
+						{beneficiary.gender === 'Man' ? 'Hombre' : 'Mujer'}
 					</article>
 					<article className='font-Varela text-gray-800'>
 						<span className='font-Varela text-blue-500 font-bold'>
 							Observaciones:
 						</span>
 						<p className='font-Varela text-gray-800 mt-2'>
-							{beneficiary.observation}
+							{beneficiary.observation || '--'}
 						</p>
 					</article>
 				</section>
 			</div>
+			{showModal ? (
+				<RegisterInterventionModal
+					onClickFunction={() => setShowModal(!showModal)}
+					beneficiaryId={beneficiary.id}
+				/>
+			) : null}
 		</div>
 	)
 }

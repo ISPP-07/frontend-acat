@@ -1,8 +1,7 @@
 'use client'
 import Image from 'next/image'
-import Link from 'next/link'
 /* eslint-disable no-unused-vars */
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 /* eslint-enable no-unused-vars */
 import { useSearchParams, usePathname, useRouter } from 'next/navigation'
 import SidebarEntry from './sidebarEntry'
@@ -11,6 +10,14 @@ export default function Sidebar() {
 	const searchParams = useSearchParams()
 	const pathname = usePathname()
 	const { replace } = useRouter()
+
+	// Check if user is MASTER
+	useEffect(() => {
+		const jwt = localStorage.getItem('jwt')
+		if (!jwt) {
+			window.location.href = '/'
+		}
+	}, [])
 
 	const isMobile = () => {
 		return typeof window !== 'undefined' ? window.innerWidth <= 768 : false
@@ -37,7 +44,7 @@ export default function Sidebar() {
 		},
 		{
 			link: '/passwords',
-			icon: '/bell.svg',
+			icon: '/password.svg',
 			text: 'Cambiar contraseña'
 		},
 		{
@@ -70,28 +77,28 @@ export default function Sidebar() {
 				onClick={toggleShowSidebar}
 			>
 				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					fill="none"
-					viewBox="0 0 24 24"
-					strokeWidth="1.5"
-					stroke="currentColor"
-					className="w-3/4 h-3/4 text-white"
+					xmlns='http://www.w3.org/2000/svg'
+					fill='none'
+					viewBox='0 0 24 24'
+					strokeWidth='1.5'
+					stroke='currentColor'
+					className='w-3/4 h-3/4 text-white'
 				>
 					<path
-						strokeLinecap="round"
-						strokeLinejoin="round"
+						strokeLinecap='round'
+						strokeLinejoin='round'
 						d={`${state ? 'M15.75 19.5 8.25 12l7.5-7.5' : 'm8.25 4.5 7.5 7.5-7.5 7.5'}`}
 					/>
 				</svg>
 			</button>
 			<Image
-				src="/acat.jpg"
+				src='/acat.jpg'
 				width={300}
 				height={100}
 				className={`${state ? '' : 'hidden'}`}
-				alt="Logo de ACAT"
+				alt='Logo de ACAT'
 			/>
-			<div className="flex flex-col justify-between">
+			<div className='flex flex-col justify-between'>
 				<div className={`${state ? '' : 'hidden'} flex flex-col my-3`}>
 					{links.map((link, index) => (
 						<SidebarEntry
@@ -107,14 +114,18 @@ export default function Sidebar() {
 				<div
 					className={`${state ? '' : 'hidden'} absolute bottom-0 w-[300px] left-[30px]`}
 				>
-					<hr className="w-4/5"></hr>
-					<Link
-						href="/"
-						className="flex items-center justify-center text-sm font-normal font-Varela text-white rounded-xl bg-red-500 hover:bg-red-700 shadow-xl p-2 w-3/4 my-9 gap-2"
+					<hr className='w-4/5'></hr>
+					<div
+						onClick={() => {
+							localStorage.removeItem('jwt')
+							localStorage.removeItem('refresh')
+							window.location.href = '/'
+						}}
+						className='flex items-center justify-center text-sm font-normal font-Varela text-white rounded-xl bg-red-500 hover:bg-red-700 shadow-xl p-2 w-3/4 my-9 gap-2 cursor-pointer'
 					>
-						<Image src="/logout.svg" width={18} height={18} alt="logout" />
+						<Image src='/logout.svg' width={18} height={18}></Image>
 						<span>Cerrar Sesión</span>
-					</Link>
+					</div>
 				</div>
 			</div>
 		</div>

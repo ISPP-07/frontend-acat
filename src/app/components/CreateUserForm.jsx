@@ -16,7 +16,16 @@ function CreateUserForm() {
 
 	const router = useRouter()
 
-	function validateForm(formData) {
+	const verifyEmail = async email => {
+		try {
+			const response = await axios.post('/api/verify_email', { email })
+			return response.data.success
+		} catch (error) {
+			return false
+		}
+	}
+
+	async function validateForm(formData) {
 		let isValid = true
 		const errors = {}
 
@@ -30,7 +39,22 @@ function CreateUserForm() {
 
 		if (!emailRegex.test(email)) {
 			isValid = false
+			errors.email = 'Estructura de correo electrónico inválida'
+		}
+
+		const emailValid = await verifyEmail(email)
+		if (!emailValid) {
+			isValid = false
 			errors.email = 'Correo electrónico inválido'
+		}
+
+		const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/
+		const password = formData.get('password').toString()
+
+		if (!passwordRegex.test(password)) {
+			isValid = false
+			errors.password =
+				'La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número'
 		}
 
 		setErrors(errors)
@@ -41,7 +65,7 @@ function CreateUserForm() {
 		event.preventDefault()
 		const formData = new FormData(event.target)
 
-		if (validateForm(formData)) {
+		if (await validateForm(formData)) {
 			formData.delete('confirmPassword')
 
 			const jsonData = {
