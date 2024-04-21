@@ -44,7 +44,7 @@ export default function Sidebar() {
 		},
 		{
 			link: '/passwords',
-			icon: '/bell.svg',
+			icon: '/password.svg',
 			text: 'Cambiar contraseña'
 		},
 		{

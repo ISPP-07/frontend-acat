@@ -17,6 +17,7 @@ import { createAxiosInterceptors } from '../axiosConfig'
 
 export default function BeneficiariesList() {
 	const [data, setData] = useState(null)
+	const [filteredData, setFilteredData] = useState(null)
 	const [showModal, setShowModal] = useState(false)
 	const [page, setPage] = useState(1)
 	const [perPage, setPerPage] = useState(20)
@@ -30,6 +31,21 @@ export default function BeneficiariesList() {
 		{ label: '40', value: 40 },
 		{ label: '80', value: 80 }
 	]
+
+	const genders = [
+		{ label: 'Hombre', value: 'Man' },
+		{ label: 'Mujer', value: 'Woman' }
+	]
+
+	const handleSelectChange = event => {
+		const genero = event.target.value
+		if (genero === '') setFilteredData(data)
+		else {
+			const filtered = data.filter(beneficiary => beneficiary.gender === genero)
+			setFilteredData(filtered)
+		}
+	}
+
 	// change when backend retrieval is updated
 	const totalPages = Math.ceil(data?.total_elements / perPage)
 
@@ -63,7 +79,8 @@ export default function BeneficiariesList() {
 		const fetchData = async () => {
 			try {
 				const data = await fetchDataBeneficiaries(perPage, (page - 1) * perPage)
-				setData(data)
+				setData(data.elements)
+				setFilteredData(data.elements)
 			} catch (error) {
 				console.error('Error al cargar los datos:', error)
 				alert(
@@ -81,14 +98,36 @@ export default function BeneficiariesList() {
 		setPerPage(opt?.value)
 	}
 
+	const handleSearch = searchTerm => {
+		if (!searchTerm) {
+			setData(data)
+			setFilteredData(data)
+		} else {
+			const filtered = data.filter(
+				beneficiary =>
+					beneficiary.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+					beneficiary.alias.toLowerCase().includes(searchTerm.toLowerCase())
+			)
+			setFilteredData(filtered)
+		}
+	}
+
 	return (
 		<main className='flex w-full'>
 			<Suspense fallback={<div></div>}>
 				<Sidebar />
 			</Suspense>
-			<div className='w-full h-full flex flex-col items-center'>
-				<Searchbar handleClick={toggleModal} stext='Dar de alta' />
-				<div className='flex flex-row'>
+			<div className="w-full h-full flex flex-col items-center">
+				<Searchbar
+					handleClick={toggleModal}
+					handleSearch={handleSearch}
+					stext="Dar de alta"
+					page="beneficiaries"
+					datosSelect={genders}
+					handleSelectChange={handleSelectChange}
+					searchText="Buscar beneficiario por nombre o alias"
+				/>
+				<div className="flex flex-row">
 					<button
 						className=' bg-green-400 h-8 w-8 rounded-full shadow-2xl mt-3 mr-2'
 						onClick={() =>
@@ -126,8 +165,8 @@ export default function BeneficiariesList() {
 				</div>
 				<div className='container p-10 flex flex-wrap gap-5 justify-center items-center'>
 					<Suspense fallback={<div>Cargando...</div>}>
-						{data &&
-							data.elements.map(beneficiary => (
+						{filteredData &&
+							filteredData.map(beneficiary => (
 								<Link
 									href={`/beneficiaries/${beneficiary.id}?showSidebar=${mobile}`}
 									key={beneficiary.id}
