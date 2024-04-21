@@ -80,6 +80,18 @@ export default function BeneficiaryDetailsEdit({
 				</div>
 				<hr />
 				<fieldset className='flex items-center gap-3'>
+					<Image alt='imagen-alias' src='/user.svg' width={20} height={20} />
+					<input
+						type='text'
+						id='alias'
+						name='alias'
+						defaultValue={beneficiary.alias ?? ''}
+						placeholder={'Alias'}
+						className='p-1 border-2 rounded-xl placeholder-black'
+						data-testid='alias'
+					/>
+				</fieldset>
+				<fieldset className='flex items-center gap-3'>
 					<label htmlFor='contact_phone'>
 						<Image
 							alt='imagen-telefono'

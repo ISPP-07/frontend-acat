@@ -81,6 +81,12 @@ export default function BeneficiaryDetailsView({
 				</div>
 				<hr />
 				<div className='flex items-center gap-3'>
+					<Image alt='imagen-alias' src='/user.svg' width={20} height={20} />
+					<span className='font-Varela text-gray-800 text-base'>
+						{beneficiary.alias}
+					</span>
+				</div>
+				<div className='flex items-center gap-3'>
 					<Image
 						alt='imagen-telefono'
 						src='/phone.svg'
@@ -88,7 +94,7 @@ export default function BeneficiaryDetailsView({
 						height={20}
 					/>
 					<span className='font-Varela text-gray-800 text-base'>
-						{beneficiary.contact_phone}
+						{beneficiary.contact_phone || 'Sin teléfono'}
 					</span>
 				</div>
 				<div className='flex items-center gap-3'>
@@ -99,7 +105,7 @@ export default function BeneficiaryDetailsView({
 						height={20}
 					/>
 					<span className='font-Varela text-gray-800 text-base'>
-						{beneficiary.address}
+						{beneficiary.address || 'Sin dirección'}
 					</span>
 				</div>
 				<hr />
@@ -126,7 +132,7 @@ export default function BeneficiaryDetailsView({
 						<span className='font-Varela text-blue-500 font-bold mr-2'>
 							Técnico:
 						</span>
-						{beneficiary.first_technician}
+						{beneficiary.first_technician || '--'}
 					</article>
 					<article className='font-Varela text-gray-800'>
 						<span className='font-Varela text-blue-500 font-bold mr-2'>
@@ -139,7 +145,7 @@ export default function BeneficiaryDetailsView({
 							Observaciones:
 						</span>
 						<p className='font-Varela text-gray-800 mt-2'>
-							{beneficiary.observation}
+							{beneficiary.observation || '--'}
 						</p>
 					</article>
 				</section>

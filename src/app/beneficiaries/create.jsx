@@ -34,6 +34,23 @@ function CreateModal({ closeModal }) {
 		formData.append('registration_date', formattedDate)
 		formData.append('age', '0')
 
+		// Auto add alias if it's empty
+		// "2 primeras letras del 1er ap. 2 2o. Si nombre simple 2 nombre. Si es compuesto 1o de cada nombre"
+		if (formData.get('alias') === '') {
+			let alias = ''
+			const name = formData.get('name').split(' ')
+			if (name.length === 1) {
+				alias = name[0].substring(0, 2)
+			} else {
+				alias = name[0].substring(0, 1) + name[1].substring(0, 1)
+			}
+			alias += formData.get('first_surname').substring(0, 2)
+			if (formData.get('second_surname') !== '') {
+				alias += formData.get('second_surname').substring(0, 2)
+			}
+			formData.set('alias', alias)
+		}
+
 		// up until here
 		const object = {}
 		formData.forEach((value, key) => (object[key] = value))
@@ -230,7 +247,7 @@ function CreateModal({ closeModal }) {
 					</fieldset>
 					<fieldset className='flex flex-col w-full md:w-5/12'>
 						<label htmlFor='alias' className='hidden md:block text-black'>
-							Alias <span className='text-red-500'>*</span>
+							Alias
 						</label>
 						<div className='relative flex items-center border-2 rounded-xl border-gray-200 bg-white'>
 							<svg
@@ -253,7 +270,6 @@ function CreateModal({ closeModal }) {
 								placeholder='Alias'
 								id='alias'
 								name='alias'
-								required={true}
 							/>
 						</div>
 						<span className='text-red-500'>{errors?.alias}</span>

@@ -96,6 +96,7 @@ export default function BeneficiaryDetails({ params }) {
 		const passportRegExp = /^[A-Z]{2}\d{7}$/
 
 		if (!contactPhoneRegExp.test(formData.get('contact_phone'))) {
+			console.log(formData.get('contact_phone'))
 			valid = false
 			newError.contact_phone = 'El teléfono no es válido'
 		}
@@ -154,6 +155,10 @@ export default function BeneficiaryDetails({ params }) {
 				formData.get('name').trim() === ''
 					? beneficiary.name
 					: formData.get('name'),
+			alias:
+				formData.get('alias').trim() === ''
+					? beneficiary.alias
+					: formData.get('alias'),
 			contact_phone:
 				formData.get('contact_phone') === ''
 					? beneficiary.contact_phone
