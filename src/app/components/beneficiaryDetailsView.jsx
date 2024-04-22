@@ -6,6 +6,8 @@ import Image from 'next/image'
 import ButtonIcon from './buttonIcon'
 import ButtonText from './buttonText'
 import RegisterInterventionModal from './RegisterInterventionModal'
+import axios from 'axios'
+import { useRouter } from 'next/navigation'
 
 export default function BeneficiaryDetailsView({
 	beneficiary,
@@ -23,6 +25,24 @@ export default function BeneficiaryDetailsView({
 			day: '2-digit'
 		}
 	)
+
+	const router = useRouter()
+
+	const handleDelete = async () => {
+		const confirmed = window.confirm(
+			'¿Desea eliminar los datos de este beneficiario?'
+		)
+		if (confirmed) {
+			const BASEURL = process.env.NEXT_PUBLIC_BASE_URL
+			try {
+				await axios.delete(`${BASEURL}/acat/patient/${beneficiary.id}`)
+				router.push('/beneficiaries')
+			} catch (error) {
+				return null
+			}
+		}
+	}
+
 	return (
 		<div className='w-full h-full flex'>
 			<div className='flex flex-col gap-4 h-screen w-[500px] bg-white border border-solid shadow-xl p-5 px-8'>
@@ -47,7 +67,7 @@ export default function BeneficiaryDetailsView({
 								iconHeight={18}
 								iconWidth={18}
 								color={'bg-red-500'}
-								handleClick={deleteView}
+								handleClick={handleDelete}
 							/>
 						</div>
 					</div>
