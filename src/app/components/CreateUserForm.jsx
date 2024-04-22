@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation'
 function CreateUserForm() {
 	const [showPassword, setShowPassword] = useState(false)
 	const [userNameOrEmailError, setUserNameOrEmailError] = useState(false)
+	const [validating, setValidating] = useState('')
 	const [errors, setErrors] = useState({})
 
 	const togglePassword = () => {
@@ -17,10 +18,13 @@ function CreateUserForm() {
 	const router = useRouter()
 
 	const verifyEmail = async email => {
+		setValidating('Validating email...')
 		try {
 			const response = await axios.post('/api/verify_email', { email })
+			setValidating('')
 			return response.data.success
 		} catch (error) {
+			setValidating('')
 			return false
 		}
 	}
@@ -48,10 +52,14 @@ function CreateUserForm() {
 			errors.email = 'Correo electrónico inválido'
 		}
 
-		const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/
 		const password = formData.get('password').toString()
 
-		if (!passwordRegex.test(password)) {
+		// Check password has at least 8 characters, one uppercase, one lowercase and one number without regex
+		const hasUpperCase = /[A-Z]/.test(password)
+		const hasLowerCase = /[a-z]/.test(password)
+		const hasNumber = /\d/.test(password)
+		const hasLength = password.length >= 8
+		if (!hasUpperCase || !hasLowerCase || !hasNumber || !hasLength) {
 			isValid = false
 			errors.password =
 				'La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número'
@@ -169,6 +177,7 @@ function CreateUserForm() {
 							className='p-1 w-full'
 						/>
 					</div>
+					{validating && <span>{validating}</span>}
 					{errors.email && <span className='text-red-500'>{errors.email}</span>}
 				</article>
 				<article className='flex flex-col'>
@@ -240,6 +249,9 @@ function CreateUserForm() {
 							</svg>
 						)}
 					</div>
+					{errors.password && (
+						<span className='text-red-500'>{errors.password}</span>
+					)}
 				</article>
 				<article className='flex flex-col'>
 					<label htmlFor='confirm-password'>
