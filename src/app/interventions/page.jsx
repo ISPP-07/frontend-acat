@@ -127,6 +127,9 @@ export default function InterventionPage() {
 					intervention.patient.name
 						.toLowerCase()
 						.includes(searchTerm.toLowerCase()) ||
+					intervention.patient.alias
+						.toLowerCase()
+						.includes(searchTerm.toLowerCase()) ||
 					intervention.typology.toString().includes(searchTerm.toLowerCase()) ||
 					intervention.reason.toLowerCase().includes(searchTerm.toLowerCase())
 			)

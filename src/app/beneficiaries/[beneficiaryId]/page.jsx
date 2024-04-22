@@ -332,7 +332,7 @@ export default function BeneficiaryDetails({ params }) {
 								Resetear
 							</button>
 						</div>
-						<div className='p-10 flex flex-wrap gap-5 justify-center items-center overflow-y-scroll h-screen'>
+						<div className='p-10 flex flex-wrap gap-5 overflow-y-scroll h-screen'>
 							<Suspense fallback={<div>Cargando...</div>}>
 								{interventions && interventions.length !== 0 ? (
 									interventions.map(intervention => (
