@@ -25,7 +25,18 @@ function CreateUserForm() {
 			return response.data.success
 		} catch (error) {
 			setValidating('')
-			return false
+			if (error.response.status !== 504) {
+				return false
+			} else {
+				// Ask for confirmation if the request failed
+				if (
+					confirm(
+						'Algo fallo intentando verificar el correo, ¿desea continuar de todas formas?'
+					)
+				)
+					return true
+				else return false
+			}
 		}
 	}
 
