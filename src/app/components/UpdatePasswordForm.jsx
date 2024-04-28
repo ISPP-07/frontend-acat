@@ -18,6 +18,9 @@ export default function UpdatePasswordForm({ onToggle, show = true }) {
 		event.preventDefault()
 		const formData = new FormData(event.target)
 
+		const loader = document.getElementById('loader')
+		loader.classList.remove('hidden')
+
 		const jsonData = {
 			email: formData.get('email').toString(),
 			opt_code: formData.get('opt_code').toString(),
@@ -39,6 +42,9 @@ export default function UpdatePasswordForm({ onToggle, show = true }) {
 			})
 			.catch(function (error) {
 				alert(`Hubo un error al modificar la contraseña: ${error.JSON}`)
+			})
+			.finally(() => {
+				loader.classList.add('hidden')
 			})
 	}
 	return (

@@ -21,13 +21,23 @@ export default function BeneficiaryDetails({ params }) {
 	const [toggleDeleteView, setToggleDeleteView] = useState(false)
 	const [startDate, setStartDate] = useState(null)
 	const [endDate, setEndDate] = useState(null)
-
+	const [closeLoader] = useState(false)
 	const [errors, setErrors] = useState(null)
 	const router = useRouter()
 
 	useEffect(() => {
 		createAxiosInterceptors()
 	}, [])
+
+	useEffect(() => {
+		const loader = document.getElementById('loader')
+		loader.classList.add('hidden')
+	}, [closeLoader])
+
+	function showLoader() {
+		const loader = document.getElementById('loader')
+		loader.classList.remove('hidden')
+	}
 
 	const fetchData = async () => {
 		try {
@@ -82,6 +92,10 @@ export default function BeneficiaryDetails({ params }) {
 
 	function deleteBeneficiary() {
 		let BASEURL = process.env.NEXT_PUBLIC_BASE_URL
+
+		const loader = document.getElementById('loader')
+		loader.classList.remove('hidden')
+
 		if (BASEURL === undefined) {
 			BASEURL = 'http://localhost:8080/api/v1'
 		}
@@ -95,6 +109,9 @@ export default function BeneficiaryDetails({ params }) {
 				alert(
 					'Se produjo un error al eliminar el beneficiario. Por favor, inténtalo de nuevo.'
 				)
+			})
+			.finally(() => {
+				loader.classList.add('hidden')
 			})
 	}
 
@@ -160,6 +177,10 @@ export default function BeneficiaryDetails({ params }) {
 		if (!valid) {
 			return
 		}
+
+		const loder = document.getElementById('loader')
+		loder.classList.remove('hidden')
+
 		console.log(formData.get('first_technician'))
 
 		const jsonData = {
@@ -214,6 +235,9 @@ export default function BeneficiaryDetails({ params }) {
 					'Se produjo un error al enviar los datos. Por favor, inténtalo de nuevo.'
 				)
 			})
+			.finally(() => {
+				loder.classList.add('hidden')
+			})
 	}
 
 	const fetchInterventions = async () => {
@@ -263,11 +287,11 @@ export default function BeneficiaryDetails({ params }) {
 	}
 
 	return (
-		<main className='flex flex-auto w-full'>
+		<main className="flex flex-auto w-full">
 			<Suspense fallback={<div></div>}>
 				<Sidebar />
 			</Suspense>
-			<div className='flex flex-wrap'>
+			<div className="flex flex-wrap">
 				<div>
 					{beneficiary &&
 						(toggleEditView ? (
@@ -289,56 +313,57 @@ export default function BeneficiaryDetails({ params }) {
 						))}
 					{toggleDeleteView && (
 						<ModalConfirmation
-							title='¿Estás seguro?'
-							message='Si aceptas borrarás permanentemente el usuario.'
+							title="¿Estás seguro?"
+							message="Si aceptas borrarás permanentemente el usuario."
 							handleCancel={deleteView}
 							handleConfirm={deleteBeneficiary}
 						/>
 					)}
 				</div>
-				<div className='p-10 flex-1 flex flex-wrap gap-5 justify-center font-Varela overflow-y-auto min-w-[400px]'>
-					<div className='w-full overflow-x-auto'>
-						<span className='font-Varela text-black text-2xl font-bold'>
+				<div className="p-10 flex-1 flex flex-wrap gap-5 justify-center font-Varela overflow-y-auto min-w-[400px]">
+					<div className="w-full overflow-x-auto">
+						<span className="font-Varela text-black text-2xl font-bold">
 							Intervenciones
 						</span>
-						<div className='flex flex-wrap gap-4 items-center'>
-							<div className='p-2'>
-								<label htmlFor='startDate'>Fecha de inicio:</label>
+						<div className="flex flex-wrap gap-4 items-center">
+							<div className="p-2">
+								<label htmlFor="startDate">Fecha de inicio:</label>
 								<input
-									className='ml-2 border border-blue-400 rounded-md p-1'
-									type='date'
-									id='startDate'
-									name='startDate'
+									className="ml-2 border border-blue-400 rounded-md p-1"
+									type="date"
+									id="startDate"
+									name="startDate"
 									value={startDate}
 									onChange={e => setStartDate(e.target.value)}
 								/>
 							</div>
-							<div className='p-2'>
-								<label htmlFor='endDate'>Fecha de fin:</label>
+							<div className="p-2">
+								<label htmlFor="endDate">Fecha de fin:</label>
 								<input
-									className='ml-2 border border-blue-400 rounded-md p-1'
-									type='date'
-									id='endDate'
-									name='endDate'
+									className="ml-2 border border-blue-400 rounded-md p-1"
+									type="date"
+									id="endDate"
+									name="endDate"
 									value={endDate}
 									onChange={e => setEndDate(e.target.value)}
-									placeholder='Fecha fin'
+									placeholder="Fecha fin"
 								/>
 							</div>
 							<button
-								className='bg-blue-500 text-white px-4 py-2 rounded-md'
+								className="bg-blue-500 text-white px-4 py-2 rounded-md"
 								onClick={handleResetFilters}
 							>
 								Resetear
 							</button>
 						</div>
-						<div className='p-10 flex flex-wrap gap-5 overflow-y-scroll h-screen'>
+						<div className="p-10 flex flex-wrap gap-5 overflow-y-scroll h-screen">
 							<Suspense fallback={<div>Cargando...</div>}>
 								{interventions && interventions.length !== 0 ? (
 									interventions.map(intervention => (
 										<Link
 											href={`/interventions/${intervention.id}`}
 											key={intervention.id}
+											onClick={showLoader}
 										>
 											<CardIntervention
 												key={intervention.id}
@@ -347,8 +372,8 @@ export default function BeneficiaryDetails({ params }) {
 										</Link>
 									))
 								) : (
-									<div className='align-self-start w-full'>
-										<span className='text-xl'>
+									<div className="align-self-start w-full">
+										<span className="text-xl">
 											No hay intervenciones para este beneficiario
 										</span>
 									</div>
