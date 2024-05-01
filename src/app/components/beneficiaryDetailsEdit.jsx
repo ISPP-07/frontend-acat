@@ -29,6 +29,7 @@ export default function BeneficiaryDetailsEdit({
 								placeholder={'Nombre:'}
 								className='p-1 border-2 rounded-xl placeholder-black'
 								data-testid='name'
+								required={true}
 							/>
 						</span>
 						<div className='flex items-center gap-2'>
@@ -136,6 +137,41 @@ export default function BeneficiaryDetailsEdit({
 				<section className='flex flex-col gap-3'>
 					<fieldset className='font-Varela text-gray-800 flex items-center w-full'>
 						<label
+							htmlFor='first_surname'
+							className='font-Varela text-blue-500 font-bold mr-2 w-fit text-nowrap'
+						>
+							Primer Apellido:
+						</label>
+						<input
+							type='text'
+							id='first_surname'
+							name='first_surname'
+							defaultValue={beneficiary.first_surname ?? ''}
+							placeholder={'Primer apellido:'}
+							className='p-1 border-2 rounded-xl placeholder-black w-full'
+							data-testid='first_surname'
+							required={true}
+						/>
+					</fieldset>
+					<fieldset className='font-Varela text-gray-800 flex items-center w-full'>
+						<label
+							htmlFor='second_surname'
+							className='font-Varela text-blue-500 font-bold mr-2 w-fit text-nowrap'
+						>
+							Segundo Apellido:
+						</label>
+						<input
+							type='text'
+							id='second_surname'
+							name='second_surname'
+							defaultValue={beneficiary.second_surname ?? ''}
+							placeholder={'Primer apellido:'}
+							className='p-1 border-2 rounded-xl placeholder-black w-full'
+							data-testid='second_surname'
+						/>
+					</fieldset>
+					<fieldset className='font-Varela text-gray-800 flex items-center w-full'>
+						<label
 							htmlFor='dossier_number'
 							className='font-Varela text-blue-500 font-bold mr-2 w-fit text-nowrap'
 						>
@@ -149,6 +185,7 @@ export default function BeneficiaryDetailsEdit({
 							placeholder={'Nº de expediente:'}
 							className='p-1 border-2 rounded-xl placeholder-black w-full'
 							data-testid='dossier_number'
+							required={true}
 						/>
 					</fieldset>
 					<fieldset className='font-Varela text-gray-800 flex items-center'>
@@ -191,6 +228,7 @@ export default function BeneficiaryDetailsEdit({
 							}
 							className='p-1 border-2 rounded-xl placeholder-black w-full'
 							data-testid='birth_date'
+							required={true}
 						/>
 					</fieldset>
 					{errors?.birth_date && (
@@ -226,6 +264,7 @@ export default function BeneficiaryDetailsEdit({
 							defaultValue={beneficiary.gender}
 							className='p-1 border-2 rounded-xl w-full bg-white'
 							data-testid='gender'
+							required={true}
 						>
 							<option value='Man'>Hombre</option>
 							<option value='Woman'>Mujer</option>

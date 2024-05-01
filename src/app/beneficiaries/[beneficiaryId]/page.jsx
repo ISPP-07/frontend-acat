@@ -167,6 +167,14 @@ export default function BeneficiaryDetails({ params }) {
 				formData.get('name').trim() === ''
 					? beneficiary.name
 					: formData.get('name'),
+			first_surname:
+				formData.get('first_surname').trim() === ''
+					? beneficiary.first_surname
+					: formData.get('first_surname'),
+			second_surname:
+				formData.get('second_surname').trim() === ''
+					? beneficiary.second_surname
+					: formData.get('second_surname'),
 			alias:
 				formData.get('alias').trim() === ''
 					? beneficiary.alias
