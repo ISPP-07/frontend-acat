@@ -60,12 +60,16 @@ export default function BeneficiariesList() {
 		const selectedFile = event.target.files[0]
 		try {
 			const formData = new FormData()
-			formData.append('file', selectedFile)
-			await axios.post('url/de/import', formData, {
-				headers: {
-					'Content-Type': 'multipart/form-data'
+			formData.append('patients', selectedFile)
+			await axios.post(
+				`${process.env.NEXT_PUBLIC_BASE_URL}/acat/patient/excel`,
+				formData,
+				{
+					headers: {
+						'Content-Type': 'multipart/form-data'
+					}
 				}
-			})
+			)
 			alert('Datos importados correctamente')
 		} catch (error) {
 			console.error(error)
@@ -129,14 +133,31 @@ export default function BeneficiariesList() {
 				<div className='flex flex-row'>
 					<button
 						className=' bg-green-400 h-8 w-8 rounded-full shadow-2xl mt-3 mr-2'
-						onClick={() =>
-							exportData(data, 'Beneficiados', {
-								id: 'id',
-								alias: 'alias',
-								birthday: 'birthday',
-								isFinished: 'isFinished'
+						onClick={async () => {
+							const data = (await fetchDataBeneficiaries()).elements
+							// Change 'Man' to 'Hombre' and 'Woman' to 'Mujer'
+							data.forEach(beneficiary => {
+								if (beneficiary.gender === 'Man') beneficiary.gender = 'Hombre'
+								else beneficiary.gender = 'Mujer'
 							})
-						}
+							// Export all but the id
+							exportData(data, 'Beneficiarios', {
+								name: 'nombre',
+								first_surname: 'primer apellido',
+								second_surname: 'segundo apellido',
+								// alias: 'alias',
+								nid: 'dni',
+								birth_date: 'fecha nacimiento',
+								gender: 'genero',
+								address: 'direccion',
+								contact_phone: 'telefono',
+								dossier_number: 'numero expediente',
+								// is_rehabilitated: 'rehabilitado',
+								first_technician: 'tecnico',
+								// registration_date: 'fecha de alta',
+								observation: 'observacion'
+							})
+						}}
 						data-testid='export-button'
 					>
 						<Image
@@ -158,7 +179,7 @@ export default function BeneficiariesList() {
 						id='file'
 						onChange={handleFileChange}
 						style={{ display: 'none' }}
-						accept='.xls'
+						accept='.xlsx'
 						data-testid='file'
 					/>
 				</div>

@@ -166,7 +166,18 @@ export default function InterventionPage() {
 				<div className='flex flex-row'>
 					<button
 						className=' bg-green-400 h-8 w-8 rounded-full shadow-2xl mt-3 mr-2'
-						onClick={() => exportData(data, 'Intervenciones', { id: 'ID' })}
+						onClick={async () => {
+							const data = (await fetchDataInterventions()).elements
+							// export all data except the patient field and id
+							exportData(data, 'Intervenciones', {
+								date: 'fecha',
+								reason: 'razon',
+								typology: 'tipologia',
+								observations: 'observacion',
+								technician: 'tecnico'
+								// patient: 'paciente'
+							})
+						}}
 						data-testid='export-button'
 					>
 						<Image
@@ -188,7 +199,7 @@ export default function InterventionPage() {
 						id='file'
 						onChange={handleFileChange}
 						style={{ display: 'none' }}
-						accept='.xls'
+						accept='.xlsx'
 						data-testid='file'
 					/>
 				</div>

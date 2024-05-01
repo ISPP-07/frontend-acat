@@ -46,14 +46,31 @@ export default function BeneficiariesList() {
 				<div className='flex flex-row'>
 					<button
 						className=' bg-green-400 h-8 w-8 rounded-full shadow-2xl mt-3 mr-2'
-						onClick={() =>
-							exportData(data, 'Beneficiados', {
-								id: 'id',
-								alias: 'alias',
-								birthday: 'birthday',
-								isFinished: 'isFinished'
+						onClick={async () => {
+							const data = (await Rehabilited()).elements
+							// Change 'Man' to 'Hombre' and 'Woman' to 'Mujer'
+							data.forEach(beneficiary => {
+								if (beneficiary.gender === 'Man') beneficiary.gender = 'Hombre'
+								else beneficiary.gender = 'Mujer'
 							})
-						}
+							// Export all but the id
+							exportData(data, 'Beneficiarios', {
+								name: 'nombre',
+								first_surname: 'primer apellido',
+								second_surname: 'segundo apellido',
+								// alias: 'alias',
+								nid: 'dni',
+								birth_date: 'fecha nacimiento',
+								gender: 'genero',
+								address: 'direccion',
+								contact_phone: 'telefono',
+								dossier_number: 'numero expediente',
+								// is_rehabilitated: 'rehabilitado',
+								first_technician: 'tecnico',
+								// registration_date: 'fecha de alta',
+								observation: 'observacion'
+							})
+						}}
 						data-testid='export-button'
 					>
 						<Image
