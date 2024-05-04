@@ -22,10 +22,21 @@ export default function BeneficiariesList() {
 	const [page, setPage] = useState(1)
 	const [totalPages, setTotalPages] = useState(0)
 	const [perPage, setPerPage] = useState(20)
+	const [closeLoader] = useState(false)
 
 	useEffect(() => {
 		createAxiosInterceptors()
 	}, [])
+
+	useEffect(() => {
+		const loader = document.getElementById('loader')
+		loader.classList.add('hidden')
+	}, [closeLoader])
+
+	function showLoader() {
+		const loader = document.getElementById('loader')
+		loader.classList.remove('hidden')
+	}
 
 	const selectOpts = [
 		{ label: '20', value: 20 },
@@ -190,6 +201,7 @@ export default function BeneficiariesList() {
 								<Link
 									href={`/beneficiaries/${beneficiary.id}?showSidebar=${mobile}`}
 									key={beneficiary.id}
+									onClick={showLoader}
 								>
 									<CardBeneficiary
 										key={beneficiary.id}

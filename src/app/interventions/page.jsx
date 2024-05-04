@@ -23,10 +23,21 @@ export default function InterventionPage() {
 	const [page, setPage] = useState(1)
 	const [totalPages, setTotalPages] = useState(0)
 	const [perPage, setPerPage] = useState(20)
+	const [closeLoader] = useState(false)
 
 	useEffect(() => {
 		createAxiosInterceptors()
 	}, [])
+
+	useEffect(() => {
+		const loader = document.getElementById('loader')
+		loader.classList.add('hidden')
+	}, [closeLoader])
+
+	function showLoader() {
+		const loader = document.getElementById('loader')
+		loader.classList.remove('hidden')
+	}
 
 	const selectOpts = [
 		{ label: '20', value: 20 },
@@ -191,14 +202,14 @@ export default function InterventionPage() {
 					</button>
 					{/*
 					<label
-						htmlFor='file'
-						className='bg-green-400 w-32 h-6 mt-4 rounded-full font-Varela text-white cursor-pointer text-center text-sm'
+						htmlFor="file"
+						className="bg-green-400 w-32 h-6 mt-4 rounded-full font-Varela text-white cursor-pointer text-center text-sm"
 					>
 						Importar datos
 					</label>
 					<input
-						type='file'
-						id='file'
+						type="file"
+						id="file"
 						onChange={handleFileChange}
 						style={{ display: 'none' }}
 						accept='.xlsx'
@@ -211,6 +222,7 @@ export default function InterventionPage() {
 						{filteredData &&
 							filteredData.map(intervention => (
 								<Link
+									onClick={showLoader}
 									href={`/interventions/${intervention.id}`}
 									key={intervention.id}
 								>

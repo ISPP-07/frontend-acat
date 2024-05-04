@@ -2,6 +2,7 @@ import './globals.css'
 /* eslint-disable no-unused-vars */
 import React from 'react'
 /* eslint-enable no-unused-vars */
+import Loader from './components/loader'
 
 export const metadata = {
 	title: 'ACAT',
@@ -15,7 +16,10 @@ export default function RootLayout({ children }) {
 			<head>
 				<meta name="theme-color" content="#ffffff" />
 			</head>
-			<body>{children}</body>
+			<body>
+				<Loader />
+				{children}
+			</body>
 		</html>
 	)
 }

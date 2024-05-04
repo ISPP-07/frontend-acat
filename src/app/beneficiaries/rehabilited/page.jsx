@@ -15,10 +15,16 @@ import { createAxiosInterceptors } from '../../axiosConfig'
 export default function BeneficiariesList() {
 	const [data, setData] = useState(null)
 	const [showModal, setShowModal] = useState(false)
+	const [closeLoader] = useState(false)
 
 	const toggleModal = () => {
 		setShowModal(!showModal)
 	}
+
+	useEffect(() => {
+		const loader = document.getElementById('loader')
+		loader.classList.add('hidden')
+	}, [closeLoader])
 
 	useEffect(() => {
 		createAxiosInterceptors()
