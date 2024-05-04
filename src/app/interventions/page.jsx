@@ -18,6 +18,7 @@ import { formatDate } from './utils'
 export default function InterventionPage() {
 	const [data, setData] = useState(null)
 	const [filteredData, setFilteredData] = useState(null)
+	const [allData, setAllData] = useState(null)
 	const [showModal, setShowModal] = useState(false)
 	const [startDate, setStartDate] = useState(null)
 	const [endDate, setEndDate] = useState(null)
@@ -25,6 +26,7 @@ export default function InterventionPage() {
 	const [totalPages, setTotalPages] = useState(0)
 	const [perPage, setPerPage] = useState(20)
 	const [closeLoader] = useState(false)
+	const [showPagination, setShowPagination] = useState(true)
 
 	useEffect(() => {
 		createAxiosInterceptors()
@@ -60,8 +62,10 @@ export default function InterventionPage() {
 		const opt = event.target.value
 		if (opt === '') {
 			setFilteredData(data)
+			setShowPagination(true)
 		} else {
-			const filtered = data.filter(
+			setShowPagination(false)
+			const filtered = allData.filter(
 				intervention => intervention.typology === opt
 			)
 			setFilteredData(filtered)
@@ -100,26 +104,9 @@ export default function InterventionPage() {
 				)
 				setTotalPages(Math.ceil(data1.total_elements / perPage))
 				setData(data1.elements)
-				let filteredIntervention = data1.elements
-				if (startDate && endDate) {
-					filteredIntervention = data.filter(intervention => {
-						const expDate = new Date(intervention.date)
-						return (
-							expDate >= new Date(startDate) && expDate <= new Date(endDate)
-						)
-					})
-				} else if (startDate && !endDate) {
-					filteredIntervention = data.filter(intervention => {
-						const expDate = new Date(intervention.date)
-						return expDate >= new Date(startDate)
-					})
-				} else if (!startDate && endDate) {
-					filteredIntervention = data.filter(intervention => {
-						const expDate = new Date(intervention.date)
-						return expDate <= new Date(endDate)
-					})
-				}
-				setFilteredData(filteredIntervention)
+				setFilteredData(data1.elements)
+				const allData1 = await fetchDataInterventions()
+				setAllData(allData1.elements)
 			} catch (error) {
 				console.error('Error al cargar los datos:', error)
 				alert(
@@ -128,14 +115,41 @@ export default function InterventionPage() {
 			}
 		}
 		fetchData()
-	}, [page, perPage, startDate, endDate])
+	}, [page, perPage])
+
+	useEffect(() => {
+		let filteredIntervention = data
+		setShowPagination(true)
+		if (startDate && endDate) {
+			setShowPagination(false)
+			filteredIntervention = allData.filter(intervention => {
+				const expDate = new Date(intervention.date)
+				return expDate >= new Date(startDate) && expDate <= new Date(endDate)
+			})
+		} else if (startDate && !endDate) {
+			setShowPagination(false)
+			filteredIntervention = allData.filter(intervention => {
+				const expDate = new Date(intervention.date)
+				return expDate >= new Date(startDate)
+			})
+		} else if (!startDate && endDate) {
+			setShowPagination(false)
+			filteredIntervention = allData.filter(intervention => {
+				const expDate = new Date(intervention.date)
+				return expDate <= new Date(endDate)
+			})
+		}
+		setFilteredData(filteredIntervention)
+	}, [startDate, endDate])
 
 	const handleSearch = searchTerm => {
 		if (!searchTerm) {
 			setData(data)
 			setFilteredData(data)
+			setShowPagination(true)
 		} else {
-			const filtered = data.filter(
+			setShowPagination(false)
+			const filtered = allData.filter(
 				intervention =>
 					intervention.patient.name
 						.toLowerCase()
@@ -143,7 +157,9 @@ export default function InterventionPage() {
 					intervention.patient.alias
 						.toLowerCase()
 						.includes(searchTerm.toLowerCase()) ||
-					intervention.typology.toString().includes(searchTerm.toLowerCase()) ||
+					intervention.typology
+						.toLowerCase()
+						.includes(searchTerm.toLowerCase()) ||
 					intervention.reason.toLowerCase().includes(searchTerm.toLowerCase())
 			)
 			setFilteredData(filtered)
@@ -238,25 +254,27 @@ export default function InterventionPage() {
 							))}
 					</Suspense>
 				</div>
-				<div>
-					<Pagination
-						count={totalPages}
-						initialpage={1}
-						onChange={handlePageChange}
-						className='flex flex-wrap justify-center items-center'
-					/>
-					<div className='flex justify-center items-center m-2'>
-						<p>Número de elementos:</p>
-						<Select
-							options={selectOpts}
-							defaultValue={{ label: '20', value: 20 }}
-							isSearchable={false}
-							isClearable={false}
-							onChange={handleSelect}
-							className='m-2'
+				{showPagination && (
+					<div>
+						<Pagination
+							count={totalPages}
+							initialpage={1}
+							onChange={handlePageChange}
+							className='flex flex-wrap justify-center items-center'
 						/>
+						<div className='flex justify-center items-center m-2'>
+							<p>Número de elementos:</p>
+							<Select
+								options={selectOpts}
+								defaultValue={{ label: '20', value: 20 }}
+								isSearchable={false}
+								isClearable={false}
+								onChange={handleSelect}
+								className='m-2'
+							/>
+						</div>
 					</div>
-				</div>
+				)}
 			</div>
 			{showModal ? (
 				<RegisterInterventionModal onClickFunction={toggleModal} />

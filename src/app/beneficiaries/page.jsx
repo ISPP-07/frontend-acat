@@ -18,11 +18,13 @@ import { createAxiosInterceptors } from '../axiosConfig'
 export default function BeneficiariesList() {
 	const [data, setData] = useState(null)
 	const [filteredData, setFilteredData] = useState(null)
+	const [allData, setAllData] = useState(null)
 	const [showModal, setShowModal] = useState(false)
 	const [page, setPage] = useState(1)
 	const [totalPages, setTotalPages] = useState(0)
 	const [perPage, setPerPage] = useState(20)
 	const [closeLoader] = useState(false)
+	const [showPagination, setShowPagination] = useState(true)
 
 	useEffect(() => {
 		createAxiosInterceptors()
@@ -51,9 +53,14 @@ export default function BeneficiariesList() {
 
 	const handleSelectChange = event => {
 		const genero = event.target.value
-		if (genero === '') setFilteredData(data)
-		else {
-			const filtered = data.filter(beneficiary => beneficiary.gender === genero)
+		if (genero === '') {
+			setFilteredData(data)
+			setShowPagination(true)
+		} else {
+			setShowPagination(false)
+			const filtered = allData.filter(
+				beneficiary => beneficiary.gender === genero
+			)
 			setFilteredData(filtered)
 		}
 	}
@@ -95,6 +102,8 @@ export default function BeneficiariesList() {
 				setTotalPages(Math.ceil(data.total_elements / perPage))
 				setData(data.elements)
 				setFilteredData(data.elements)
+				const allData = await fetchDataBeneficiaries()
+				setAllData(allData.elements)
 			} catch (error) {
 				console.error('Error al cargar los datos:', error)
 				alert(
@@ -114,10 +123,11 @@ export default function BeneficiariesList() {
 
 	const handleSearch = searchTerm => {
 		if (!searchTerm) {
-			setData(data)
 			setFilteredData(data)
+			setShowPagination(true)
 		} else {
-			const filtered = data.filter(
+			setShowPagination(false)
+			const filtered = allData.filter(
 				beneficiary =>
 					beneficiary.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
 					beneficiary.alias.toLowerCase().includes(searchTerm.toLowerCase())
@@ -127,23 +137,23 @@ export default function BeneficiariesList() {
 	}
 
 	return (
-		<main className='flex w-full'>
+		<main className="flex w-full">
 			<Suspense fallback={<div></div>}>
 				<Sidebar />
 			</Suspense>
-			<div className='w-full h-full flex flex-col items-center'>
+			<div className="w-full h-full flex flex-col items-center">
 				<Searchbar
 					handleClick={toggleModal}
 					handleSearch={handleSearch}
-					stext='Dar de alta'
-					page='beneficiaries'
+					stext="Dar de alta"
+					page="beneficiaries"
 					datosSelect={genders}
 					handleSelectChange={handleSelectChange}
-					searchText='Buscar beneficiario por nombre o alias'
+					searchText="Buscar beneficiario por nombre o alias"
 				/>
-				<div className='flex flex-row'>
+				<div className="flex flex-row">
 					<button
-						className=' bg-green-400 h-8 w-8 rounded-full shadow-2xl mt-3 mr-2'
+						className=" bg-green-400 h-8 w-8 rounded-full shadow-2xl mt-3 mr-2"
 						onClick={async () => {
 							const data = (await fetchDataBeneficiaries()).elements
 							// Change 'Man' to 'Hombre' and 'Woman' to 'Mujer'
@@ -169,32 +179,32 @@ export default function BeneficiariesList() {
 								observation: 'observacion'
 							})
 						}}
-						data-testid='export-button'
+						data-testid="export-button"
 					>
 						<Image
-							alt='Exportar a excel'
-							src='/excel.svg'
-							className='ml-2'
+							alt="Exportar a excel"
+							src="/excel.svg"
+							className="ml-2"
 							width={15}
 							height={15}
 						/>
 					</button>
 					<label
-						htmlFor='file'
-						className='bg-green-400 w-32 h-6 mt-4 rounded-full font-Varela text-white cursor-pointer text-center text-sm'
+						htmlFor="file"
+						className="bg-green-400 w-32 h-6 mt-4 rounded-full font-Varela text-white cursor-pointer text-center text-sm"
 					>
 						Importar datos
 					</label>
 					<input
-						type='file'
-						id='file'
+						type="file"
+						id="file"
 						onChange={handleFileChange}
 						style={{ display: 'none' }}
-						accept='.xlsx'
-						data-testid='file'
+						accept=".xlsx"
+						data-testid="file"
 					/>
 				</div>
-				<div className='container p-10 flex flex-wrap gap-5 justify-center items-center'>
+				<div className="container p-10 flex flex-wrap gap-5 justify-center items-center">
 					<Suspense fallback={<div>Cargando...</div>}>
 						{filteredData &&
 							filteredData.map(beneficiary => (
@@ -211,25 +221,27 @@ export default function BeneficiariesList() {
 							))}
 					</Suspense>
 				</div>
-				<div>
-					<Pagination
-						count={totalPages}
-						initialpage={1}
-						onChange={handlePageChange}
-						className='flex flex-wrap justify-center items-center'
-					/>
-					<div className='flex justify-center items-center m-2'>
-						<p>Número de elementos:</p>
-						<Select
-							options={selectOpts}
-							defaultValue={{ label: '20', value: 20 }}
-							isSearchable={false}
-							isClearable={false}
-							onChange={handleSelect}
-							className='m-2'
+				{showPagination && (
+					<div>
+						<Pagination
+							count={totalPages}
+							initialpage={1}
+							onChange={handlePageChange}
+							className="flex flex-wrap justify-center items-center"
 						/>
+						<div className="flex justify-center items-center m-2">
+							<p>Número de elementos:</p>
+							<Select
+								options={selectOpts}
+								defaultValue={{ label: '20', value: 20 }}
+								isSearchable={false}
+								isClearable={false}
+								onChange={handleSelect}
+								className="m-2"
+							/>
+						</div>
 					</div>
-				</div>
+				)}
 			</div>
 			{showModal ? <CreateModal closeModal={toggleModal} /> : null}
 		</main>
