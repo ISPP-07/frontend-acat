@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React from 'react'
-import { formatDate } from '../utils'
+import { formatDate } from '../interventions/utils'
 /* eslint-enable no-unused-vars */
 
 export default function InterventionDetailsView({ intervention }) {
