@@ -16,9 +16,23 @@ export default function BeneficiariesList() {
 	const [data, setData] = useState(null)
 	const [showModal, setShowModal] = useState(false)
 	const [closeLoader] = useState(false)
+	const [filteredData, setFilteredData] = useState(null)
 
 	const toggleModal = () => {
 		setShowModal(!showModal)
+	}
+
+	const handleSearch = searchTerm => {
+		if (!searchTerm) {
+			setFilteredData(data)
+		} else {
+			const filtered = data.filter(
+				beneficiary =>
+					beneficiary.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+					beneficiary.alias.toLowerCase().includes(searchTerm.toLowerCase())
+			)
+			setFilteredData(filtered)
+		}
 	}
 
 	useEffect(() => {
@@ -32,6 +46,7 @@ export default function BeneficiariesList() {
 			try {
 				const data = await Rehabilited()
 				setData(data)
+				setFilteredData(data)
 			} catch (error) {
 				console.error('Error al cargar los datos:', error)
 				alert(
@@ -43,17 +58,22 @@ export default function BeneficiariesList() {
 	}, [])
 
 	return (
-		<main className='flex w-full'>
+		<main className="flex w-full">
 			<Suspense fallback={<div></div>}>
 				<Sidebar />
 			</Suspense>
-			<div className='w-full h-full flex flex-col items-center'>
-				<Searchbar handleClick={toggleModal} stext='Dar de alta' />
-				<div className='flex flex-row'>
+			<div className="w-full h-full flex flex-col items-center">
+				<Searchbar
+					handleClick={toggleModal}
+					stext="Dar de alta"
+					handleSearch={handleSearch}
+					searchText="Buscar beneficiario por nombre o alias"
+				/>
+				<div className="flex flex-row">
 					<button
-						className=' bg-green-400 h-8 w-8 rounded-full shadow-2xl mt-3 mr-2'
+						className=" bg-green-400 h-8 w-8 rounded-full shadow-2xl mt-3 mr-2"
 						onClick={async () => {
-							const data = (await Rehabilited()).elements
+							const data = await Rehabilited()
 							// Change 'Man' to 'Hombre' and 'Woman' to 'Mujer'
 							data.forEach(beneficiary => {
 								if (beneficiary.gender === 'Man') beneficiary.gender = 'Hombre'
@@ -77,21 +97,21 @@ export default function BeneficiariesList() {
 								observation: 'observacion'
 							})
 						}}
-						data-testid='export-button'
+						data-testid="export-button"
 					>
 						<Image
-							alt='Exportar a excel'
-							src='/excel.svg'
-							className='ml-2'
+							alt="Exportar a excel"
+							src="/excel.svg"
+							className="ml-2"
 							width={15}
 							height={15}
 						/>
 					</button>
 				</div>
-				<div className='container p-10 flex flex-wrap gap-5 justify-center items-center'>
+				<div className="container p-10 flex flex-wrap gap-5 justify-center items-center">
 					<Suspense fallback={<div>Cargando...</div>}>
-						{data &&
-							data.map(beneficiary => (
+						{filteredData &&
+							filteredData.map(beneficiary => (
 								<Link
 									href={`/beneficiaries/${beneficiary.id}`}
 									key={beneficiary.id}
