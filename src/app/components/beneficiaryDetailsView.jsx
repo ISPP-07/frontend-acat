@@ -132,6 +132,18 @@ export default function BeneficiaryDetailsView({
 				<section className='flex flex-col gap-3'>
 					<article className='font-Varela text-gray-800'>
 						<span className='font-Varela text-blue-500 font-bold mr-2'>
+							Primer Apellido:
+						</span>
+						{beneficiary.first_surname}
+					</article>
+					<article className='font-Varela text-gray-800'>
+						<span className='font-Varela text-blue-500 font-bold mr-2'>
+							Segundo Apellido:
+						</span>
+						{beneficiary.second_surname || '--'}
+					</article>
+					<article className='font-Varela text-gray-800'>
+						<span className='font-Varela text-blue-500 font-bold mr-2'>
 							Nº de expediente:
 						</span>
 						{beneficiary.dossier_number}

@@ -9,11 +9,11 @@ import Link from 'next/link'
 import { fetchDataInterventions } from './fetchIntervention'
 import Image from 'next/image'
 import { exportData } from '../exportData'
-import axios from 'axios'
 import RegisterInterventionModal from '../components/RegisterInterventionModal'
 import Pagination from '@mui/material/Pagination'
 import Select from 'react-select'
 import { createAxiosInterceptors } from '../axiosConfig'
+import { formatDate } from './utils'
 
 export default function InterventionPage() {
 	const [data, setData] = useState(null)
@@ -72,6 +72,7 @@ export default function InterventionPage() {
 		setShowModal(!showModal)
 	}
 
+	/*
 	const handleFileChange = async event => {
 		const selectedFile = event.target.files[0]
 		try {
@@ -88,6 +89,7 @@ export default function InterventionPage() {
 			alert('Error al importar los datos')
 		}
 	}
+    */
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -156,38 +158,53 @@ export default function InterventionPage() {
 	}
 
 	return (
-		<main className="flex w-full">
+		<main className='flex w-full'>
 			<Suspense fallback={<div></div>}>
 				<Sidebar />
 			</Suspense>
-			<div className="w-full h-full flex flex-col items-center">
+			<div className='w-full h-full flex flex-col items-center'>
 				<Searchbar
 					handleClick={toggleModal}
 					handleSearch={handleSearch}
-					text="Registrar intervención"
-					page="interventions"
+					text='Registrar intervención'
+					page='interventions'
 					startDate={startDate}
 					endDate={endDate}
 					handleStartDateChange={e => setStartDate(e.target.value)}
 					handleEndDateChange={e => setEndDate(e.target.value)}
-					searchText="Buscar intervención por nombre, tipo o motivo"
+					searchText='Buscar intervención por nombre, tipo o motivo'
 					datosSelect={typologyOpts}
 					handleSelectChange={handleTypologyChange}
 				/>
-				<div className="flex flex-row">
+				<div className='flex flex-row'>
 					<button
-						className=" bg-green-400 h-8 w-8 rounded-full shadow-2xl mt-3 mr-2"
-						onClick={() => exportData(data, 'Intervenciones', { id: 'ID' })}
-						data-testid="export-button"
+						className=' bg-green-400 h-8 w-8 rounded-full shadow-2xl mt-3 mr-2'
+						onClick={async () => {
+							const data = (await fetchDataInterventions()).elements
+							data.forEach(intervention => {
+								intervention.date = formatDate(intervention.date)
+							})
+							// export all data except the patient field and id
+							exportData(data, 'Intervenciones', {
+								date: 'fecha',
+								reason: 'razon',
+								typology: 'tipologia',
+								observations: 'observacion',
+								technician: 'tecnico'
+								// patient: 'paciente'
+							})
+						}}
+						data-testid='export-button'
 					>
 						<Image
-							src="/excel.svg"
-							className="ml-2"
+							src='/excel.svg'
+							className='ml-2'
 							width={15}
 							height={15}
-							alt="excel"
+							alt='excel'
 						/>
 					</button>
+					{/*
 					<label
 						htmlFor="file"
 						className="bg-green-400 w-32 h-6 mt-4 rounded-full font-Varela text-white cursor-pointer text-center text-sm"
@@ -199,11 +216,12 @@ export default function InterventionPage() {
 						id="file"
 						onChange={handleFileChange}
 						style={{ display: 'none' }}
-						accept=".xls"
-						data-testid="file"
+						accept='.xlsx'
+						data-testid='file'
 					/>
+					*/}
 				</div>
-				<div className="container p-10 flex flex-wrap gap-5 justify-center items-center">
+				<div className='container p-10 flex flex-wrap gap-5 justify-center items-center'>
 					<Suspense fallback={<div>Cargando...</div>}>
 						{filteredData &&
 							filteredData.map(intervention => (
@@ -225,9 +243,9 @@ export default function InterventionPage() {
 						count={totalPages}
 						initialpage={1}
 						onChange={handlePageChange}
-						className="flex flex-wrap justify-center items-center"
+						className='flex flex-wrap justify-center items-center'
 					/>
-					<div className="flex justify-center items-center m-2">
+					<div className='flex justify-center items-center m-2'>
 						<p>Número de elementos:</p>
 						<Select
 							options={selectOpts}
@@ -235,7 +253,7 @@ export default function InterventionPage() {
 							isSearchable={false}
 							isClearable={false}
 							onChange={handleSelect}
-							className="m-2"
+							className='m-2'
 						/>
 					</div>
 				</div>

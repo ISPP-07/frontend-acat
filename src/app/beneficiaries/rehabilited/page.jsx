@@ -43,35 +43,52 @@ export default function BeneficiariesList() {
 	}, [])
 
 	return (
-		<main className="flex w-full">
+		<main className='flex w-full'>
 			<Suspense fallback={<div></div>}>
 				<Sidebar />
 			</Suspense>
-			<div className="w-full h-full flex flex-col items-center">
-				<Searchbar handleClick={toggleModal} stext="Dar de alta" />
-				<div className="flex flex-row">
+			<div className='w-full h-full flex flex-col items-center'>
+				<Searchbar handleClick={toggleModal} stext='Dar de alta' />
+				<div className='flex flex-row'>
 					<button
-						className=" bg-green-400 h-8 w-8 rounded-full shadow-2xl mt-3 mr-2"
-						onClick={() =>
-							exportData(data, 'Beneficiados', {
-								id: 'id',
-								alias: 'alias',
-								birthday: 'birthday',
-								isFinished: 'isFinished'
+						className=' bg-green-400 h-8 w-8 rounded-full shadow-2xl mt-3 mr-2'
+						onClick={async () => {
+							const data = (await Rehabilited()).elements
+							// Change 'Man' to 'Hombre' and 'Woman' to 'Mujer'
+							data.forEach(beneficiary => {
+								if (beneficiary.gender === 'Man') beneficiary.gender = 'Hombre'
+								else beneficiary.gender = 'Mujer'
 							})
-						}
-						data-testid="export-button"
+							// Export all but the id
+							exportData(data, 'Beneficiarios', {
+								name: 'nombre',
+								first_surname: 'primer apellido',
+								second_surname: 'segundo apellido',
+								// alias: 'alias',
+								nid: 'dni',
+								birth_date: 'fecha nacimiento',
+								gender: 'genero',
+								address: 'direccion',
+								contact_phone: 'telefono',
+								dossier_number: 'numero expediente',
+								// is_rehabilitated: 'rehabilitado',
+								first_technician: 'tecnico',
+								// registration_date: 'fecha de alta',
+								observation: 'observacion'
+							})
+						}}
+						data-testid='export-button'
 					>
 						<Image
-							alt="Exportar a excel"
-							src="/excel.svg"
-							className="ml-2"
+							alt='Exportar a excel'
+							src='/excel.svg'
+							className='ml-2'
 							width={15}
 							height={15}
 						/>
 					</button>
 				</div>
-				<div className="container p-10 flex flex-wrap gap-5 justify-center items-center">
+				<div className='container p-10 flex flex-wrap gap-5 justify-center items-center'>
 					<Suspense fallback={<div>Cargando...</div>}>
 						{data &&
 							data.map(beneficiary => (
