@@ -1,24 +1,9 @@
 /* eslint-disable no-unused-vars */
 import React from 'react'
+import { formatDate } from '../utils'
 /* eslint-enable no-unused-vars */
 
 export default function InterventionDetailsView({ intervention }) {
-	function formatDate(dateString) {
-		const date = new Date(dateString)
-		let formattedDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()} `
-		if (date.getHours() < 10) {
-			formattedDate += `0${date.getHours()}:`
-		} else {
-			formattedDate += `${date.getHours()}:`
-		}
-		if (date.getMinutes() < 10) {
-			formattedDate += `0${date.getMinutes()}`
-		} else {
-			formattedDate += `${date.getMinutes()}`
-		}
-		return formattedDate
-	}
-
 	return (
 		<section className='flex flex-col gap-3 w-full'>
 			<article className='flex items-center w-full'>

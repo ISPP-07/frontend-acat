@@ -13,6 +13,7 @@ import RegisterInterventionModal from '../components/RegisterInterventionModal'
 import Pagination from '@mui/material/Pagination'
 import Select from 'react-select'
 import { createAxiosInterceptors } from '../axiosConfig'
+import { formatDate } from './utils'
 
 export default function InterventionPage() {
 	const [data, setData] = useState(null)
@@ -180,6 +181,9 @@ export default function InterventionPage() {
 						className=' bg-green-400 h-8 w-8 rounded-full shadow-2xl mt-3 mr-2'
 						onClick={async () => {
 							const data = (await fetchDataInterventions()).elements
+							data.forEach(intervention => {
+								intervention.date = formatDate(intervention.date)
+							})
 							// export all data except the patient field and id
 							exportData(data, 'Intervenciones', {
 								date: 'fecha',
