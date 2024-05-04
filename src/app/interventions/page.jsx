@@ -9,7 +9,6 @@ import Link from 'next/link'
 import { fetchDataInterventions } from './fetchIntervention'
 import Image from 'next/image'
 import { exportData } from '../exportData'
-import axios from 'axios'
 import RegisterInterventionModal from '../components/RegisterInterventionModal'
 import Pagination from '@mui/material/Pagination'
 import Select from 'react-select'
@@ -61,6 +60,7 @@ export default function InterventionPage() {
 		setShowModal(!showModal)
 	}
 
+	/*
 	const handleFileChange = async event => {
 		const selectedFile = event.target.files[0]
 		try {
@@ -77,6 +77,7 @@ export default function InterventionPage() {
 			alert('Error al importar los datos')
 		}
 	}
+    */
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -188,6 +189,7 @@ export default function InterventionPage() {
 							alt='excel'
 						/>
 					</button>
+					{/*
 					<label
 						htmlFor='file'
 						className='bg-green-400 w-32 h-6 mt-4 rounded-full font-Varela text-white cursor-pointer text-center text-sm'
@@ -202,6 +204,7 @@ export default function InterventionPage() {
 						accept='.xlsx'
 						data-testid='file'
 					/>
+					*/}
 				</div>
 				<div className='container p-10 flex flex-wrap gap-5 justify-center items-center'>
 					<Suspense fallback={<div>Cargando...</div>}>
