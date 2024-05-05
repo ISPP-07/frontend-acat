@@ -1,0 +1,26 @@
+version: '3.7'
+
+services:
+  frontend_acat:
+    restart: always
+    container_name: harmony_frontend_acat
+    build:
+      context: .
+    ports:
+      - '3000:3000'
+    volumes:
+    env_file:
+      - ./.env.docker
+    command: sh -c "pnpm start"
+    volumes:
+      - frontend_acat_data:/usr/share/frontend_data
+    networks:
+      - harmony
+
+volumes:
+  frontend_acat_data:
+    name: frontend_acat_data
+
+networks:
+  harmony:
+    driver: bridge
