@@ -13,7 +13,6 @@ import RegisterInterventionModal from '../components/RegisterInterventionModal'
 import Pagination from '@mui/material/Pagination'
 import Select from 'react-select'
 import { createAxiosInterceptors } from '../axiosConfig'
-import { formatDate } from './utils'
 import axios from 'axios'
 
 export default function InterventionPage() {
@@ -201,7 +200,6 @@ export default function InterventionPage() {
 						onClick={async () => {
 							const data = (await fetchDataInterventions()).elements
 							data.forEach(intervention => {
-								intervention.date = formatDate(intervention.date)
 								intervention.dni = intervention.patient.nid
 							})
 							// export all data except the patient field and id
@@ -217,7 +215,7 @@ export default function InterventionPage() {
 									dni: 'dni beneficiario'
 								},
 								{
-									date: 'yyyy-mm-ddThh:mm:ss'
+									date: 'dd/mm/yyyy hh:mm:ss'
 								}
 							)
 						}}

@@ -25,6 +25,7 @@ export function exportData(datos, nombre, columnas, dateFormat) {
 			if (dateFormat[key]) {
 				// Set column format for all entries matching col + any number
 				for (let i = 2; i <= filteredData.length + 1; i++) {
+					// Only datetimes can be set as dates. Otherwise they will contain time and not be accepted by the backend
 					if (
 						dateFormat[key].includes('h') ||
 						dateFormat[key].includes('T') ||
