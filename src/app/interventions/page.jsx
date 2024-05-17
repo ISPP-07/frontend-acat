@@ -13,7 +13,7 @@ import RegisterInterventionModal from '../components/RegisterInterventionModal'
 import Pagination from '@mui/material/Pagination'
 import Select from 'react-select'
 import { createAxiosInterceptors } from '../axiosConfig'
-import { formatDate } from './utils'
+import axios from 'axios'
 
 export default function InterventionPage() {
 	const [data, setData] = useState(null)
@@ -76,24 +76,26 @@ export default function InterventionPage() {
 		setShowModal(!showModal)
 	}
 
-	/*
 	const handleFileChange = async event => {
 		const selectedFile = event.target.files[0]
 		try {
 			const formData = new FormData()
-			formData.append('file', selectedFile)
-			await axios.post('url/de/import', formData, {
-				headers: {
-					'Content-Type': 'multipart/form-data'
+			formData.append('interventions', selectedFile)
+			await axios.post(
+				`${process.env.NEXT_PUBLIC_BASE_URL}/acat/intervention/excel`,
+				formData,
+				{
+					headers: {
+						'Content-Type': 'multipart/form-data'
+					}
 				}
-			})
+			)
 			alert('Datos importados correctamente')
 		} catch (error) {
 			console.error(error)
-			alert('Error al importar los datos')
+			alert('Error al importar los datos', error.response.data.detail)
 		}
 	}
-    */
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -198,17 +200,24 @@ export default function InterventionPage() {
 						onClick={async () => {
 							const data = (await fetchDataInterventions()).elements
 							data.forEach(intervention => {
-								intervention.date = formatDate(intervention.date)
+								intervention.dni = intervention.patient.nid
 							})
 							// export all data except the patient field and id
-							exportData(data, 'Intervenciones', {
-								date: 'fecha',
-								reason: 'razon',
-								typology: 'tipologia',
-								observations: 'observacion',
-								technician: 'tecnico'
-								// patient: 'paciente'
-							})
+							exportData(
+								data,
+								'Intervenciones',
+								{
+									date: 'fecha',
+									reason: 'motivo',
+									typology: 'tipo',
+									observations: 'observacion',
+									technician: 'tecnico',
+									dni: 'dni beneficiario'
+								},
+								{
+									date: 'dd/mm/yyyy hh:mm:ss'
+								}
+							)
 						}}
 						data-testid='export-button'
 					>
@@ -220,22 +229,20 @@ export default function InterventionPage() {
 							alt='excel'
 						/>
 					</button>
-					{/*
 					<label
-						htmlFor="file"
-						className="bg-green-400 w-32 h-6 mt-4 rounded-full font-Varela text-white cursor-pointer text-center text-sm"
+						htmlFor='file'
+						className='bg-green-400 w-32 h-6 mt-4 rounded-full font-Varela text-white cursor-pointer text-center text-sm'
 					>
 						Importar datos
 					</label>
 					<input
-						type="file"
-						id="file"
+						type='file'
+						id='file'
 						onChange={handleFileChange}
 						style={{ display: 'none' }}
 						accept='.xlsx'
 						data-testid='file'
 					/>
-					*/}
 				</div>
 				<div className='container p-10 flex flex-wrap gap-5 justify-center items-center'>
 					<Suspense fallback={<div>Cargando...</div>}>
