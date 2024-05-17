@@ -165,7 +165,6 @@ export default function BeneficiariesList() {
 								else beneficiary.is_rehabilitated = ''
 							})
 							// Export all but the id
-							console.log(data)
 							exportData(
 								data,
 								'Beneficiarios',
